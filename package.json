@@ -1,7 +1,6 @@
 {
   "name": "antariksa",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js"
@@ -16,5 +15,14 @@
     "morgan": "^1.10.0",
     "pg": "^8.8.0",
     "sequelize": "^6.25.8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/doniwahyus/final-project.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/doniwahyus/final-project/issues"
+  },
+  "homepage": "https://gitlab.com/doniwahyus/final-project#readme",
+  "description": ""
 }
