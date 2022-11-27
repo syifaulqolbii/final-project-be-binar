@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const router = require('./routes')
-const port = process.env.HTTP_PORT;
+const PORT = process.env.HTTP_PORT;
 const app = express()
 
 app.use(express.json())
@@ -16,6 +16,6 @@ app.use((err, req, res, next) =>{
         message: err.message
     });
 })
-app.listen(port, () => console.log('listening on port', port));
+app.listen(PORT, () => console.log('listening on PORT', PORT));
 
 module.exports = app
