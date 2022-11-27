@@ -4,13 +4,20 @@ const con = require('../controllers')
 const mid = require('../helpers/middlewere')
 const {User} = require('../db/models')
 
-router.get('/',(req, res, next) => {
+router.get('/',async(req, res, next) => {
     try {
-        const user = User.findAll();
-        return res.status(200).json({
+        const user = await User.findAll();
+        if(!user.length){
+            return res.status(400).json({
+                status: false,
+                data: null,
+                message: "empty data!"
+            })
+        }
+        return res.status(400).json({
             status: true,
-            data: user,
-            message: "connections berhasil"
+            data: 'success',
+            message: user
         })
     } catch (error) {
         next(error)
