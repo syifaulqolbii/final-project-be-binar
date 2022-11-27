@@ -2,11 +2,14 @@ const express = require('express')
 const router = express.Router()
 const con = require('../controllers')
 const mid = require('../helpers/middlewere')
+const {User} = require('../db/models')
 
 router.get('/',(req, res, next) => {
     try {
+        const user = User.findAll();
         return res.status(200).json({
             status: true,
+            data: user,
             message: "connections berhasil"
         })
     } catch (error) {
