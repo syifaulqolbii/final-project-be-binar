@@ -5,7 +5,10 @@ const mid = require('../helpers/middlewere')
 
 router.get('/',(req, res, next) => {
     try {
-        console.log('koneksi deploy berhasil');
+        return res.status(200).json({
+            status: true,
+            message: "connections berhasil"
+        })
     } catch (error) {
         next(error)
     }
