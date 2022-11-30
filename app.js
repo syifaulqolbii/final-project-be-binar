@@ -12,8 +12,9 @@ const {
 
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(cors());
 app.use(router);
-app.use(cors())
+
 
 app.use((err, req, res, next) =>{
     console.log(err);
