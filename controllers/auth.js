@@ -38,7 +38,7 @@ module.exports = {
 
 
             return res.status(201).json({
-                status: false,
+                status: true,
                 message: 'Succes',
                 data: {
                     email: user.email,
@@ -78,7 +78,7 @@ module.exports = {
             const token = jwt.sign(payload, JWT_SECRET_KEY)
 
             return res.status(201).json({
-                status: false,
+                status: true,
                 data: {
                     token: token,
                     role: user.role
@@ -93,7 +93,7 @@ module.exports = {
 
         try {
             return res.status(200).json({
-                status: false,
+                status: true,
                 message: 'succes',
                 data: user
             })
@@ -134,7 +134,7 @@ module.exports = {
             const token = jwt.sign(payload, JWT_SECRET_KEY)
 
             return res.status(201).json({
-                status: false,
+                status: true,
                 data: {
                     token: token,
                     role: admin.role
