@@ -1,30 +1,23 @@
-const express = require('express')
-const router = express.Router()
-const con = require('../controllers')
-const mid = require('../helpers/middlewere')
-const {User} = require('../db/models')
+const express = require("express");
+const router = express.Router();
+const con = require("../controllers");
+const mid = require("../helpers/middlewere");
+const roles = require("../utils/roles");
 
-router.get('/',async(req, res, next) => {
-    try {
-        const user = await User.findAll();
-        if(!user.length){
-            return res.status(400).json({
-                status: false,
-                data: null,
-                message: "empty data!"
-            })
-        }
-        return res.status(400).json({
-            status: true,
-            data: 'success',
-            message: user
-        })
-    } catch (error) {
-        next(error)
-    }
-} )
-router.post('/auth/register', con.auth.register);
-router.post('/auth/login', con.auth.login)
-router.get('/auth/whoami', mid.cekLogin, con.auth.whomami)
+// router.get('/auth/forgot-password', con.auth.forgotPasswordView);
+// router.post('/auth/forgot-password', con.auth.forgotpassword);
 
-module.exports = router
+router.post("/auth/register", con.auth.register);
+router.post("/auth/login", con.auth.login);
+
+router.post("/auth/loginAdmin", con.auth.loginAdmin)
+
+router.get("/auth/whoami", mid(roles.buyer), con.auth.whomami);
+
+// add only admin can access
+
+// router.post("/test", mid(roles.admin), (req, res, next)=> {
+//     return res.send('test role admin')
+// })
+
+module.exports = router;
