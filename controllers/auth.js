@@ -1,16 +1,18 @@
 const { User } = require('../db/models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { use } = require('../routes')
+const roles = require('../utils/roles')
+
 
 const {
-    JWT_SECRET_KEY
+    JWT_SECRET_KEY,
+    
 } = process.env
 
 module.exports = {
     register: async (req, res, next) => {
         try{
-            const { name, email, password } = req.body;
+            const { name, email, password, role = roles.buyer } = req.body;
 
             const existUser = await User.findOne({ where: {email: email }});
             if (existUser){
@@ -30,7 +32,8 @@ module.exports = {
             const user = await User.create({
                 name,
                 email,
-                password: encryptPassword
+                password: encryptPassword,
+                role
             });
 
 
@@ -39,7 +42,8 @@ module.exports = {
                 message: 'Succes',
                 data: {
                     email: user.email,
-                    name: user.name
+                    name: user.name,
+                    role: user.role
                 }
             });
         }catch(err){
@@ -68,14 +72,16 @@ module.exports = {
             payload = {
                 id: user.id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                role: user.role
             }
             const token = jwt.sign(payload, JWT_SECRET_KEY)
 
             return res.status(201).json({
                 status: false,
                 data: {
-                    token: token
+                    token: token,
+                    role: user.role
                 }
             })
         } catch (error) {
@@ -94,5 +100,70 @@ module.exports = {
         } catch (err) {
             next(err);
         }
+    },
+    loginAdmin: async(req, res, next)=> {
+        try {
+            const {email, password} = req.body
+
+            const admin = await User.findOne({where: {email: email}})
+            if(!admin){
+                return res.status(404).json({
+                    status: false,
+                    message: "email not found"
+                })
+            }
+            if(admin.role != "Admin"){
+                return res.status(404).json({
+                    status: false,
+                    message: "you are not admin"
+                })
+            }
+            const isPassCorrect = await bcrypt.compare(password, admin.password)
+            if (!isPassCorrect) {
+                return res.status(404).json({
+                    status: false,
+                    message: 'password is not correct'
+                });
+            }
+            payload = {
+                id: admin.id,
+                name: admin.name,
+                email: admin.email,
+                role: admin.role
+            }
+            const token = jwt.sign(payload, JWT_SECRET_KEY)
+
+            return res.status(201).json({
+                status: false,
+                data: {
+                    token: token,
+                    role: admin.role
+                }
+            })
+
+        } catch (error) {
+            next(error)
+        }
     }
+    // forgotpassword: async(req, res, next) => {
+    //     try {
+    //         const {email} = req.body;
+
+    //         const user = await User.findOne({where: {email}});
+    //         if(user){
+    //             const payload = {user_id: user.id};
+    //             const token = jwt.sign(payload, JWT_SECRET_KEY);
+    //             const link = `https://backend-4.up.railway.app/`
+
+    //             htmlEmail = await util.email.getHtml('reset-password.ejs', {name: user.name, link: link});
+    //             await util.email.sendEmail(user.email, 'Reset your password', htmlEmail);
+    //         }
+    //         return res.render('auth/forgot-password', { message: 'we will send email for reset'});
+    //     } catch (error) {
+    //         next(error)
+    //     }
+    // },
+    // forgotPasswordView: (req, res) => {
+    //     return res.render('auth/forgot-password', {message: null});
+    // }
 }
