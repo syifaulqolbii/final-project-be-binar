@@ -54,11 +54,6 @@ paths:
           description: email not match
         '403':
           description: email already used
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
       requestBody:
         content:
           application/json:
@@ -84,6 +79,67 @@ paths:
                   password: '123'
         description: In this body you can create new buyer
       description: ''
+      tags:
+        - Auth Endpoint
+  /auth/login:
+    post:
+      summary: Login Buyer Endpoint
+      operationId: post-auth-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      role:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    data:
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlN5aWZhIiwiZW1haWwiOiJzeWlmYXVscW9sYmkzNUBnbWFpbC5jb20iLCJyb2xlIjoiQnV5ZXIiLCJpYXQiOjE2Njk4Mzk2ODR9.Rg3zv3MGeGRwSYAvEoo76j6MLM0g_i9BWEnMyeXNU3U
+                      role: Buyer
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data:
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlN5aWZhIiwiZW1haWwiOiJzeWlmYXVscW9sYmkzNUBnbWFpbC5jb20iLCJyb2xlIjoiQnV5ZXIiLCJpYXQiOjE2Njk4Mzk2ODR9.Rg3zv3MGeGRwSYAvEoo76j6MLM0g_i9BWEnMyeXNU3U
+                      role: Buyer
+        '400':
+          description: Email not found
+        '401':
+          description: Password doesn't match
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              x-examples:
+                Example 1:
+                  email: syifaulqolbi35@gmail.com
+                  password: '123'
+            examples:
+              Example 1:
+                value:
+                  email: syifaulqolbi35@gmail.com
+                  password: '123'
+        description: In this endpoint you can login to your application
       tags:
         - Auth Endpoint
 components:
