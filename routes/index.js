@@ -11,6 +11,7 @@ const { MODUL } = require('../utils/enum')
 router.get('/', con.auth.hello)
 
 router.get('/access', restrict, rbac(MODUL.UserDashboard, true, true), con.auth.hello)
+router.get('/access-admin', restrict, rbac(MODUL.AdminDashboard, true, true), con.auth.hello)
 
 router.get('/access-denied', restrict, rbac(MODUL.UserDashboard), con.auth.hello)
 router.post('/auth/register', con.auth.register);

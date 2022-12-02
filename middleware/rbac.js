@@ -1,4 +1,4 @@
-const { User, Modul, RoleAccess } = require('../db/models');
+const { User, Modul, RoleAcces } = require('../db/models');
 
 module.exports = (modulName, readAccess = false, writeAccess = false) => {
     return async (req, res, next) => {
@@ -14,20 +14,20 @@ module.exports = (modulName, readAccess = false, writeAccess = false) => {
         if (!modul) return res.status(401).json({ status: false, message: 'you\'re not authorized!', data: null });
 
         // get role access data
-        const roleAccess = await RoleAccess.findOne({ where: { user_id: roleDB.id, module_id: modul.id } });
-        if (!roleAccess) return res.status(401).json({ status: false, message: 'you\'re not authorized!', data: null });
+        const roleAcces = await RoleAcces.findOne({ where: { user_id: roleDB.id, module_id: modul.id } });
+        if (!roleAcces) return res.status(401).json({ status: false, message: 'you\'re not authorized!', data: null });
 
         console.log('rbac read :', readAccess);
-        console.log('user read :', roleAccess.read);
+        console.log('user read :', roleAcces.read);
         
         console.log('rbac write :', writeAccess);
-        console.log('user write :', roleAccess.write);
+        console.log('user write :', roleAcces.write);
 
-        if (readAccess && !roleAccess.read) {
+        if (readAccess && !roleAcces.read) {
             return res.status(401).json({ status: false, message: 'you\'re not authorized!', data: null });
         }
 
-        if (writeAccess && !roleAccess.write) {
+        if (writeAccess && !roleAcces.write) {
             return res.status(401).json({ status: false, message: 'you\'re not authorized!', data: null });
         }
 
