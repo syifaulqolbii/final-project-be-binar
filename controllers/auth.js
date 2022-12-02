@@ -144,26 +144,26 @@ module.exports = {
         } catch (error) {
             next(error)
         }
-    }
-    // forgotpassword: async(req, res, next) => {
-    //     try {
-    //         const {email} = req.body;
+    },
+    forgotPassword: async(req, res, next) => {
+        try {
+            const {email} = req.body;
 
-    //         const user = await User.findOne({where: {email}});
-    //         if(user){
-    //             const payload = {user_id: user.id};
-    //             const token = jwt.sign(payload, JWT_SECRET_KEY);
-    //             const link = `https://backend-4.up.railway.app/`
+            const user = await User.findOne({where: {email}});
+        if(user){
+            const payload = {user_id: user.id};
+                 const token = jwt.sign(payload, JWT_SECRET_KEY);
+                 const link = `https://backend-4.up.railway.app/`
 
-    //             htmlEmail = await util.email.getHtml('reset-password.ejs', {name: user.name, link: link});
-    //             await util.email.sendEmail(user.email, 'Reset your password', htmlEmail);
-    //         }
-    //         return res.render('auth/forgot-password', { message: 'we will send email for reset'});
-    //     } catch (error) {
-    //         next(error)
-    //     }
-    // },
-    // forgotPasswordView: (req, res) => {
-    //     return res.render('auth/forgot-password', {message: null});
-    // }
+                 htmlEmail = await util.email.getHtml('reset-password.ejs', {name: user.name, link: link});
+                 await util.email.sendEmail(user.email, 'Reset your password', htmlEmail);
+             }
+             return res.render('auth/forgotPassword', { message: 'we will send email for reset'});
+         } catch (error) {
+             next(error)
+         }
+     },
+     forgotPasswordView: (req, res) => {
+         return res.render('auth/forgot-password', {message: null});
+     }
 }
