@@ -68,7 +68,8 @@ module.exports = {
             payload = {
                 id: user.id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                role: user.role
             }
             const token = jwt.sign(payload, JWT_SECRET_KEY)
 
@@ -94,5 +95,13 @@ module.exports = {
         } catch (err) {
             next(err);
         }
+    },
+    hello: (req, res)=>{
+        return res.status(200).json({
+            message: 'Hello World!!!'
+        })
+    },
+    me: async (req, res) =>{
+
     }
 }

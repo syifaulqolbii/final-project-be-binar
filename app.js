@@ -5,8 +5,8 @@ const router = require('./routes')
 const port = process.env.HTTP_PORT;
 const app = express()
 
-app.use(express.json())
 app.use(morgan('dev'))
+app.use(express.json())
 app.use(router);
 
 app.use((err, req, res, next) =>{
