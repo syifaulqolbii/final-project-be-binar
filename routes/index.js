@@ -4,11 +4,14 @@ const con = require("../controllers");
 const mid = require("../helpers/middlewere");
 const roles = require("../utils/roles");
 
-// router.get('/auth/forgot-password', con.auth.forgotPasswordView);
-// router.post('/auth/forgot-password', con.auth.forgotpassword);
+
 
 router.post("/auth/register", con.auth.register);
 router.post("/auth/login", con.auth.login);
+
+router.get('/auth/forgot-password', con.auth.forgotPasswordView);
+router.post('/auth/forgot-password', con.auth.forgotPassword);
+router.post('/auth/resetPassword', con.auth.resetPassword);
 
 router.post("/auth/loginAdmin", con.auth.loginAdmin)
 

@@ -165,5 +165,47 @@ module.exports = {
      },
      forgotPasswordView: (req, res) => {
          return res.render('auth/forgot-password', {message: null});
+     },
+     resetPassword: async (req, res, next) => {
+        try {
+            const { oldPassword, newPassword, confirmNewPassword } = req.body;
+
+            if (newPassword !== confirmNewPassword) {
+                return res.status(422).json({
+                    status: false,
+                    message: 'new password and confirm new password doesn\'t match!'
+                });
+            }
+            const user = await User.findOne( { where: { username: req.user.username } });
+            if (!user) return res.status(404).json({
+                success: false,
+                message: 'User not found!'
+            });
+
+            const correct = await bcrypt.compare(oldPassword, user.password);
+            if(!correct) {
+                return res.status(400).json({
+                    status: false,
+                    message: 'old password doesn\'t match! '
+                });
+            }
+
+            const encryptPassword = await  bcrypt.hash(newPassword, 10);
+            const updateUser = await User.update({
+                password: encryptPassword
+            }, {
+                where: {
+                    id: user.id
+                }
+            });
+
+            return res.status(200).json({
+                status: false,
+                message: 'success',
+                data: updateUser
+            });
+        } catch(err) {
+            next(err);
+        }
      }
 }
