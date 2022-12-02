@@ -144,6 +144,15 @@ module.exports = {
         } catch (error) {
             next(error)
         }
+    },
+
+    hello: (req, res)=>{
+        return res.status(200).json({
+            message: 'Hello World!!!'
+        })
+    },
+    me: async (req, res) =>{
+
     }
     // forgotpassword: async(req, res, next) => {
     //     try {
