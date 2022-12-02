@@ -1,0 +1,91 @@
+openapi: 3.1.0
+x-stoplight:
+  id: zvpj576gvy7j9
+info:
+  title: Backend API Final Project 4
+  version: '1.0'
+  description: The API documentation here contains all the api documentation to support the Binar Academy Final Project Backend Developer
+  contact:
+    name: Syifaul Qolbi
+    email: syifaulqolbi32@gmail.com
+servers:
+  - url: 'https://api-prod-4.up.railway.app/'
+paths:
+  /auth/register:
+    post:
+      summary: Create Buyer Register Endpoint
+      operationId: post-auth-register
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      name:
+                        type: string
+                      role:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Succes
+                    data:
+                      email: syifaul@gmail.com
+                      name: Syifa
+                      role: Buyer
+              examples:
+                Example 1:
+                  value:
+                    email: syifa@mail.com
+                    name: Syifa
+                    role: Buyer
+        '400':
+          description: email not match
+        '403':
+          description: email already used
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              x-examples:
+                Example 1:
+                  name: Syifa
+                  email: syifa@mail.com
+                  password: '123'
+            examples:
+              Example 1:
+                value:
+                  name: Syifa
+                  email: syifa@mail.com
+                  password: '123'
+        description: In this body you can create new buyer
+      description: ''
+      tags:
+        - Auth Endpoint
+components:
+  schemas: {}
+  securitySchemes: {}
