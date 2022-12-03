@@ -2,12 +2,15 @@ const { User } = require('../db/models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const roles = require('../utils/roles')
+const util = require('../utils');
+const nodemailer = require('nodemailer');
 
 
 const {
     JWT_SECRET_KEY,
+    RESET_PASSWORD_KEY,
     
-} = process.env
+} = process.env;
 
 module.exports = {
     register: async (req, res, next) => {
@@ -145,69 +148,58 @@ module.exports = {
             next(error)
         }
     },
-    forgotPassword: async(req, res, next) => {
+    forgotPasswordView: (req, res) => {
+        return res.render('auth/forgot-password', { message: null });
+    },
+
+    forgotPassword: async (req, res, next) => {
         try {
-            const {email} = req.body;
+            const { email } = req.body;
 
-            const user = await User.findOne({where: {email}});
-        if(user){
-            const payload = {user_id: user.id};
-                 const token = jwt.sign(payload, JWT_SECRET_KEY);
-                 const link = `https://backend-4.up.railway.app/`
+            const user = await User.findOne({ where: { email } });
+            if (user) {
+                const payload = { user_id: user.id };
+                const token = jwt.sign(payload, JWT_SECRET_KEY);
+                const link = `http://localhost:3000/auth/reset-password?token=${token}`;
 
-                 htmlEmail = await util.email.getHtml('reset-password.ejs', {name: user.name, link: link});
-                 await util.email.sendEmail(user.email, 'Reset your password', htmlEmail);
-             }
-             return res.render('auth/forgotPassword', { message: 'we will send email for reset'});
-         } catch (error) {
-             next(error)
-         }
-     },
-     forgotPasswordView: (req, res) => {
-         return res.render('auth/forgot-password', {message: null});
-     },
-     resetPassword: async (req, res, next) => {
-        try {
-            const { oldPassword, newPassword, confirmNewPassword } = req.body;
-
-            if (newPassword !== confirmNewPassword) {
-                return res.status(422).json({
-                    status: false,
-                    message: 'new password and confirm new password doesn\'t match!'
-                });
-            }
-            const user = await User.findOne( { where: { username: req.user.username } });
-            if (!user) return res.status(404).json({
-                success: false,
-                message: 'User not found!'
-            });
-
-            const correct = await bcrypt.compare(oldPassword, user.password);
-            if(!correct) {
-                return res.status(400).json({
-                    status: false,
-                    message: 'old password doesn\'t match! '
-                });
+                htmlEmail = await util.email.getHtml('reset-password.ejs', { name: user.name, link: link });
+                await util.email.sendEmail(user.email, 'Reset your password', htmlEmail);
             }
 
-            const encryptPassword = await  bcrypt.hash(newPassword, 10);
-            const updateUser = await User.update({
-                password: encryptPassword
-            }, {
-                where: {
-                    id: user.id
-                }
-            });
-
-            return res.status(200).json({
-                status: false,
-                message: 'success',
-                data: updateUser
-            });
-        } catch(err) {
+            return res.render('auth/forgot-password', { message: 'we will send email for reset password if the email is exist on our database!' });
+        } catch (err) {
             next(err);
         }
-     },
+    },
+
+    resetPasswordView: (req, res) => {
+        const { token } = req.query;
+        return res.render('auth/reset-password', { message: null, token });
+    },
+
+    resetPassword: async (req, res, next) => {
+        try {
+            const { token } = req.query;
+            const { new_password, confirm_new_password } = req.body;
+
+            console.log('TOKEN :', token);
+
+            if (!token) return res.render('auth/reset-password', { message: 'invalid token', token });
+            if (new_password != confirm_new_password) return res.render('auth/reset-password', { message: 'password doesn\'t match!', token });
+
+            const payload = jwt.verify(token, JWT_SECRET_KEY);
+
+            const encryptedPassword = await bcrypt.hash(new_password, 10);
+
+            const user = await User.update({ password: encryptedPassword }, { where: { id: payload.user_id } });
+            // validasi masih salah
+            if (user[0]) return res.render('auth/reset-password', { message: 'failed reset password', token });
+
+            return res.render('auth/login', { error: null });
+        } catch (err) {
+            next(err);
+        }
+    },
 
     hello: (req, res)=>{
         return res.status(200).json({
