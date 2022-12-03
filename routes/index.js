@@ -20,6 +20,9 @@ router.post("/auth/loginAdmin", con.auth.loginAdmin)
 
 router.get('/auth/forgot-password', con.auth.forgotPasswordView);
 router.post('/auth/forgot-password', con.auth.forgotPassword);
-router.post('/auth/resetPassword', con.auth.resetPassword);
+
+router.get('/auth/reset-password', con.auth.resetPasswordView);
+router.post('/auth/reset-password', con.auth.resetPassword);
+
 
 module.exports = router;
