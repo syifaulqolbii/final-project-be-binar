@@ -8,8 +8,6 @@ const nodemailer = require('nodemailer');
 
 const {
     JWT_SECRET_KEY,
-    RESET_PASSWORD_KEY,
-    
 } = process.env;
 
 module.exports = {
@@ -148,10 +146,6 @@ module.exports = {
             next(error)
         }
     },
-    forgotPasswordView: (req, res) => {
-        return res.render('auth/forgot-password', { message: null });
-    },
-
     forgotPassword: async (req, res, next) => {
         try {
             const { email } = req.body;
@@ -171,12 +165,9 @@ module.exports = {
             next(err);
         }
     },
-
-    resetPasswordView: (req, res) => {
-        const { token } = req.query;
-        return res.render('auth/reset-password', { message: null, token });
+    forgotPasswordView: (req, res) => {
+        return res.render('auth/forgot-password', { message: null });
     },
-
     resetPassword: async (req, res, next) => {
         try {
             const { token } = req.query;
@@ -200,7 +191,10 @@ module.exports = {
             next(err);
         }
     },
-
+    resetPasswordView: (req, res) => {
+        const { token } = req.query;
+        return res.render('auth/reset-password', { message: null, token });
+    },
     hello: (req, res)=>{
         return res.status(200).json({
             message: 'Hello World!!!'
