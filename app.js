@@ -27,4 +27,7 @@ app.use((err, req, res, next) =>{
         message: err.message
     });
 })
+
+app.set('view engine', 'ejs');
+
 app.listen(PORT, () => console.log('listening on PORT', PORT));
