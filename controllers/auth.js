@@ -207,5 +207,14 @@ module.exports = {
         } catch(err) {
             next(err);
         }
-     }
+     },
+
+    hello: (req, res)=>{
+        return res.status(200).json({
+            message: 'Hello World!!!'
+        })
+    },
+    me: async (req, res) =>{
+
+    }
 }
