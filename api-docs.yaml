@@ -160,9 +160,42 @@ paths:
               x-examples:
                 Example 1:
                   email: syifaulqolbi32@gmail.com
+            examples:
+              Example 1:
+                value:
+                  email: syifasyifa123@gmail.com
         description: "Masukkan email user yang ingin diubah password nya :)"
       tags:
         - Auth Endpoint
+  /auth/reset-password:
+    post:
+      summary: Reset Password Endpoint
+      operationId: post-auth-reset-password
+      responses:
+        "200":
+          description: OK
+      tags:
+        - Auth Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_password:
+                  type: string
+                confirm_new_password:
+                  type: string
+              x-examples:
+                Example 1:
+                  new_password: "1234"
+                  confirm_new_password: "1234"
+            examples:
+              Example 1:
+                value:
+                  new_password: "1234"
+                  confirm_new_password: "1234"
+        description: "Endpoint untuk reset password, silahkan dimasukkan new password dan confirm new password nya"
 components:
   schemas: {}
   securitySchemes: {}
