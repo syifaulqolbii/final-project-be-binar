@@ -88,7 +88,7 @@ module.exports = {
             next(error)
         }
     },
-    whomami: (req, res, next) => {
+    whoami: (req, res, next) => {
         const user = req.user
 
         try {
