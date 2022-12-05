@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const roles = require('../utils/roles')
 const util = require('../utils');
-const nodemailer = require('nodemailer');
 
 
 const {
