@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const roles = require('../utils/roles')
 const util = require('../utils');
-const nodemailer = require('nodemailer');
 
 
 const {
@@ -89,7 +88,7 @@ module.exports = {
             next(error)
         }
     },
-    whomami: (req, res, next) => {
+    whoami: (req, res, next) => {
         const user = req.user
 
         try {
@@ -183,8 +182,6 @@ module.exports = {
             const encryptedPassword = await bcrypt.hash(new_password, 10);
 
             const user = await User.update({ password: encryptedPassword }, { where: { id: payload.user_id } });
-            // validasi masih salah
-            if (user[0]) return res.render('auth/reset-password', { message: 'failed reset password', token });
 
             return res.render('auth/login', { error: null });
         } catch (err) {
