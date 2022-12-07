@@ -6,7 +6,6 @@ const rbac = require('../middleware/rbac')
 const { MODUL } = require('../utils/enum')
 // const { User } = require('../db/models')
 
-
 router.get('/', con.auth.hello)
 
 router.get('/access', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.auth.hello)
@@ -32,24 +31,46 @@ router.put('/airlines', con.air.update)
 router.delete('/airlines', con.air.delete)
 
 router.get('/order', con.ord.index)
-router.post('/order', con.ord.create)
+router.post('/order', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.ord.create)
 router.put('/order', con.ord.update)
 router.delete('/order', con.ord.delete)
 
-router.get('/transaction', con.trans.getData)
-router.post('/transaction', con.trans.create)
+router.get('/transaction', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.trans.getData)
+router.post('/transaction', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.trans.create)
 router.put('/transaction', con.trans.update)
 router.delete('/transaction', con.trans.delete)
 
+
+router.get('/access', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.auth.hello)
+router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.auth.hello)
+router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.hello)
+
+router.post('/auth/register', con.auth.register);
+router.post('/auth/login', con.auth.login)
+router.post("/auth/loginAdmin", con.auth.loginAdmin)
+router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
+
+
+router.get('/auth/forgot-password', con.auth.forgotPasswordView);
+router.post('/auth/forgot-password', con.auth.forgotPassword);
+
+router.get('/auth/reset-password', con.auth.resetPasswordView);
+router.post('/auth/reset-password', con.auth.resetPassword);
+
+// list airport
+router.get('/list-airport', con.list.listAirport);
+
+
 router.get('/notification', con.not.getData)
-router.post('/notification', con.not.create)
+router.post('/notification', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.not.create)
 router.put('/notification', con.not.update)
 router.delete('/notification', con.not.delete)
 
 router.get('/search/:id', con.sc.getData)
 router.post('/search', con.sc.create)
-router.put('/search', con.sc.update)
-router.delete('/search', con.sc.delete)
+router.post('/search-admin',mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.create)
+router.put('/search', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.update)
+router.delete('/search', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.delete)
 
 router.get('/history', con.his.getData)
 router.post('/history', con.his.create)

@@ -12,11 +12,7 @@ const {
 module.exports = {
     register: async (req, res, next) => {
         try{
-<<<<<<< HEAD
             const { name, email, password, gender, phone} = req.body;
-=======
-            const { name, email, password, role = roles.buyer } = req.body;
->>>>>>> a1bb2cf7503653151b5f5e95d4a9ffdb8d771170
 
             const existUser = await User.findOne({ where: {email: email }});
             if (existUser){
@@ -49,13 +45,9 @@ module.exports = {
                 name,
                 email,
                 password: encryptPassword,
-<<<<<<< HEAD
                 role: 'Buyer',
                 gender,
                 phone
-=======
-                role
->>>>>>> a1bb2cf7503653151b5f5e95d4a9ffdb8d771170
             });
 
 
@@ -95,13 +87,9 @@ module.exports = {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-<<<<<<< HEAD
                 role: user.role,
                 gender: user.gender,
                 phone: user.phone
-=======
-                role: user.role
->>>>>>> a1bb2cf7503653151b5f5e95d4a9ffdb8d771170
             }
             const token = jwt.sign(payload, JWT_SECRET_KEY)
 
@@ -116,7 +104,7 @@ module.exports = {
             next(error)
         }
     },
-    whomami: (req, res, next) => {
+    whoami: (req, res, next) => {
         const user = req.user
 
         try {
@@ -129,7 +117,6 @@ module.exports = {
             next(err);
         }
     },
-<<<<<<< HEAD
     hello: (req, res)=>{
         return res.status(200).json({
             message: 'Hello World!!!'
@@ -137,51 +124,6 @@ module.exports = {
     },
     me: async (req, res) =>{
 
-=======
-    loginAdmin: async(req, res, next)=> {
-        try {
-            const {email, password} = req.body
-
-            const admin = await User.findOne({where: {email: email}})
-            if(!admin){
-                return res.status(404).json({
-                    status: false,
-                    message: "email not found"
-                })
-            }
-            if(admin.role != "Admin"){
-                return res.status(404).json({
-                    status: false,
-                    message: "you are not admin"
-                })
-            }
-            const isPassCorrect = await bcrypt.compare(password, admin.password)
-            if (!isPassCorrect) {
-                return res.status(404).json({
-                    status: false,
-                    message: 'password is not correct'
-                });
-            }
-            payload = {
-                id: admin.id,
-                name: admin.name,
-                email: admin.email,
-                role: admin.role
-            }
-            const token = jwt.sign(payload, JWT_SECRET_KEY)
-
-            return res.status(201).json({
-                status: true,
-                data: {
-                    token: token,
-                    role: admin.role
-                }
-            })
-
-        } catch (error) {
-            next(error)
-        }
->>>>>>> a1bb2cf7503653151b5f5e95d4a9ffdb8d771170
     }
     // forgotpassword: async(req, res, next) => {
     //     try {
