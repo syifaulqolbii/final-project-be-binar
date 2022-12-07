@@ -27,7 +27,7 @@ module.exports = {
                     message: 'data already create'
                 });
             }
-            let cekIdentity = /^(?=.*[0-9])\d{16}$/
+            let cekIdentity = /^(?=.*[0-9])\d{16,}$/
             if (!identity_number.match(cekIdentity)) {
                 return res.status(400).json({
                     message: 'Identity mush have 16 character'

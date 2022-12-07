@@ -2,6 +2,7 @@ const { User } = require('../db/models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const roles = require('../utils/roles')
+const util = require('../utils');
 
 
 const {
@@ -29,13 +30,13 @@ module.exports = {
                     message: 'email is not valid'
                 })
             };
-            let strongRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[a-zA-Z!#$%&? "])[a-zA-Z0-9!#$%&?]{8,}$/
+            let strongRegex = /^(?=(.*[a-zA-Z]){1,})(?=(.*[0-9]){2,}).{8,}$/
             if (!password.match(strongRegex)){
                 return res.status(400).json({
                     message: 'password must have Capital, number and special character(minimum 8 character) '
                 })
             };
-            let cekPhone = /^(?=.*[0-9])\d{11}$/
+            let cekPhone = /^(?=.*[0-9])\d{11,}$/
             if (!phone.match(cekPhone)) {
                 return res.status(400).json({
                     message: 'Phone number  needs to be atleast 11 characters'
@@ -117,6 +118,53 @@ module.exports = {
             next(err);
         }
     },
+    forgotPassword: async (req, res, next) => {
+        try {
+            const { email } = req.body;
+
+            const user = await User.findOne({ where: { email } });
+            if (user) {
+                const payload = { user_id: user.id };
+                const token = jwt.sign(payload, JWT_SECRET_KEY);
+                const link = `http://localhost:3000/auth/reset-password?token=${token}`;
+
+                htmlEmail = await util.email.getHtml('reset-password.ejs', { name: user.name, link: link });
+                await util.email.sendEmail(user.email, 'Reset your password', htmlEmail);
+            }
+
+            return res.render('auth/forgot-password', { message: 'we will send email for reset password if the email is exist on our database!' });
+        } catch (err) {
+            next(err);
+        }
+    },
+    forgotPasswordView: (req, res) => {
+        return res.render('auth/forgot-password', { message: null });
+    },
+    resetPassword: async (req, res, next) => {
+        try {
+            const { token } = req.query;
+            const { new_password, confirm_new_password } = req.body;
+
+            console.log('TOKEN :', token);
+
+            if (!token) return res.render('auth/reset-password', { message: 'invalid token', token });
+            if (new_password != confirm_new_password) return res.render('auth/reset-password', { message: 'password doesn\'t match!', token });
+
+            const payload = jwt.verify(token, JWT_SECRET_KEY);
+
+            const encryptedPassword = await bcrypt.hash(new_password, 10);
+
+            const user = await User.update({ password: encryptedPassword }, { where: { id: payload.user_id } });
+
+            return res.render('auth/login', { error: null });
+        } catch (err) {
+            next(err);
+        }
+    },
+    resetPasswordView: (req, res) => {
+        const { token } = req.query;
+        return res.render('auth/reset-password', { message: null, token });
+    },
     hello: (req, res)=>{
         return res.status(200).json({
             message: 'Hello World!!!'
@@ -125,25 +173,4 @@ module.exports = {
     me: async (req, res) =>{
 
     }
-    // forgotpassword: async(req, res, next) => {
-    //     try {
-    //         const {email} = req.body;
-
-    //         const user = await User.findOne({where: {email}});
-    //         if(user){
-    //             const payload = {user_id: user.id};
-    //             const token = jwt.sign(payload, JWT_SECRET_KEY);
-    //             const link = `https://backend-4.up.railway.app/`
-
-    //             htmlEmail = await util.email.getHtml('reset-password.ejs', {name: user.name, link: link});
-    //             await util.email.sendEmail(user.email, 'Reset your password', htmlEmail);
-    //         }
-    //         return res.render('auth/forgot-password', { message: 'we will send email for reset'});
-    //     } catch (error) {
-    //         next(error)
-    //     }
-    // },
-    // forgotPasswordView: (req, res) => {
-    //     return res.render('auth/forgot-password', {message: null});
-    // }
 }

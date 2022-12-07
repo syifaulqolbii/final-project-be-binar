@@ -3,6 +3,7 @@ const router = express.Router()
 const con = require('../controllers')
 const mid = require('../helpers/middlewere')
 const rbac = require('../middleware/rbac')
+const restrict = require('../middleware/restrict')
 const { MODUL } = require('../utils/enum')
 // const { User } = require('../db/models')
 
@@ -12,8 +13,20 @@ router.get('/access', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.a
 router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.auth.hello)
 router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.hello)
 
-// router.get('/auth/forgot-password', con.auth.forgotPasswordView);
-// router.post('/auth/forgot-password', con.auth.forgotpassword);
+router.post('/auth/register', con.auth.register);
+router.post('/auth/login', con.auth.login)
+// router.post("/auth/loginAdmin", con.auth.loginAdmin)
+router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
+
+
+router.get('/auth/forgot-password', con.auth.forgotPasswordView);
+router.post('/auth/forgot-password', con.auth.forgotPassword);
+
+router.get('/auth/reset-password', con.auth.resetPasswordView);
+router.post('/auth/reset-password', con.auth.resetPassword);
+
+// list airport
+router.get('/list-airport', con.list.listAirport);
 
 router.get('/home/:id', con.hom.getData)
 router.post('/home', con.hom.create)
@@ -44,21 +57,6 @@ router.delete('/transaction', con.trans.delete)
 router.get('/access', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.auth.hello)
 router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.auth.hello)
 router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.hello)
-
-router.post('/auth/register', con.auth.register);
-router.post('/auth/login', con.auth.login)
-router.post("/auth/loginAdmin", con.auth.loginAdmin)
-router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
-
-
-router.get('/auth/forgot-password', con.auth.forgotPasswordView);
-router.post('/auth/forgot-password', con.auth.forgotPassword);
-
-router.get('/auth/reset-password', con.auth.resetPasswordView);
-router.post('/auth/reset-password', con.auth.resetPassword);
-
-// list airport
-router.get('/list-airport', con.list.listAirport);
 
 
 router.get('/notification', con.not.getData)

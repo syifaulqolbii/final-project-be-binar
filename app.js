@@ -11,7 +11,7 @@ const router = require('./routes')
 const app = express()
 
 const {
-    PORT = 3000
+    PORT = 5000
 }=process.env
 
 app.use(express.json())
