@@ -28,7 +28,7 @@ module.exports = {
                 });
             }
             let cekIdentity = /^(?=.*[0-9])\d{16}$/
-            if (!phone.match(cekIdentity)) {
+            if (!identity_number.match(cekIdentity)) {
                 return res.status(400).json({
                     message: 'Identity mush have 16 character'
                 })
