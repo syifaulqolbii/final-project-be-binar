@@ -3,20 +3,23 @@ x-stoplight:
   id: zvpj576gvy7j9
 info:
   title: Backend API Final Project 4
-  version: "1.0"
+  version: '1.0'
   description: The API documentation here contains all the api documentation to support the Binar Academy Final Project Backend Developer
   contact:
     name: Syifaul Qolbi
     email: syifaulqolbi32@gmail.com
 servers:
-  - url: "https://antariksa-api.up.railway.app"
+  - url: 'https://antariksa-api.up.railway.app'
+    description: Production Environtment
+  - url: 'https://backend-4.up.railway.app/'
+    description: Staging Environtment
 paths:
   /auth/register:
     post:
       summary: Create Buyer Register Endpoint
       operationId: post-auth-register
       responses:
-        "201":
+        '201':
           description: Success
           content:
             application/json:
@@ -50,9 +53,9 @@ paths:
                     email: syifa@mail.com
                     name: Syifa
                     role: Buyer
-        "400":
+        '400':
           description: email not match
-        "403":
+        '403':
           description: email already used
       requestBody:
         content:
@@ -70,15 +73,15 @@ paths:
                 Example 1:
                   name: Syifa
                   email: syifa@mail.com
-                  password: "123"
+                  password: '123'
             examples:
               Example 1:
                 value:
                   name: Syifa
                   email: syifa@mail.com
-                  password: "123"
+                  password: '123'
         description: In this body you can create new buyer
-      description: ""
+      description: ''
       tags:
         - Auth Endpoint
   /auth/login:
@@ -86,7 +89,7 @@ paths:
       summary: Login Buyer Endpoint
       operationId: post-auth-login
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -115,11 +118,11 @@ paths:
                     data:
                       token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlN5aWZhIiwiZW1haWwiOiJzeWlmYXVscW9sYmkzNUBnbWFpbC5jb20iLCJyb2xlIjoiQnV5ZXIiLCJpYXQiOjE2Njk4Mzk2ODR9.Rg3zv3MGeGRwSYAvEoo76j6MLM0g_i9BWEnMyeXNU3U
                       role: Buyer
-        "400":
+        '400':
           description: Email not found
-        "401":
+        '401':
           description: Password doesn't match
-      description: ""
+      description: ''
       requestBody:
         content:
           application/json:
@@ -133,12 +136,12 @@ paths:
               x-examples:
                 Example 1:
                   email: syifaulqolbi35@gmail.com
-                  password: "123"
+                  password: '123'
             examples:
               Example 1:
                 value:
                   email: syifaulqolbi35@gmail.com
-                  password: "123"
+                  password: '123'
         description: In this endpoint you can login to your application
       tags:
         - Auth Endpoint
@@ -147,7 +150,7 @@ paths:
       summary: Forgot Password Endpoint
       operationId: post-auth-forgot-password
       responses:
-        "200":
+        '200':
           description: OK
       requestBody:
         content:
@@ -164,7 +167,7 @@ paths:
               Example 1:
                 value:
                   email: syifasyifa123@gmail.com
-        description: "Masukkan email user yang ingin diubah password nya :)"
+        description: 'Masukkan email user yang ingin diubah password nya :)'
       tags:
         - Auth Endpoint
   /auth/reset-password:
@@ -172,7 +175,7 @@ paths:
       summary: Reset Password Endpoint
       operationId: post-auth-reset-password
       responses:
-        "200":
+        '200':
           description: OK
       tags:
         - Auth Endpoint
@@ -188,21 +191,21 @@ paths:
                   type: string
               x-examples:
                 Example 1:
-                  new_password: "1234"
-                  confirm_new_password: "1234"
+                  new_password: '1234'
+                  confirm_new_password: '1234'
             examples:
               Example 1:
                 value:
-                  new_password: "1234"
-                  confirm_new_password: "1234"
-        description: "Endpoint untuk reset password, silahkan dimasukkan new password dan confirm new password nya"
+                  new_password: '1234'
+                  confirm_new_password: '1234'
+        description: 'Endpoint untuk reset password, silahkan dimasukkan new password dan confirm new password nya'
   /auth/whoami:
     get:
       summary: Profile Endpoint
       tags:
         - Auth Endpoint
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -225,9 +228,9 @@ paths:
                       role:
                         type: string
                       gender:
-                        type: "null"
+                        type: 'null'
                       phone:
-                        type: "null"
+                        type: 'null'
                       iat:
                         type: integer
                 x-examples:
@@ -263,3 +266,58 @@ paths:
           in: header
           required: true
           name: Authorization
+  /list-airport:
+    get:
+      summary: Airport List Endpoint
+      tags:
+        - List Airport Endpoint
+      responses:
+        '200':
+          description: Ok.. Data Airport
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        region:
+                          type: string
+                        code:
+                          type:
+                            - 'null'
+                            - string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Data dari Port API
+                    data:
+                      - name: Sultan Aji Muhammad Sulaiman Sepinggan International Airport
+                        region: Kalimantan Timur (East Kalimantan)
+                        code: BPN
+                      - name: Dortheys Hiyo Eluay International Airport
+                        region: Papua
+                        code: DJJ
+                      - name: Hasanuddin International Airport
+                        region: Sulawesi Selatan (South Sulawesi)
+                        code: UPG
+                                    examples:
+                Example 1:
+                  value:
+                    status: true
+                    message: Data Airport
+                    data:
+                      - name: Soekarno Hatta
+                        region: Banten
+                        code: CGK
+      operationId: get-list-airport
+      description: Endpoint ini untuk mengambil data list airport yang ada di Indonesia

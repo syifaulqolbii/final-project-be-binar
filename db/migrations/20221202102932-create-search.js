@@ -11,10 +11,10 @@ module.exports = {
       home_id: {
         type: Sequelize.INTEGER
       },
-      airlines_id: {
-        type: Sequelize.INTEGER
+      airlines: {
+        type: Sequelize.STRING
       },
-      depatur_time: {
+      depature_time: {
         type: Sequelize.TIME
       },
       arrival_time: {
