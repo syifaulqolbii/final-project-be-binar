@@ -1,4 +1,4 @@
-const { name } = require("ejs");
+import fetch from 'node-fetch';
 
 module.exports = {
     listAirport: async (req, res) => {
