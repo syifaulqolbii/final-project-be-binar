@@ -20,9 +20,19 @@
     "node-fetch": "^2.6.7",
     "nodemailer": "^6.8.0",
     "pg": "^8.8.0",
+<<<<<<< HEAD
+<<<<<<< HEAD
+    "sequelize": "^6.26.0"
+=======
+    "sequelize": "^6.25.8",
+    "swagger-ui-express": "^4.6.0",
+    "yamljs": "^0.3.0"
+>>>>>>> a1bb2cf7503653151b5f5e95d4a9ffdb8d771170
+=======
     "sequelize": "^6.26.0",
     "swagger-ui-express": "^4.6.0",
     "yamljs": "^0.3.0"
+>>>>>>> 74f8e85962d13d0d58e50571bb70644a05381e83
   },
   "repository": {
     "type": "git",

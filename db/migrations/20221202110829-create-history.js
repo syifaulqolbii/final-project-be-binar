@@ -11,6 +11,9 @@ module.exports = {
       transaction_id: {
         type: Sequelize.INTEGER
       },
+      search_id: {
+        type: Sequelize.INTEGER
+      },
       payment_id: {
         type: Sequelize.INTEGER
       },
