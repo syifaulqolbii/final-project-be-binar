@@ -1,5 +1,5 @@
 {
-  "name": "antariksa",
+  "name": "final-project-be-binar",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
@@ -26,12 +26,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/doniwahyus/final-project.git"
+    "url": "git+https://github.com/syifaulqolbii/final-project-be-binar.git"
   },
   "bugs": {
-    "url": "https://gitlab.com/doniwahyus/final-project/issues"
+    "url": "https://github.com/syifaulqolbii/final-project-be-binar/issues"
   },
-  "homepage": "https://gitlab.com/doniwahyus/final-project#readme",
-  "keywords": [],
+  "homepage": "https://github.com/syifaulqolbii/final-project-be-binar#readme",
   "description": ""
 }

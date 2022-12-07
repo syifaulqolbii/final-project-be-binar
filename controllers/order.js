@@ -37,10 +37,10 @@ module.exports = {
                 })
             }
 
-            let re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/g;
-            if (!phone_number.match(re)) {
+            let cekPhone = /^(?=.*[0-9])\d{11}$/
+            if (!phone_number.match(cekPhone)) {
                 return res.status(400).json({
-                    message: 'phone number is not valid'
+                    message: 'Phone number  needs to be atleast 11 characters'
                 })
             }
             const order = await Order.create({

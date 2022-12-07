@@ -30,13 +30,13 @@ module.exports = {
                     message: 'email is not valid'
                 })
             };
-            let strongRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[a-zA-Z!#$%&? "])[a-zA-Z0-9!#$%&?]{8,}$/
+            let strongRegex = /^(?=(.*[a-zA-Z]){1,})(?=(.*[0-9]){2,}).{8,}$/
             if (!password.match(strongRegex)){
                 return res.status(400).json({
                     message: 'password must have Capital, number and special character(minimum 8 character) '
                 })
             };
-            let cekPhone = /^(?=.*[0-9])\d{11}$/
+            let cekPhone = /^(?=.*[0-9])\d{11,}$/
             if (!phone.match(cekPhone)) {
                 return res.status(400).json({
                     message: 'Phone number  needs to be atleast 11 characters'

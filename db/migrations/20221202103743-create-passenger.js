@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       identity_number: {
-        type: Sequelize.INTEGER(25)
+        type: Sequelize.STRING
       },
       identity_exp_date: {
         type: Sequelize.DATE

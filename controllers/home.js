@@ -15,7 +15,7 @@ module.exports = {
                 res.status(200).json({
                     message: 'Data is Loaded',
                     homeOutput,
-                    dataUser: home[0]
+                    data: home[0]
                     
                 })
             } else {
