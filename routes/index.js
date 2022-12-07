@@ -25,7 +25,7 @@ router.get('/auth/reset-password', con.auth.resetPasswordView);
 router.post('/auth/reset-password', con.auth.resetPassword);
 
 // list airport
-router.get('/list', con.list.listAirport);
+router.get('/list-airport', con.list.listAirport);
 
 
 module.exports = router;
