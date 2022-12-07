@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const {
-    JWT_SIGNATURE_KEY
+    JWT_SECRET_KEY
 } = process.env
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
                 });
             }
 
-            const decode = jwt.verify(token, JWT_SIGNATURE_KEY);
+            const decode = jwt.verify(token, JWT_SECRET_KEY);
             req.user = decode;
 
             next();

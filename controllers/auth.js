@@ -10,7 +10,7 @@ const {
 module.exports = {
     register: async (req, res, next) => {
         try{
-            const { name, email, password } = req.body;
+            const { name, email, password, gender, phone} = req.body;
 
             const existUser = await User.findOne({ where: {email: email }});
             if (existUser){
@@ -24,13 +24,28 @@ module.exports = {
             let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             if (!email.match(regex)){
                 return res.status(400).json({
-                    message: 'email not match'
+                    message: 'email is not valid'
                 })
             };
+            let strongRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[a-zA-Z!#$%&? "])[a-zA-Z0-9!#$%&?]{8,}$/
+            if (!password.match(strongRegex)){
+                return res.status(400).json({
+                    message: 'password must have Capital, number and special character(minimum 8 character) '
+                })
+            };
+            let cekPhone = /^(?=.*[0-9])\d{11}$/
+            if (!phone.match(cekPhone)) {
+                return res.status(400).json({
+                    message: 'Phone number  needs to be atleast 11 characters'
+                })
+            }
             const user = await User.create({
                 name,
                 email,
-                password: encryptPassword
+                password: encryptPassword,
+                role: 'Buyer',
+                gender,
+                phone
             });
 
 
@@ -69,7 +84,9 @@ module.exports = {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                gender: user.gender,
+                phone: user.phone
             }
             const token = jwt.sign(payload, JWT_SECRET_KEY)
 

@@ -8,9 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      search_id: {
-        type: Sequelize.INTEGER
-      },
       orderer: {
         type: Sequelize.STRING
       },
