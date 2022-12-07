@@ -9,7 +9,10 @@ info:
     name: Syifaul Qolbi
     email: syifaulqolbi32@gmail.com
 servers:
-  - url: 'https://api-prod-4.up.railway.app/'
+  - url: 'https://antariksa-api.up.railway.app'
+    description: Production Environtment
+  - url: 'https://backend-4.up.railway.app/'
+    description: Staging Environtment
 paths:
   /auth/register:
     post:
@@ -142,6 +145,179 @@ paths:
         description: In this endpoint you can login to your application
       tags:
         - Auth Endpoint
-components:
-  schemas: {}
-  securitySchemes: {}
+  /auth/forgot-password:
+    post:
+      summary: Forgot Password Endpoint
+      operationId: post-auth-forgot-password
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              x-examples:
+                Example 1:
+                  email: syifaulqolbi32@gmail.com
+            examples:
+              Example 1:
+                value:
+                  email: syifasyifa123@gmail.com
+        description: 'Masukkan email user yang ingin diubah password nya :)'
+      tags:
+        - Auth Endpoint
+  /auth/reset-password:
+    post:
+      summary: Reset Password Endpoint
+      operationId: post-auth-reset-password
+      responses:
+        '200':
+          description: OK
+      tags:
+        - Auth Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_password:
+                  type: string
+                confirm_new_password:
+                  type: string
+              x-examples:
+                Example 1:
+                  new_password: '1234'
+                  confirm_new_password: '1234'
+            examples:
+              Example 1:
+                value:
+                  new_password: '1234'
+                  confirm_new_password: '1234'
+        description: 'Endpoint untuk reset password, silahkan dimasukkan new password dan confirm new password nya'
+  /auth/whoami:
+    get:
+      summary: Profile Endpoint
+      tags:
+        - Auth Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      gender:
+                        type: 'null'
+                      phone:
+                        type: 'null'
+                      iat:
+                        type: integer
+                x-examples:
+                  Example 1:
+                    status: false
+                    message: succes
+                    data:
+                      id: 4
+                      name: dadang
+                      email: dada@mail.com
+                      role: Buyer
+                      gender: null
+                      phone: null
+                      iat: 1670253655
+              examples:
+                Example 1:
+                  value:
+                    status: false
+                    message: succes
+                    data:
+                      id: 4
+                      name: dadang
+                      email: dada@mail.com
+                      role: Buyer
+                      gender: null
+                      phone: null
+                      iat: 1670253655
+      operationId: get-auth-whoami
+      description: Endpoint ini digunakan untuk cek profile
+      parameters:
+        - schema:
+            type: string
+          in: header
+          required: true
+          name: Authorization
+  /list-airport:
+    get:
+      summary: Airport List Endpoint
+      tags:
+        - List Airport Endpoint
+      responses:
+        '200':
+          description: Ok.. Data Airport
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        region:
+                          type: string
+                        code:
+                          type:
+                            - 'null'
+                            - string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Data dari Port API
+                    data:
+                      - name: Sultan Aji Muhammad Sulaiman Sepinggan International Airport
+                        region: Kalimantan Timur (East Kalimantan)
+                        code: BPN
+                      - name: Dortheys Hiyo Eluay International Airport
+                        region: Papua
+                        code: DJJ
+                      - name: Hasanuddin International Airport
+                        region: Sulawesi Selatan (South Sulawesi)
+                        code: UPG
+                                    examples:
+                Example 1:
+                  value:
+                    status: true
+                    message: Data Airport
+                    data:
+                      - name: Soekarno Hatta
+                        region: Banten
+                        code: CGK
+      operationId: get-list-airport
+      description: Endpoint ini untuk mengambil data list airport yang ada di Indonesia

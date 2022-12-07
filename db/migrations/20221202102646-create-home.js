@@ -1,24 +1,33 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Homes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      user_id: {
+        type: Sequelize.INTEGER
+      },
+      passenger_id: {
+        type: Sequelize.INTEGER
+      },
+      origin_airport: {
         type: Sequelize.STRING
       },
-      email: {
+      destination_airport: {
         type: Sequelize.STRING
       },
-      password: {
-        type: Sequelize.STRING
+      depature_date: {
+        type: Sequelize.DATE
       },
-      role: {
-        type: Sequelize.ENUM(['Admin','Buyer'])
+      arrival_date: {
+        type: Sequelize.DATE
+      },
+      return_date: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Homes');
   }
 };

@@ -5,6 +5,7 @@ const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./api-docs.yaml');
 const cors = require('cors')
+const methodOverride = require('method-override');
 const router = require('./routes')
 
 const app = express()
@@ -14,9 +15,11 @@ const {
 }=process.env
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true}));
 app.use(morgan('dev'))
 app.use(cors());
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(methodOverride('_method'));
 app.use(router);
 
 
@@ -27,4 +30,7 @@ app.use((err, req, res, next) =>{
         message: err.message
     });
 })
+
+app.set('view engine', 'ejs');
+
 app.listen(PORT, () => console.log('listening on PORT', PORT));

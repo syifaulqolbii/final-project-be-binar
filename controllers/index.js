@@ -1,4 +1,8 @@
-const auth = require('./auth')
+const auth = require('./auth');
+const list = require('./list');
 
 
-module.exports = {auth}
+module.exports = {
+    auth,
+    list
+}
