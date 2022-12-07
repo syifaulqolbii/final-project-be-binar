@@ -1,13 +1,26 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./api-docs.yaml');
+const cors = require('cors')
 const router = require('./routes')
-const port = process.env.HTTP_PORT;
+
 const app = express()
 
 app.use(morgan('dev'))
 app.use(express.json())
+const {
+    PORT = 3000
+}=process.env
+
+app.use(express.json())
+app.use(morgan('dev'))
+app.use(cors());
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(router);
+
 
 app.use((err, req, res, next) =>{
     console.log(err);
@@ -16,6 +29,4 @@ app.use((err, req, res, next) =>{
         message: err.message
     });
 })
-app.listen(port, () => console.log('listening on port', port));
-
-module.exports = app
+app.listen(PORT, () => console.log('listening on PORT', PORT));

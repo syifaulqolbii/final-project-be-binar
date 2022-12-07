@@ -13,9 +13,8 @@ router.get('/access', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.a
 router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.auth.hello)
 router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.hello)
 
-router.post('/auth/register', con.auth.register);
-router.post('/auth/login', con.auth.login)
-router.get('/auth/whoami', mid.cekLogin, con.auth.whomami)
+// router.get('/auth/forgot-password', con.auth.forgotPasswordView);
+// router.post('/auth/forgot-password', con.auth.forgotpassword);
 
 router.get('/home/:id', con.hom.getData)
 router.post('/home', con.hom.create)
