@@ -1,4 +1,5 @@
 const { User } = require('../db/models')
+const { Notification } = require('../db/models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const roles = require('../utils/roles')
@@ -7,15 +8,16 @@ const util = require('../utils');
 
 const {
     JWT_SECRET_KEY,
-} = process.env;
+
+} = process.env
 
 module.exports = {
     register: async (req, res, next) => {
-        try{
-            const { name, email, password, role = roles.buyer } = req.body;
+        try {
+            const { name, email, password, gender, phone } = req.body;
 
-            const existUser = await User.findOne({ where: {email: email }});
-            if (existUser){
+            const existUser = await User.findOne({ where: { email: email } });
+            if (existUser) {
                 return res.status(400).json({
                     status: false,
                     message: 'email already used!'
@@ -24,16 +26,30 @@ module.exports = {
 
             const encryptPassword = await bcrypt.hash(password, 10);
             let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            if (!email.match(regex)){
+            if (!email.match(regex)) {
                 return res.status(400).json({
-                    message: 'email not match'
+                    message: 'email is not valid'
                 })
             };
+            let strongRegex = /^(?=(.*[a-zA-Z]){1,})(?=(.*[0-9]){2,}).{8,}$/
+            if (!password.match(strongRegex)) {
+                return res.status(400).json({
+                    message: 'password must have Capital, number and special character(minimum 8 character) '
+                })
+            };
+            let cekPhone = /^(?=.*[0-9])\d{11,}$/
+            if (!phone.match(cekPhone)) {
+                return res.status(400).json({
+                    message: 'Phone number  needs to be atleast 11 characters'
+                })
+            }
             const user = await User.create({
                 name,
                 email,
                 password: encryptPassword,
-                role
+                role: 'Buyer',
+                gender,
+                phone
             });
 
 
@@ -46,14 +62,14 @@ module.exports = {
                     role: user.role
                 }
             });
-        }catch(err){
+        } catch (err) {
             next(err);
         }
     },
-    login: async(req, res, next) =>{
+    login: async (req, res, next) => {
         try {
             const { email, password } = req.body;
-            const user = await User.findOne({ where : {email: email}})
+            const user = await User.findOne({ where: { email: email } })
             if (!user) {
                 return res.status(404).json({
                     status: false,
@@ -73,7 +89,9 @@ module.exports = {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                gender: user.gender,
+                phone: user.phone
             }
             const token = jwt.sign(payload, JWT_SECRET_KEY)
 
@@ -88,61 +106,26 @@ module.exports = {
             next(error)
         }
     },
-    whoami: (req, res, next) => {
+    whoami: async(req, res, next) => {
         const user = req.user
+
+        // //Create
+        const notification = await Notification.create({
+            user_id: user.id,
+            data : "haiiii",
+            tittle : `Hello ${user.id}!!` ,
+            description : "Welcome to Antariksa, Happy Flight Everywhere",
+            isRead: false
+        });
 
         try {
             return res.status(200).json({
                 status: true,
                 message: 'succes',
-                data: user
+                data: notification
             })
         } catch (err) {
             next(err);
-        }
-    },
-    loginAdmin: async(req, res, next)=> {
-        try {
-            const {email, password} = req.body
-
-            const admin = await User.findOne({where: {email: email}})
-            if(!admin){
-                return res.status(404).json({
-                    status: false,
-                    message: "email not found"
-                })
-            }
-            if(admin.role != "Admin"){
-                return res.status(404).json({
-                    status: false,
-                    message: "you are not admin"
-                })
-            }
-            const isPassCorrect = await bcrypt.compare(password, admin.password)
-            if (!isPassCorrect) {
-                return res.status(404).json({
-                    status: false,
-                    message: 'password is not correct'
-                });
-            }
-            payload = {
-                id: admin.id,
-                name: admin.name,
-                email: admin.email,
-                role: admin.role
-            }
-            const token = jwt.sign(payload, JWT_SECRET_KEY)
-
-            return res.status(201).json({
-                status: true,
-                data: {
-                    token: token,
-                    role: admin.role
-                }
-            })
-
-        } catch (error) {
-            next(error)
         }
     },
     forgotPassword: async (req, res, next) => {
@@ -192,14 +175,12 @@ module.exports = {
         const { token } = req.query;
         return res.render('auth/reset-password', { message: null, token });
     },
-    hello: (req, res)=>{
+    hello: (req, res) => {
         return res.status(200).json({
             message: 'Hello World!!!'
         })
     },
-    me: async (req, res) =>{
+    me: async (req, res) => {
 
     }
 }
-
-// as

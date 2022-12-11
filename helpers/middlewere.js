@@ -1,12 +1,11 @@
 const jwt = require('jsonwebtoken');
-const roles = require('../utils/roles');
 
 const {
     JWT_SECRET_KEY
 } = process.env
 
 module.exports = {
-        cekLogin: (req, res, next) =>{
+    cekLogin: (req, res, next) =>{
         try {
             const token = req.headers['authorization'];
             if (!token) {
@@ -31,6 +30,7 @@ module.exports = {
             }
 
             next(err)
+
         }
     }   
-};
+}

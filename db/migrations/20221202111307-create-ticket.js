@@ -11,9 +11,6 @@ module.exports = {
       search_id: {
         type: Sequelize.INTEGER
       },
-      airline_id: {
-        type: Sequelize.INTEGER
-      },
       passenger_id: {
         type: Sequelize.INTEGER
       },

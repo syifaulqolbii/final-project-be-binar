@@ -8,8 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      name_passenger: {
+        type: Sequelize.STRING
+      },
       identity_number: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       identity_exp_date: {
         type: Sequelize.DATE

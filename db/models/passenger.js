@@ -11,10 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsToMany(models.Transaction, {through: 'Transactions', foreignKey: 'PassengerId', as: 'passenger'})
     }
   }
   Passenger.init({
-    identity_number: DataTypes.INTEGER,
+    name_passenger: DataTypes.STRING,
+    identity_number: DataTypes.STRING,
     identity_exp_date: DataTypes.DATE,
     nationality: DataTypes.STRING,
     identity_type: DataTypes.ENUM('Passport','KTP')

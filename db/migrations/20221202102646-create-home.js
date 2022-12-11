@@ -11,9 +11,6 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
-      passenger_id: {
-        type: Sequelize.INTEGER
-      },
       origin_airport: {
         type: Sequelize.STRING
       },
@@ -28,6 +25,9 @@ module.exports = {
       },
       return_date: {
         type: Sequelize.DATE
+      },
+      total_passenger: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Search.init({
     home_id: DataTypes.INTEGER,
-    airlines_id: DataTypes.INTEGER,
-    depatur_time: DataTypes.TIME,
+    airlines: DataTypes.STRING,
+    depature_time: DataTypes.TIME,
     arrival_time: DataTypes.TIME,
     duration_time: DataTypes.STRING,
     price: DataTypes.STRING
