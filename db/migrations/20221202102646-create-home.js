@@ -26,6 +26,9 @@ module.exports = {
       return_date: {
         type: Sequelize.DATE
       },
+      total_passenger: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
