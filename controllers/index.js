@@ -8,8 +8,9 @@ const not = require('./notification')
 const hom = require('./home')
 const his = require('./history')
 const list = require('./list');
+const admin = require('./admin');
 
 
-module.exports = {auth, sc, pas, air, trans, ord, not, hom, his, list}
+module.exports = {auth, sc, pas, air, trans, ord, not, hom, his, list, admin}
 
 
