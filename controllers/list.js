@@ -22,21 +22,37 @@ module.exports = {
           responseData[index] = {
             name: data.properties.name,
             region: data.properties.region.name,
-            code : data.properties.iata,
+            code: data.properties.iata,
           };
         });
 
         for (let i = 0; i < responseData.length; i++) {
-            // Mencari dan mengganti kurung dan isi kurung dengan string kosong
-            responseData[i].name = responseData[i].name.replace(/\([^)]*\)/g, "");
-            responseData[i].region = responseData[i].region.replace(/\([^)]*\)/g, "");
-          }
-          
+          // Mencari dan mengganti kurung dan isi kurung dengan string kosong
+          responseData[i].name = responseData[i].name.replace(/\([^)]*\)/g, "");
+          responseData[i].region = responseData[i].region.replace(
+            /\([^)]*\)/g,
+            ""
+          );
+        }
+
+        // Inisialisasi variabel hasil
+        let result = [];
+
+        // Menyimpan elemen ke-2 dari data JSON ke dalam variabel hasil
+        result.push(
+          responseData[4],
+          responseData[5],
+          responseData[6],
+          responseData[37],
+          responseData[121],
+          responseData[122],
+          responseData[58]
+        );
 
         res.status(200).json({
           status: true,
           message: "Data Airport",
-          data: responseData,
+          data: result,
         });
       }
     } catch (error) {
