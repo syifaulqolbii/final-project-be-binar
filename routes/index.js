@@ -74,6 +74,6 @@ router.get('/search?', con.hom.getData)
 router.get('/history', con.his.getData)
 router.post('/history', con.his.create)
 router.put('/history', con.his.update)
-router.delete('/history', con.his.delete)
+router.delete('/history/:id', con.his.delete)
 
 module.exports = router

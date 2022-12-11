@@ -57,7 +57,7 @@ module.exports = {
 
 
             return res.status(201).json({
-                status: false,
+                status: true,
                 message: 'Succes',
                 data: search
             })
@@ -93,7 +93,7 @@ module.exports = {
 
 
             return res.status(201).json({
-                status: false,
+                status: true,
                 message: 'Succes',
                 data: search
             });
@@ -105,7 +105,7 @@ module.exports = {
     //Delete
     delete: async (req, res, next) => {
         try{
-            const { id } = req.body;
+            const { id } = req.params;
 
             await Search.destroy({
                 where: {
