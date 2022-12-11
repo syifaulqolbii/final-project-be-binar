@@ -19,10 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     destination_airport: DataTypes.STRING,
     depature_date: DataTypes.DATE,
     arrival_date: DataTypes.DATE,
-    return_date: DataTypes.DATE
+    return_date: DataTypes.DATE,
+    total_passenger: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Home',
+    timestamps: false
   });
   return Home;
 };
