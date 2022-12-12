@@ -29,9 +29,9 @@ router.post('/auth/reset-password', con.auth.resetPassword);
 router.get('/list-airport', con.list.listAirport);
 
 // router.get('/home?', con.hom.getData)
-router.post('/home', con.hom.create)
-router.put('/home', con.hom.update)
-router.delete('/home', con.hom.delete)
+router.post('/flight', con.fli.create)
+router.put('/flight', con.fli.update)
+router.delete('/flight', con.fli.delete)
 
 router.get('/passenger', con.pas.index)
 router.post('/passenger', con.pas.create)
@@ -65,11 +65,12 @@ router.put('/notification', con.not.update)
 router.delete('/notification', con.not.delete)
 
 // router.get('/search/:id', con.sc.getData)
-router.post('/search', con.sc.create)
-router.post('/search-admin',mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.create)
-router.put('/search', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.update)
-router.delete('/search', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.delete)
-router.get('/search?', con.hom.getData)
+router.get('/search?', con.fli.getData)
+// router.post('/search', con.sc.create)
+// router.post('/search-admin',mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.create)
+// router.put('/search', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.update)
+// router.delete('/search', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.delete)
+
 
 router.get('/history', con.his.getData)
 router.post('/history', con.his.create)
