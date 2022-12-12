@@ -1,9 +1,10 @@
+const { where } = require('sequelize');
 const { Notification } = require('../db/models')
 
 module.exports = {
     getData: async (req, res, next) => {
         try {
-            const notification = await Notification.findAll();
+            const notification = await Notification.findAll({where: {user_id: req.us.id}});
 
             return res.status(200).json({
                 data: notification
