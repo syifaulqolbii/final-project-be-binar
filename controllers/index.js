@@ -10,6 +10,6 @@ const his = require('./history')
 const list = require('./list');
 const admin = require('./admin');
 
-module.exports = {auth, sc, pas, air, trans, ord, not, his, fli, list, admin}
+module.exports = {auth, sc, pas, air, trans, ord, not, fli, his, list, admin}
 
 

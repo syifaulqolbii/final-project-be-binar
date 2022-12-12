@@ -1,6 +1,7 @@
 const { Flight, User, Search }= require ('../db/models')
 const db  = require('../db/models/index')
-const { QueryTypes } = require('sequelize')
+const { QueryTypes, or } = require('sequelize')
+const user = require('../db/models/user')
 
 module.exports = {
     getData: async (req, res, next) => {
@@ -80,7 +81,9 @@ module.exports = {
     create: async (req, res, next) => {
         try {
             const { origin_airport, destination_airport, depature_date, arrival_date, return_date, total_passenger } = req.body;
-            const user_id = req.User.id
+            console.log(origin_airport)
+            console.log(req.user)
+            const user_id = req.user.id
             // Read
             // const existFlight = await Flight.findOne({ where: {user_id: req.User.id }});
             // if (existFlight){
@@ -89,7 +92,8 @@ module.exports = {
             //         message: 'already create'
             //     });
             // }
-
+            
+            console.log(user_id)
             //Create
             const flight = await Flight.create({
                 user_id,
