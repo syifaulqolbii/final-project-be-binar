@@ -1,7 +1,6 @@
-const { Flight, User, Search }= require ('../db/models')
+const { Home }= require ('../db/models')
 const db  = require('../db/models/index')
-const { QueryTypes, or } = require('sequelize')
-const user = require('../db/models/user')
+const { QueryTypes } = require('sequelize')
 
 module.exports = {
     getData: async (req, res, next) => {
@@ -53,9 +52,9 @@ module.exports = {
             if(req.query.tp){
                 tp = req.query.tp
             }
-            console.log(req.query)
+
             let offset = (tab-1)*4
-            Flight.findAll({where :{
+            Home.findAll({where :{
                 origin_airport : oa,
                 destination_airport : da,
                 depature_date: dd,
@@ -80,29 +79,25 @@ module.exports = {
     },
     create: async (req, res, next) => {
         try {
-            const { origin_airport, destination_airport, depature_date, arrival_date, return_date, total_passenger } = req.body;
-            console.log(origin_airport)
-            console.log(req.user)
-            const user_id = req.user.id
-            // Read
-            // const existFlight = await Flight.findOne({ where: {user_id: req.User.id }});
-            // if (existFlight){
-            //     return res.status(400).json({
-            //         status: false,
-            //         message: 'already create'
-            //     });
-            // }
-            
-            console.log(user_id)
+            const { user_id, origin_airport, destination_airport, depature_date, arrival_date, return_date } = req.body;
+
+            //Read
+            const existHome = await Home.findOne({ where: {user_id: user_id }});
+            if (existHome){
+                return res.status(400).json({
+                    status: false,
+                    message: 'already create'
+                });
+            }
+
             //Create
-            const flight = await Flight.create({
+            const home = await Home.create({
                 user_id,
                 origin_airport,
                 destination_airport,
                 depature_date,
                 arrival_date,
-                return_date,
-                total_passenger
+                return_date
         
             });
 
@@ -110,7 +105,7 @@ module.exports = {
             return res.status(201).json({
                 status: false,
                 message: 'Succes',
-                data: flight
+                data: home
             })
         } catch (err) {
             next(err)
@@ -120,14 +115,14 @@ module.exports = {
         try{
             const { id, user_id, origin_airport, destination_airport, depature_date, arrival_date, return_date } = req.body;
 
-            const existFlight = await Flight.findOne({ where: {id: id }});
-            if (!existFlight){
+            const existHome = await Home.findOne({ where: {id: id }});
+            if (!existHome){
                 return res.status(400).json({
                     status: false,
                     message: 'data is not found'
                 });
             }
-            const flight = await Flight.update({
+            const home = await Home.update({
                 user_id,
                 origin_airport,
                 destination_airport,
@@ -146,7 +141,7 @@ module.exports = {
             return res.status(201).json({
                 status: false,
                 message: 'Succes',
-                data: flight
+                data: home
             });
         }catch(err){
             next(err);
@@ -158,7 +153,7 @@ module.exports = {
         try{
             const { id } = req.body;
 
-            await Flight.destroy({
+            await Home.destroy({
                 where: {
                     id
                 }
