@@ -307,10 +307,7 @@ paths:
                       - name: Dortheys Hiyo Eluay International Airport
                         region: Papua
                         code: DJJ
-                      - name: Hasanuddin International Airport
-                        region: Sulawesi Selatan (South Sulawesi)
-                        code: UPG
-                                    examples:
+              examples:
                 Example 1:
                   value:
                     status: true
@@ -321,3 +318,267 @@ paths:
                         code: CGK
       operationId: get-list-airport
       description: Endpoint ini untuk mengambil data list airport yang ada di Indonesia
+  /search?:
+    get:
+      summary: Get All Data Search
+      tags:
+        - Search Endpoint
+      responses:
+        '200':
+          description: OK
+      operationId: get-search?
+      description: This endpoint can show all data search
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: Origin Airport
+          description: Add origin airport
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: Destination Airport
+          description: Add destination airport
+          required: true
+        - schema: {}
+          in: query
+          name: Departure Date
+          description: Add departure date
+          required: true
+        - schema: {}
+          in: query
+          name: Arrival Date
+          description: Add arrival date
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: Return Date
+          description: Add return date
+        - schema:
+            type: integer
+          in: query
+          name: Total Passenger
+          description: Add total passenger
+          required: true
+  /search-admin:
+    parameters: []
+    post:
+      summary: Add schedule flight list
+      operationId: post-search-admin
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      airlines:
+                        type: string
+                      depature_time:
+                        type: string
+                      arrival_time:
+                        type: string
+                      duration_time:
+                        type: string
+                      price:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: success
+                    data:
+                      airlines: Garuda
+                      depature_time: '2022-12-10'
+                      arrival_time: '2022-12-10'
+                      duration_time: '6'
+                      price: '6000000'
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    message: success
+                    data:
+                      airlines: Garuda
+                      depature_time: '2022-12-10'
+                      arrival_time: '2022-12-10'
+                      duration_time: '6'
+                      price: '6000000'
+        '400':
+          description: Bad Request
+      tags:
+        - Search Endpoint
+      description: Di endpoint ini admin dapat menambahkan list jadwal penerbangan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                airlines:
+                  type: string
+                depature_time:
+                  type: string
+                arrival_time:
+                  type: string
+                duration_time:
+                  type: string
+                price:
+                  type: string
+              x-examples:
+                Example 1:
+                  airlines: Garuda
+                  depature_time: '2022-12-10'
+                  arrival_time: '2022-12-10'
+                  duration_time: '6'
+                  price: '6000000'
+            examples:
+              Example 1:
+                value:
+                  airlines: Garuda
+                  depature_time: '2022-12-10'
+                  arrival_time: '2022-12-10'
+                  duration_time: '6'
+                  price: '6000000'
+        description: 'Kamu dapat memasukkan data berikut '
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authorization
+          description: authorization for admin needed
+  /search:
+    parameters: []
+    put:
+      summary: Edit schedule list endpoint
+      operationId: put-search
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      airlines:
+                        type: string
+                      depature_time:
+                        type: string
+                      arrival_time:
+                        type: string
+                      duration_time:
+                        type: string
+                      price:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: success
+                    data:
+                      airlines: Garuda
+                      depature_time: '2022-12-10'
+                      arrival_time: '2022-12-10'
+                      duration_time: '6'
+                      price: '6000000'
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    message: success
+                    data:
+                      airlines: Garuda
+                      depature_time: '2022-12-10'
+                      arrival_time: '2022-12-10'
+                      duration_time: '6'
+                      price: '6000000'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+      description: Diendpoint ini admin dapat mengubah jadwal penerbangan pesawat
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authorization
+          description: only admin can access this endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                airlines:
+                  type: string
+                depature_time:
+                  type: string
+                arrival_time:
+                  type: string
+                duration_time:
+                  type: string
+                price:
+                  type: string
+              x-examples:
+                Example 1:
+                  airlines: Garuda
+                  depature_time: '2022-12-10'
+                  arrival_time: '2022-12-10'
+                  duration_time: '6'
+                  price: '6000000'
+            examples:
+              Example 1:
+                value:
+                  airlines: Garuda
+                  depature_time: '2022-12-10'
+                  arrival_time: '2022-12-10'
+                  duration_time: '6'
+                  price: '6000000'
+        description: 'Hal hal yang bisa di edit, tidak harus semua field diedit'
+      tags:
+        - Search Endpoint
+  '/search/:id':
+    parameters: []
+    delete:
+      summary: Delete Schedule Flight List Endpoint
+      operationId: delete-search---copy
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Example 1:
+                  value:
+                    message: Success delete data
+      tags:
+        - Search Endpoint
+      description: Endpoint ini digunakan untuk menghapus Schedule Flight
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authorization
+          description: only admin can delete data
+components:
+  securitySchemes: {}
