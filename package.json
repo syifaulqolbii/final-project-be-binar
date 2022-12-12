@@ -31,6 +31,10 @@
   "bugs": {
     "url": "https://github.com/syifaulqolbii/final-project-be-binar/issues"
   },
-  "homepage": "https://github.com/syifaulqolbii/final-project-be-binar#readme",
-  "description": ""
+  "homepage": "https://gitlab.com/doniwahyus/final-project#readme",
+  "keywords": [],
+  "description": "",
+  "devDependencies": {
+    "sequelize-cli": "^6.5.2"
+  }
 }
