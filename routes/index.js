@@ -60,9 +60,8 @@ router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.h
 
 
 router.get('/notification', con.not.getData)
-router.post('/notification', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.not.create)
-router.put('/notification', con.not.update)
-router.delete('/notification', con.not.delete)
+// router.post('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.create)
+router.put('/notification/:id', con.not.update)
 
 // router.get('/search/:id', con.sc.getData)
 router.get('/search?', con.fli.getData)
@@ -77,4 +76,6 @@ router.post('/history', con.his.create)
 router.put('/history', con.his.update)
 router.delete('/history', con.his.delete)
 
+router.get('/admin/get-user', con.admin.getUser)
+router.get('/admin/get-transaction', con.admin.getTransaction)
 module.exports = router
