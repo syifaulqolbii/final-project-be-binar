@@ -1,88 +1,89 @@
-const { Flight, User, Search }= require ('../db/models')
+const { Flight, User, Search, Sequelize }= require ('../db/models')
 const db  = require('../db/models/index')
 const { QueryTypes, or } = require('sequelize')
-const user = require('../db/models/user')
+const user = require('../db/models/user');
+// const { query } = require('express');
+// const { query } = require('express')
+const Op = Sequelize.Op;
 
 module.exports = {
-    getData: async (req, res, next) => {
+    getSearch: async (req, res, next) => {
         try {
-            // var id = req.params.id
-            // let home = await db.sequelize.query(`SELECT "Users".name, "Users".role, "Users".gender 
-            // FROM "Users" JOIN "Homes" ON "Users".id = "Homes".user_id WHERE "Users".id = ${id} ORDER BY "Users".id ASC `, {
-            //     type: QueryTypes.SELECT
-            // })
-            // const homeOutput = await Home.findOne({ where : {user_id: req.params.id}})
-            // if (home.length > 0) {
-            //     res.status(200).json({
-            //         message: 'Data is Loaded',
-            //         homeOutput,
-            //         data: home[0]
-                    
-            //     })
-            // } else {
-            //     res.status(200).json({
-            //         message: 'Data Unknown',
-            //         data: []
-            //     })
+
+            // let tab = 1
+            // let oa = ''
+            // let da = ''
+            // let dd = ''
+            // let rd = ''
+            // let tp = ''
+            // if(req.query.tab){
+            //     tab = req.query.tab
             // }
-            let tab = 1
-            let oa = ''
-            let da = ''
-            let dd = ''
-            let ad = ''
-            let rd = ''
-            let tp = ''
-            if(req.query.tab){
-                tab = req.query.tab
-            }
-            if(req.query.oa){
-                oa = req.query.oa
-            }
-            if(req.query.da){
-                da = req.query.da
-            }
-            if(req.query.dd){
-                dd = req.query.dd
-            }
-            if(req.query.ad){
-                ad = req.query.ad
-            }
-            if(req.query.rd){
-                rd = req.query.rd
-            }
-            if(req.query.tp){
-                tp = req.query.tp
-            }
-            console.log(req.query)
-            let offset = (tab-1)*4
-            Flight.findAll({where :{
-                origin_airport : oa,
-                destination_airport : da,
-                depature_date: dd,
-                arrival_date: ad,
-                return_date: rd,
-                total_passenger: tp
-            },
-            limit: 4,
-            offset
+            // if(req.query.oa){
+            //     oa = req.query.oa
+            // }
+            // if(req.query.da){
+            //     da = req.query.da
+            // }
+            // if(req.query.dd){
+            //     dd = req.query.dd
+            // }
+            // if(req.query.rd){
+            //     rd = req.query.rd
+            // }
+            // if(req.query.tp){
+            //     tp = req.query.tp
+            // }
+            // console.log(req.query)
+            // let offset = (tab-1)*4
+            // Flight.findAll({where :{
+            //     origin_airport : oa,
+            //     destination_airport : da,
+            //     depature_date: dd,
+            //     return_date: rd,
+            //     total_passenger: tp,
+            //     airlines,
+            //     depature_time,
+            //     arrival_time,
+            //     price
+            // },
+            // limit: 4,
+            // offset
+            // })
+            // .then(home =>{
+            //     if(home.length == 0){
+            //         res.json({message: "Flight is not found", succes: true, data: {home}})
+            //     }else{
+            //         res.json({message: "Found Flight", succes: true, data: {
+
+            //         }})
+            //     }
+            // })
+            const {oa, da, dd, rd, tp} = req.query
+            req.query.where = {
+                [Op.and]: [
+                    {origin_airport: oa},
+                    {destination_airport: da},
+                    {depature_date: dd},
+                    {return_date: rd},
+                    {total_passenger: tp}
+                ]
+            };
+            const flight = await Flight.findAll(req.query)
+            return res.status(200).json({
+                status: true,
+                data: flight
             })
-            .then(home =>{
-                if(home.length == 0){
-                    res.json({message: "Flight is not found", succes: true, data: {home}})
-                }else{
-                    res.json({message: "Found Flight", succes: true, data: {home}})
-                }
-            })
-            
         } catch (err) {
             next(err)
         }
     },
     create: async (req, res, next) => {
         try {
-            const { origin_airport, destination_airport, depature_date, arrival_date, return_date, total_passenger } = req.body;
-            console.log(origin_airport)
-            console.log(req.user)
+            const { origin_airport, destination_airport, depature_date, return_date, total_passenger,
+                depature_time, arrival_time, duration_time, price } = req.body;
+            // console.log(origin_airport)
+            // console.log(req.user)
             const user_id = req.user.id
             // Read
             // const existFlight = await Flight.findOne({ where: {user_id: req.User.id }});
@@ -94,18 +95,22 @@ module.exports = {
             // }
             
             console.log(user_id)
+            
             //Create
             const flight = await Flight.create({
                 user_id,
                 origin_airport,
                 destination_airport,
                 depature_date,
-                arrival_date,
                 return_date,
-                total_passenger
+                total_passenger,
+                airlines:'Garuda Indonesia',
+                depature_time,
+                arrival_time,
+                duration_time, 
+                price
         
             });
-
 
             return res.status(201).json({
                 status: false,
@@ -118,8 +123,8 @@ module.exports = {
     },
     update: async (req, res, next) => {
         try{
-            const { id, user_id, origin_airport, destination_airport, depature_date, arrival_date, return_date } = req.body;
-
+            const { id, origin_airport, destination_airport, depature_date, return_date, depature_time, arrival_time,duration_time } = req.body;
+            const user_id = req.user.id
             const existFlight = await Flight.findOne({ where: {id: id }});
             if (!existFlight){
                 return res.status(400).json({
@@ -132,8 +137,12 @@ module.exports = {
                 origin_airport,
                 destination_airport,
                 depature_date,
-                arrival_date,
-                return_date
+                return_date,
+                total_passenger,
+                depature_time,
+                arrival_time,
+                duration_time, 
+                price
         
             },
             {
@@ -144,7 +153,7 @@ module.exports = {
 
 
             return res.status(201).json({
-                status: false,
+                status: true,
                 message: 'Succes',
                 data: flight
             });
