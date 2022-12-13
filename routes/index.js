@@ -30,7 +30,7 @@ router.get('/list-airport', con.list.listAirport);
 
 // router.get('/home?', con.hom.getData)
 router.get('/search?', mid.cekLogin,con.fli.getSearch)
-router.post('/route', rbac(MODUL.AdminDashboard, true, true),mid.cekLogin, con.fli.create)
+router.post('/route', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true), con.fli.create)
 router.put('/flight', mid.cekLogin,con.fli.update)
 router.delete('/flight', mid.cekLogin,con.fli.delete)
 
