@@ -110,19 +110,19 @@ module.exports = {
         const user = req.user
 
         // //Create
-        const notification = await Notification.create({
-            user_id: user.id,
-            data : "haiiii",
-            tittle : `Hello ${user.id}!!` ,
-            description : "Welcome to Antariksa, Happy Flight Everywhere",
-            isRead: false
-        });
+        // const notification = await Notification.create({
+        //     user_id: user.id,
+        //     data : "haiiii",
+        //     tittle : `Hello ${user.id}!!` ,
+        //     description : "Welcome to Antariksa, Happy Flight Everywhere",
+        //     isRead: false
+        // });
 
         try {
             return res.status(200).json({
                 status: true,
                 message: 'succes',
-                data: notification
+                data: user
             })
         } catch (err) {
             next(err);
