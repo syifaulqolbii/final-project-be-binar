@@ -42,13 +42,18 @@ module.exports = {
                     message: 'Phone number  needs to be atleast 11 characters'
                 })
             }
+            
+            //const payload = { email: user.email };
+            //const token = jwt.sign(payload, JWT_SECRET_KEY);
+
             const user = await User.create({
                 name,
                 email,
                 password: encryptPassword,
                 role: 'Buyer',
                 gender,
-                phone
+                phone,
+                //confirmationCode: token
             });
 
 
@@ -74,6 +79,13 @@ module.exports = {
                     status: false,
                     message: 'email not found!'
                 });
+            }
+
+            if (user.status != "Active") {
+                return res.status(401).json({
+                    status: false,
+                    message: "Pending Account. Please Verify Your Email"
+                })
             }
 
             const isPassCorrect = await bcrypt.compare(password, user.password)
@@ -118,15 +130,46 @@ module.exports = {
             next(err);
         }
     },
+    verifyUser: async (req, res, next) => {
+        try {
+            const { confirmationCode } = req.params;
+
+            const user = await User.findOne({ where: {confirmationCode: confirmationCode }});
+            
+            if (!user) {
+                return res.status(404).json({
+                    message: "User Not found."
+                });
+            }
+
+            user.status = "Active";
+            user.save((err) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: err
+                    });
+                }
+            })
+
+        } catch(err) {
+            next(err);
+        }
+    },
     forgotPassword: async (req, res, next) => {
         try {
             const { email } = req.body;
 
             const user = await User.findOne({ where: { email } });
+
+            if (!user) {
+                return res.status(404).json({
+                    messsage: "Email Not Found!"
+                })
+            }
             if (user) {
                 const payload = { user_id: user.id };
                 const token = jwt.sign(payload, JWT_SECRET_KEY);
-                const link = `http://localhost:3000/auth/reset-password?token=${token}`;
+                const link = `https://backend-4-staging.up.railway.app/auth/reset-password?token=${token}`;
 
                 htmlEmail = await util.email.getHtml('reset-password.ejs', { name: user.name, link: link });
                 await util.email.sendEmail(user.email, 'Reset your password', htmlEmail);
