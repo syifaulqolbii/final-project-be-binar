@@ -75,7 +75,7 @@ router.put('/notification/:id', con.not.update)
 router.get('/history', con.his.getData)
 router.post('/history', con.his.create)
 router.put('/history', con.his.update)
-router.delete('/history', con.his.delete)
+router.delete('/history/:id', con.his.delete)
 
 router.get('/admin/get-user', con.admin.getUser)
 router.get('/admin/get-transaction', con.admin.getTransaction)
