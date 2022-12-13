@@ -110,6 +110,7 @@ module.exports = {
         const user = req.user
 
         // //Create
+        // 
         // const notification = await Notification.create({
         //     user_id: user.id,
         //     data : "haiiii",
