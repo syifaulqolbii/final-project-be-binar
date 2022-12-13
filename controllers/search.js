@@ -5,26 +5,26 @@ const { QueryTypes } = require('sequelize')
 module.exports = {
     getData: async (req, res, next) => {
         try {
-            var id = req.params.id
-            let search = await db.sequelize.query(`SELECT "Homes".origin_airport, "Homes".destination_airport, 
-            "Homes".depature_date, "Homes".arrival_date FROM "Homes" JOIN "Searches" 
-            ON "Homes".id = "Searches".home_id WHERE "Homes".id = ${id} ORDER BY "Homes".id ASC `, {
-                type: QueryTypes.SELECT
-            })
-            const searchOutput = await Search.findOne({ where : {home_id: req.params.id}})
-            if (search.length > 0) {
-                res.status(200).json({
-                    message: 'Data is Loaded',
-                    searchOutput,
-                    dataHome: search[0]
+            // var id = req.params.id
+            // let search = await db.sequelize.query(`SELECT "Homes".origin_airport, "Homes".destination_airport, 
+            // "Homes".depature_date, "Homes".arrival_date FROM "Homes" JOIN "Searches" 
+            // ON "Homes".id = "Searches".home_id WHERE "Homes".id = ${id} ORDER BY "Homes".id ASC `, {
+            //     type: QueryTypes.SELECT
+            // })
+            // const searchOutput = await Search.findOne({ where : {home_id: req.params.id}})
+            // if (search.length > 0) {
+            //     res.status(200).json({
+            //         message: 'Data is Loaded',
+            //         searchOutput,
+            //         dataHome: search[0]
                     
-                })
-            } else {
-                res.status(200).json({
-                    message: 'Data Unknown',
-                    data: []
-                })
-            }
+            //     })
+            // } else {
+            //     res.status(200).json({
+            //         message: 'Data Unknown',
+            //         data: []
+            //     })
+            // }
 
 
         } catch (err) {
