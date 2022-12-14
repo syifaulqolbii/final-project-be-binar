@@ -30,10 +30,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       depature_time: {
-        type: Sequelize.TIME
+        type: Sequelize.STRING
       },
       arrival_time: {
-        type: Sequelize.TIME
+        type: Sequelize.STRING
       },
       duration_time: {
         type: Sequelize.STRING
