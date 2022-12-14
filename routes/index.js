@@ -30,7 +30,7 @@ router.get('/list-airport', con.list.listAirport);
 
 // router.get('/home?', con.hom.getData)
 router.get('/search?', mid.cekLogin,con.fli.getSearch)
-router.post('/route', rbac(MODUL.AdminDashboard, true, true),mid.cekLogin, con.fli.create)
+router.post('/route', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true), con.fli.create)
 router.put('/flight', mid.cekLogin,con.fli.update)
 router.delete('/flight', mid.cekLogin,con.fli.delete)
 
@@ -50,6 +50,7 @@ router.put('/order', mid.cekLogin,con.ord.update)
 router.delete('/order', mid.cekLogin,con.ord.delete)
 
 router.get('/transaction/:id', mid.cekLogin, con.trans.getData)
+router.get('/transaction-ticket/:id', mid.cekLogin, con.trans.getTicket)
 router.post('/transaction', mid.cekLogin,  con.trans.create)
 router.put('/transaction', con.trans.update)
 router.delete('/transaction', con.trans.delete)
