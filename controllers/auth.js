@@ -56,8 +56,7 @@ module.exports = {
             });
 
             if (user) {
-                const payload = { user_id: user.id };
-                const token = jwt.sign(payload, JWT_SECRET_KEY);
+                
                 const link = `http://localhost:5000/auth/verify-email?token=${user.emailToken}`;
 
                 htmlEmail = await util.email.getHtml('verify-email.ejs', { name: user.name, link: link });
@@ -153,15 +152,18 @@ module.exports = {
     },
     verifyEmail: async (req, res, next) => {
         try {
-            const { token } = req.query.token
-            const user = await User.findOne({ emailToken: token})
+            const token = req.query.token
+            const user = await User.findOne({emailToken: token})
             if (user) {
-                user.status = 'Active';
-                user.emailToken = null;
+                user.status = "Active"
+                user.emailToken= null
 
-                user.save();
+                await user.save();
+
                 return res.render('auth/login', { error:null});
             }
+
+            
 
         } catch (err) {
             next(err);
