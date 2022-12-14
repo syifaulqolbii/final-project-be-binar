@@ -324,7 +324,7 @@ paths:
                     status: true
                     message: Data Airport
                     data:
-                      - name: Soekarno Hatta
+                      - name: Soeharto Hatta
                         region: Banten
                         code: CGK
       operationId: get-list-airport

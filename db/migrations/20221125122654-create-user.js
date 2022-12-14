@@ -26,6 +26,14 @@ module.exports = {
       phone: {
         type: Sequelize.STRING
       },
+      emailToken: {
+        type: Sequelize.STRING
+      },
+      status: {
+        type: Sequelize.STRING,
+        enum: ['Pending', 'Active'],
+        defaultValue: 'Pending'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
