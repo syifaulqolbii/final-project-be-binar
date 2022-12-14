@@ -83,12 +83,6 @@ module.exports = {
             const { email, password } = req.body;
             const user = await User.findOne({ where: { email: email } })
 
-            if (user.status != "Active") {
-                return res.status(401).json({
-                    status: false,
-                    message: "Pending Account. Please Verify Your Email"
-                })
-            }
 
             if (!user) {
                 return res.status(404).json({
@@ -97,6 +91,12 @@ module.exports = {
                 });
             }
 
+            if (user.status != "Active") {
+                return res.status(401).json({
+                    status: false,
+                    message: "Pending Account. Please Verify Your Email"
+                })
+            }
 
             const isPassCorrect = await bcrypt.compare(password, user.password)
             if (!isPassCorrect) {
