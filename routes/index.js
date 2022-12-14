@@ -50,6 +50,7 @@ router.put('/order', mid.cekLogin,con.ord.update)
 router.delete('/order', mid.cekLogin,con.ord.delete)
 
 router.get('/transaction/:id', mid.cekLogin, con.trans.getData)
+router.get('/transaction-ticket/:id', mid.cekLogin, con.trans.getTicket)
 router.post('/transaction', mid.cekLogin,  con.trans.create)
 router.put('/transaction', con.trans.update)
 router.delete('/transaction', con.trans.delete)

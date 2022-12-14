@@ -1,4 +1,4 @@
-const { Transaction, Passenger, Order } = require('../db/models')
+const { Transaction, Passenger, Order, Flight } = require('../db/models')
 const seq = require('sequelize')
 const db  = require('../db/models/index')
 const { QueryTypes } = require('sequelize')
@@ -51,6 +51,25 @@ module.exports = {
         } catch (err) {
             next(err)
         }
+    },
+    getTicket: async( req, res, next) => {
+        // const { origin_aiport, destination_aiport, airlines, depature_date, depature_time, price } = req.body
+        // console.log(req.params)
+        // Flight.findAll()
+        // .then((tiket) => {
+        //     res.json(tiket)
+        // })
+        Flight.findOne({ where: {id: +req.params.id}})
+        .then((ticket) =>{
+            console.log(ticket)
+            return res.json({
+                data: {
+                    ticket, 
+                    total: ticket.price * ticket.total_passenger
+                }
+            })
+        })
+
     },
     create: async (req, res, next) => {
         try {
