@@ -20,14 +20,26 @@ module.exports = {
       depature_date: {
         type: Sequelize.STRING
       },
-      arrival_date: {
-        type: Sequelize.STRING
-      },
       return_date: {
         type: Sequelize.STRING
       },
       total_passenger: {
         type: Sequelize.INTEGER
+      },
+      airlines: {
+        type: Sequelize.STRING
+      },
+      depature_time: {
+        type: Sequelize.STRING
+      },
+      arrival_time: {
+        type: Sequelize.STRING
+      },
+      duration_time: {
+        type: Sequelize.STRING
+      },
+      price: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
