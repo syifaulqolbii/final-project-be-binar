@@ -37,7 +37,7 @@ module.exports = {
                 })
             }
 
-            let cekPhone = /^(?=.*[0-9])\d{11}$/
+            let cekPhone = /^(?=.*[0-9])\d{11,13}$/
             if (!phone_number.match(cekPhone)) {
                 return res.status(400).json({
                     message: 'Phone number  needs to be atleast 11 characters'
