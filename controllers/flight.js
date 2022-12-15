@@ -59,12 +59,14 @@ module.exports = {
             //         }})
             //     }
             // })
-            const {oa, da, dd} = req.query
+            const {oa, da, dd, rd, tp} = req.query
             req.query.where = {
                 [Op.and]: [
                     {origin_airport: oa},
                     {destination_airport: da},
-                    {depature_date: dd}
+                    {depature_date: dd},
+                    {return_date: rd},
+                    {total_passenger: tp}
                 ]
             };
             const flight = await Flight.findAll(req.query)
