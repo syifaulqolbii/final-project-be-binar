@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       identity_exp_date: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       nationality: {
         type: Sequelize.STRING

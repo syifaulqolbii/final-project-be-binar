@@ -24,7 +24,7 @@ module.exports = (modulName, readAccess = false, writeAccess = false) => {
         console.log('user write :', roleAcces.write);
 
         if (readAccess && !roleAcces.read) {
-            return res.status(401).json({ status: false, message: 'you\'re not Admin!', data: null });
+            return res.status(401).json({ status: false, message: 'you\'re not authorized!', data: null });
         }
 
         if (writeAccess && !roleAcces.write) {
