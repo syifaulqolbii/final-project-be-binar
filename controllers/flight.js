@@ -84,7 +84,6 @@ module.exports = {
                 depature_time, arrival_time, duration_time, price } = req.body;
             // console.log(origin_airport)
             // console.log(req.user)
-            // 
             const user_id = req.user.id
             // Read
             // const existFlight = await Flight.findOne({ where: {user_id: req.User.id }});

@@ -18,8 +18,6 @@ router.post('/auth/login', con.auth.login)
 // router.post("/auth/loginAdmin", con.auth.loginAdmin)
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
 
-router.get('/auth/verify-email', con.auth.verifyEmail);
-
 
 router.get('/auth/forgot-password', con.auth.forgotPasswordView);
 router.post('/auth/forgot-password', con.auth.forgotPassword);
