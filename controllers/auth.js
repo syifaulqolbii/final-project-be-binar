@@ -9,6 +9,7 @@ const util = require('../utils');
 
 const {
     JWT_SECRET_KEY,
+    SERVER
 
 } = process.env
 
@@ -57,7 +58,8 @@ module.exports = {
 
             if (user) {
                 
-                const link = `http://localhost:5000/auth/verify-email?token=${user.emailToken}`;
+                const link = `https://${SERVER}/auth/verify-email?token=${user.emailToken}`;
+                console.log(link);
 
                 htmlEmail = await util.email.getHtml('verify-email.ejs', { name: user.name, link: link });
                 await util.email.sendEmail(user.email, 'Verify Account', htmlEmail);
