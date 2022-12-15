@@ -59,7 +59,7 @@ module.exports = {
             //         }})
             //     }
             // })
-            const {oa, da, dd, rd, tp} = req.query
+            const {oa, da, dd} = req.query
             req.query.where = {
                 [Op.and]: [
                     {origin_airport: oa},
