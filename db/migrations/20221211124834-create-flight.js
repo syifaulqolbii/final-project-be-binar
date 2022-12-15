@@ -12,10 +12,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       origin_airport: {
-        type: Sequelize.JSON
+        type: Sequelize.STRING
       },
       destination_airport: {
-        type: Sequelize.JSON
+        type: Sequelize.STRING
       },
       depature_date: {
         type: Sequelize.STRING
