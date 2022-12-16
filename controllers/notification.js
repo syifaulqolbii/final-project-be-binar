@@ -4,7 +4,8 @@ const { Notification } = require('../db/models')
 module.exports = {
     getData: async (req, res, next) => {
         try {
-            const notification = await Notification.findAll({where: {user_id: req.us.id}});
+            const user_id = req.user.id
+            const notification = await Notification.findAll({where: {user_id: user_id}});
 
             return res.status(200).json({
                 data: notification
@@ -33,13 +34,13 @@ module.exports = {
                     id
                 }
             });
-            const updateNotif = await Notification.findOne({ where: {id: id }});
+            const updatedNotif = await Notification.findOne({ where: {id: id }});
             return res.status(201).json({
                 status: false,
                 message: 'Succes',
                 data: {
-                    id : updateNotif.id,
-                    isRead : updateNotif.isRead
+                    id : updatedNotif.id,
+                    isRead : updatedNotif.isRead
                 }
             });
         }catch(err){
