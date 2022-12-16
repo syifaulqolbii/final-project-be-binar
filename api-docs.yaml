@@ -1113,5 +1113,134 @@ paths:
           description: authorization for admin needed
       tags:
         - Admin Endpoint
+  /admin/get-user:
+    get:
+      summary: Get Amount User
+      tags:
+        - Admin Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+      operationId: get-admin-get-user
+      description: endpoint ini digunakan untuk mengambil total jumlah user
+      parameters: []
+  /admin/get-transaction:
+    get:
+      summary: Get Amount Transaction
+      tags:
+        - Admin Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+          description: Success
+      operationId: get-admin-get-user
+      description: endpoint ini digunakan untuk mengambil total jumlah transaksi
+      parameters: []
+    parameters: []
+  /admin/get-route:
+    get:
+      summary: Get Amount Route
+      tags:
+        - Admin Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+          description: Success
+      operationId: get-admin-get-user
+      description: endpoint ini digunakan untuk mengambil total jumlah rute penerbangan
+      parameters: []
+    parameters: []
 components:
   securitySchemes: {}
