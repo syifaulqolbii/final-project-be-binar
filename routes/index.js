@@ -80,4 +80,5 @@ router.delete('/history/:id', con.his.delete)
 
 router.get('/admin/get-user', con.admin.getUser)
 router.get('/admin/get-transaction', con.admin.getTransaction)
+router.get('/admin/get-route', con.admin.getRoute)
 module.exports = router
