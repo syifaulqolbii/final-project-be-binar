@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Homes', {
+    await queryInterface.createTable('Flights', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,19 +12,34 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       origin_airport: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       destination_airport: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       depature_date: {
-        type: Sequelize.DATE
-      },
-      arrival_date: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
       },
       return_date: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
+      },
+      total_passenger: {
+        type: Sequelize.INTEGER
+      },
+      airlines: {
+        type: Sequelize.STRING
+      },
+      depature_time: {
+        type: Sequelize.STRING
+      },
+      arrival_time: {
+        type: Sequelize.STRING
+      },
+      duration_time: {
+        type: Sequelize.STRING
+      },
+      price: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +52,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Homes');
+    await queryInterface.dropTable('Flights');
   }
 };
