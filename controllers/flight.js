@@ -65,8 +65,6 @@ module.exports = {
                     {origin_airport: oa},
                     {destination_airport: da},
                     {depature_date: dd},
-                    {return_date: rd},
-                    {total_passenger: tp}
                 ]
             };
             const flight = await Flight.findAll(req.query)
