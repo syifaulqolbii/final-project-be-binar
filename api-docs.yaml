@@ -500,7 +500,6 @@ paths:
                   email: cikskuy@mail.com
         description: Body yang harus dimasukkan
       tags:
-        - Buyer Endpoint
         - Transactions Endpoint
   /passenger:
     parameters: []
@@ -612,7 +611,6 @@ paths:
                   identity_type: Passport
         description: Body yang harus dimasukkan
       tags:
-        - Buyer Endpoint
         - Transactions Endpoint
   /transaction:
     parameters: []
@@ -725,7 +723,6 @@ paths:
                   PassengerId: '1'
         description: Body yang harus dimasukkan
       tags:
-        - Buyer Endpoint
         - Transactions Endpoint
   '/transaction/{transaction_id}':
     parameters:
@@ -836,7 +833,6 @@ paths:
           description: Add transactions Id
       description: Endpoint ini digunakan untuk mengambil data transaction berdasarkan order id dan passenger id
       tags:
-        - Buyer Endpoint
         - Transactions Endpoint
   /flight:
     parameters: []
