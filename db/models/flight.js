@@ -11,12 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Transaction, {as: 'transaction'})
     }
   }
   Flight.init({
     user_id: DataTypes.INTEGER,
-    origin_airport: DataTypes.JSON,
-    destination_airport: DataTypes.JSON,
+    origin_airport: DataTypes.STRING,
+    destination_airport: DataTypes.STRING,
     depature_date: DataTypes.STRING,
     return_date: DataTypes.STRING,
     total_passenger: DataTypes.INTEGER,
