@@ -137,6 +137,12 @@ module.exports = {
                 DataPassengers.forEach(element => {
                     let PassengerId = element.PassengerId
                     if(!PassengerId){
+                        let cekIdentity = /^(?=.*[0-9])\d{16,}$/
+                        if (!element.identity_number.match(cekIdentity)) {
+                            return res.status(400).json({
+                                message: 'Identity must a number and have 16 character'
+                            })
+                        }
                         const passenger = Passenger.create({
                             name_passenger: element.name_passenger, 
                             identity_number: element.identity_number, 
