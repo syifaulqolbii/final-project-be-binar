@@ -29,7 +29,7 @@ router.post('/auth/reset-password', con.auth.resetPassword);
 router.get('/list-airport', con.list.listAirport);
 
 // router.get('/home?', con.hom.getData)
-router.get('/search?', mid.cekLogin,con.fli.getSearch)
+router.get('/search?', con.fli.getSearch)
 router.post('/route', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true), con.fli.create)
 router.put('/flight', mid.cekLogin,con.fli.update)
 router.delete('/flight', mid.cekLogin,con.fli.delete)
@@ -80,4 +80,5 @@ router.get('/history', mid.cekLogin, con.his.getData)
 
 router.get('/admin/get-user', con.admin.getUser)
 router.get('/admin/get-transaction', con.admin.getTransaction)
+router.get('/admin/get-route', con.admin.getRoute)
 module.exports = router

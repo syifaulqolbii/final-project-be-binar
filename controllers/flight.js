@@ -64,7 +64,7 @@ module.exports = {
                 [Op.and]: [
                     {origin_airport: oa},
                     {destination_airport: da},
-                    {depature_date: dd}
+                    {depature_date: dd},
                 ]
             };
             const flight = await Flight.findAll(req.query)
