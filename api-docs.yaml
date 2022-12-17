@@ -434,406 +434,7 @@ paths:
           description: Add departure date
           required: true
       tags:
-        - Buyer Endpoint
-  /order:
-    parameters: []
-    post:
-      summary: Order Transaction
-      operationId: post-order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      phone_number:
-                        type: string
-                      email:
-                        type: string
-                x-examples:
-                  Example 1:
-                    status: false
-                    message: Succes
-                    data:
-                      phone_number: '1230974637235'
-                      email: cikskuy@mail.com
-              examples:
-                Example 1:
-                  value:
-                    status: false
-                    message: Succes
-                    data:
-                      phone_number: '1230974637235'
-                      email: cikskuy@mail.com
-      description: Di endpoint ini digunakan untuk menambahkan order data transaction
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                orderer:
-                  type: string
-                phone_number:
-                  type: string
-                email:
-                  type: string
-              x-examples:
-                Example 1:
-                  orderer: Cikall
-                  phone_number: '1230974637235'
-                  email: cikskuy@mail.com
-            examples:
-              Example 1:
-                value:
-                  orderer: Cikall
-                  phone_number: '1230974637235'
-                  email: cikskuy@mail.com
-        description: Body yang harus dimasukkan
-      tags:
-        - Transactions Endpoint
-  /passenger:
-    parameters: []
-    post:
-      summary: Order Transaction
-      operationId: post-order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      phone_number:
-                        type: string
-                      email:
-                        type: string
-                x-examples:
-                  Example 1:
-                    status: false
-                    message: Succes
-                    data:
-                      phone_number: '1230974637235'
-                      email: cikskuy@mail.com
-              examples:
-                Example 1:
-                  value:
-                    status: false
-                    message: Succes
-                    data:
-                      phone_number: '1230974637235'
-                      email: cikskuy@mail.com
-        '':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      name_passenger:
-                        type: string
-                      identity_number:
-                        type: string
-                      identity_type:
-                        type: string
-                x-examples:
-                  Example 1:
-                    status: false
-                    message: Succes
-                    data:
-                      name_passenger: aziz
-                      identity_number: '7637002348572198'
-                      identity_type: Passport
-              examples:
-                Example 1:
-                  value:
-                    status: false
-                    message: Succes
-                    data:
-                      name_passenger: aziz
-                      identity_number: '7637002348572198'
-                      identity_type: Passport
-      description: Di endpoint ini digunakan untuk menambahkan data passenger untuk transaction
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name_passenger:
-                  type: string
-                identity_number:
-                  type: string
-                identity_exp_date:
-                  type: string
-                nationality:
-                  type: string
-                identity_type:
-                  type: string
-              x-examples:
-                Example 1:
-                  name_passenger: aziz
-                  identity_number: '7637002348572198'
-                  identity_exp_date: 20-10-2022
-                  nationality: Turkey
-                  identity_type: Passport
-            examples:
-              Example 1:
-                value:
-                  name_passenger: aziz
-                  identity_number: '7637002348572198'
-                  identity_exp_date: 20-10-2022
-                  nationality: Turkey
-                  identity_type: Passport
-        description: Body yang harus dimasukkan
-      tags:
-        - Transactions Endpoint
-  /transaction:
-    parameters: []
-    post:
-      summary: Order Transaction
-      operationId: post-order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      phone_number:
-                        type: string
-                      email:
-                        type: string
-                x-examples:
-                  Example 1:
-                    status: false
-                    message: Succes
-                    data:
-                      phone_number: '1230974637235'
-                      email: cikskuy@mail.com
-              examples:
-                Example 1:
-                  value:
-                    status: false
-                    message: Succes
-                    data:
-                      phone_number: '1230974637235'
-                      email: cikskuy@mail.com
-        '':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      transaction:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                          PassengerId:
-                            type: integer
-                          OrderId:
-                            type: integer
-                          updatedAt:
-                            type: string
-                          createdAt:
-                            type: string
-                x-examples:
-                  Example 1:
-                    status: false
-                    message: Succes
-                    data:
-                      transaction:
-                        id: 1
-                        PassengerId: 1
-                        OrderId: 1
-                        updatedAt: '2022-12-14T10:24:19.816Z'
-                        createdAt: '2022-12-14T10:24:19.816Z'
-              examples:
-                Example 1:
-                  value:
-                    status: false
-                    message: Succes
-                    data:
-                      transaction:
-                        id: 1
-                        PassengerId: 1
-                        OrderId: 1
-                        updatedAt: '2022-12-14T10:24:19.816Z'
-                        createdAt: '2022-12-14T10:24:19.816Z'
-      description: Di endpoint ini digunakan untuk menambahkan data untuk transaction
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                OrderId:
-                  type: string
-                PassengerId:
-                  type: string
-              x-examples:
-                Example 1:
-                  OrderId: '1'
-                  PassengerId: '1'
-            examples:
-              Example 1:
-                value:
-                  OrderId: '1'
-                  PassengerId: '1'
-        description: Body yang harus dimasukkan
-      tags:
-        - Transactions Endpoint
-  '/transaction/{transaction_id}':
-    parameters:
-      - schema:
-          type: string
-        name: transaction_id
-        in: path
-        required: true
-    get:
-      summary: Get data transactions
-      operationId: get-transaction---copy
-      responses:
-        '200':
-          description: OK
-        '':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      transaction:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                          OrderId:
-                            type: integer
-                          PassengerId:
-                            type: integer
-                          passenger:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                              name_passenger:
-                                type: string
-                              identity_number:
-                                type: string
-                              nationality:
-                                type: string
-                              identity_type:
-                                type: string
-                          order:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                              orderer:
-                                type: string
-                              phone_number:
-                                type: string
-                              email:
-                                type: string
-                x-examples:
-                  Example 1:
-                    message: Transactions data 1 has been found
-                    success: true
-                    data:
-                      transaction:
-                        id: 1
-                        OrderId: 1
-                        PassengerId: 1
-                        passenger:
-                          id: 1
-                          name_passenger: aziz
-                          identity_number: '7637002348572198'
-                          nationality: Turkey
-                          identity_type: Passport
-                        order:
-                          id: 1
-                          orderer: Cikall
-                          phone_number: '1230974637235'
-                          email: cikskuy@mail.com
-              examples:
-                Example 1:
-                  value:
-                    message: Transactions data 1 has been found
-                    success: true
-                    data:
-                      transaction:
-                        id: 1
-                        OrderId: 1
-                        PassengerId: 1
-                        passenger:
-                          id: 1
-                          name_passenger: aziz
-                          identity_number: '7637002348572198'
-                          nationality: Turkey
-                          identity_type: Passport
-                        order:
-                          id: 1
-                          orderer: Cikall
-                          phone_number: '1230974637235'
-                          email: cikskuy@mail.com
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: '{transaction_id}'
-          description: Add transactions Id
-      description: Endpoint ini digunakan untuk mengambil data transaction berdasarkan order id dan passenger id
-      tags:
-        - Transactions Endpoint
+        - Search Endpoint
   /flight:
     parameters: []
     put:
@@ -949,8 +550,6 @@ paths:
                 Example 1:
                   value:
                     message: Success delete data
-      tags:
-        - Search Endpoint
       description: Endpoint ini digunakan untuk menghapus Schedule Flight
       parameters:
         - schema:
@@ -958,6 +557,8 @@ paths:
           in: header
           name: authorization
           description: only admin can delete data
+      tags:
+        - Admin Endpoint
   /route:
     parameters: []
     post:
@@ -1238,5 +839,285 @@ paths:
       description: endpoint ini digunakan untuk mengambil total jumlah rute penerbangan
       parameters: []
     parameters: []
+  '/transaction/:id':
+    post:
+      summary: Create Transaction
+      operationId: 'post-transaction:id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Succes Create Booking
+      description: Endpoint ini digunakan untuk membuat transaksi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  name_passenger:
+                    type: string
+                  identity_number:
+                    type: string
+                  identity_exp_date:
+                    type: string
+                  nationality:
+                    type: string
+                  identity_type:
+                    type: string
+              x-examples:
+                Example 1:
+                  - name_passenger: wahyu
+                    identity_number: cd002348572198
+                    identity_exp_date: 20-10-2022
+                    nationality: INDO
+                    identity_type: KTP
+                  - name_passenger: doni
+                    identity_number: '7637002348572198'
+                    identity_exp_date: 20-10-2022
+                    nationality: Jepang
+                    identity_type: KTP
+            examples:
+              Example 1:
+                value:
+                  - name_passenger: string
+                    identity_number: string
+                    identity_exp_date: string
+                    nationality: string
+                    identity_type: string
+        description: Data yang harus dimasukkan
+      tags:
+        - Transactions Endpoint
+    parameters: []
+  '/transaction-ticket/:id':
+    parameters: []
+    get:
+      summary: ''
+      operationId: 'get-transaction-ticket-:id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ticket:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          user_id:
+                            type: 'null'
+                          origin_airport:
+                            type: string
+                          destination_airport:
+                            type: string
+                          depature_date:
+                            type: string
+                          return_date:
+                            type: string
+                          total_passenger:
+                            type: integer
+                          airlines:
+                            type: string
+                          depature_time:
+                            type: string
+                          arrival_time:
+                            type: string
+                          duration_time:
+                            type: string
+                          price:
+                            type: string
+                          createdAt:
+                            type: string
+                          updatedAt:
+                            type: string
+                x-examples:
+                  Example 1:
+                    data:
+                      ticket:
+                        id: 1
+                        user_id: null
+                        origin_airport: KON
+                        destination_airport: KIN
+                        depature_date: '2022-12-11'
+                        return_date: '2022-12-30'
+                        total_passenger: 2
+                        airlines: Garuda Indonesia
+                        depature_time: '15:25'
+                        arrival_time: '20:37'
+                        duration_time: 5 Hours 12 Minutes
+                        price: '20000'
+                        createdAt: '2022-12-17T12:00:04.095Z'
+                        updatedAt: '2022-12-17T12:00:04.095Z'
+      description: Untuk get ticket by id
+      tags:
+        - Transactions Endpoint
+  /history:
+    parameters: []
+    get:
+      summary: Get Data History
+      operationId: 'get-transaction-ticket-:id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ticket:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          user_id:
+                            type: 'null'
+                          origin_airport:
+                            type: string
+                          destination_airport:
+                            type: string
+                          depature_date:
+                            type: string
+                          return_date:
+                            type: string
+                          total_passenger:
+                            type: integer
+                          airlines:
+                            type: string
+                          depature_time:
+                            type: string
+                          arrival_time:
+                            type: string
+                          duration_time:
+                            type: string
+                          price:
+                            type: string
+                          createdAt:
+                            type: string
+                          updatedAt:
+                            type: string
+                x-examples:
+                  Example 1:
+                    data:
+                      ticket:
+                        id: 1
+                        user_id: null
+                        origin_airport: KON
+                        destination_airport: KIN
+                        depature_date: '2022-12-11'
+                        return_date: '2022-12-30'
+                        total_passenger: 2
+                        airlines: Garuda Indonesia
+                        depature_time: '15:25'
+                        arrival_time: '20:37'
+                        duration_time: 5 Hours 12 Minutes
+                        price: '20000'
+                        createdAt: '2022-12-17T12:00:04.095Z'
+                        updatedAt: '2022-12-17T12:00:04.095Z'
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        UserId:
+                          type: integer
+                        FlightId:
+                          type: integer
+                        OrderId:
+                          type: 'null'
+                        PassengerId:
+                          type: 'null'
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        flight:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            user_id:
+                              type: 'null'
+                            origin_airport:
+                              type: string
+                            destination_airport:
+                              type: string
+                            depature_date:
+                              type: string
+                            return_date:
+                              type: string
+                            total_passenger:
+                              type: integer
+                            airlines:
+                              type: string
+                            depature_time:
+                              type: string
+                            arrival_time:
+                              type: string
+                            duration_time:
+                              type: string
+                            price:
+                              type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Display History Data
+                    data:
+                      - id: 1
+                        UserId: 2
+                        FlightId: 1
+                        OrderId: null
+                        PassengerId: null
+                        createdAt: '2022-12-17T12:00:56.701Z'
+                        updatedAt: '2022-12-17T12:00:56.701Z'
+                        flight:
+                          id: 1
+                          user_id: null
+                          origin_airport: KON
+                          destination_airport: KIN
+                          depature_date: '2022-12-11'
+                          return_date: '2022-12-30'
+                          total_passenger: 2
+                          airlines: Garuda Indonesia
+                          depature_time: '15:25'
+                          arrival_time: '20:37'
+                          duration_time: 5 Hours 12 Minutes
+                          price: '20000'
+      description: Untuk mengambil data history
+      tags:
+        - History Endpoint
 components:
   securitySchemes: {}
