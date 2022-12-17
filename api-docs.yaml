@@ -905,7 +905,7 @@ paths:
   '/transaction-ticket/:id':
     parameters: []
     get:
-      summary: ''
+      summary: Get Ticket From Transactions
       operationId: 'get-transaction-ticket-:id'
       responses:
         '200':
