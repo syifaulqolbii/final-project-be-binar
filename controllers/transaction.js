@@ -1,8 +1,12 @@
-const { Transaction, Passenger, Order, Flight } = require('../db/models')
+const { Transaction, Passenger, Order, Flight,transactionMapping, User } = require('../db/models')
 const seq = require('sequelize')
 const db  = require('../db/models/index')
 const { QueryTypes } = require('sequelize')
-const transaction = require('../db/models/transaction')
+const order = require('../db/models/order')
+// const passenger = require('./passenger')
+// const passenger = require('./passenger')
+// const transaction = require('../db/models/transaction')
+// const order = require('./order')
 module.exports = {
     getData: async(req, res, next) => {
         try {
@@ -64,8 +68,8 @@ module.exports = {
             console.log(ticket)
             return res.json({
                 data: {
-                    ticket, 
-                    total: ticket.price * ticket.total_passenger
+                    ticket
+                    // total: ticket.price * ticket.total_passenger
                 }
             })
         })
@@ -73,31 +77,95 @@ module.exports = {
     },
     create: async (req, res, next) => {
         try {
-            const { PassengerId, OrderId } = req.body;
+            // const { PassengerId, OrderId } = req.body;
 
-            //Read
-            // const existTransaction = await Transaction.findOne({ where: {id: id }});
-            // if (existTransaction){
-            //     return res.status(400).json({
-            //         status: false,
-            //         message: 'data already create'
-            //     });
-            // }
-            //Create
-            const transaction = await Transaction.create({
-                PassengerId,
-                OrderId
+            // //Read
+            // // const existTransaction = await Transaction.findOne({ where: {id: id }});
+            // // if (existTransaction){
+            // //     return res.status(400).json({
+            // //         status: false,
+            // //         message: 'data already create'
+            // //     });
+            // // }
+            // //Create
+            // const transaction = await Transaction.create({
+            //     PassengerId,
+            //     OrderId
         
-            });
+            // });
 
 
+            // return res.status(201).json({
+            //     status: false,
+            //     message: 'Succes',
+            //     data: {
+            //         transaction
+            //     }
+            // });
+            // const { name_passenger, identity_number, identity_exp_date, nationality, identity_type, 
+            //     name, email, password, gender, phone} =  req.body
+            const  DataPassengers  = req.body
+            
+            
+            const UserId = req.user.id
+            const FlightId = +req.params.id
+            console.log(UserId)
+            if(!UserId){
+                return res.json({
+                    status: false,
+                    message: "You are not logged in"
+                })
+            }
+            // const passengers = [
+            //     {  name_passenger, 
+            //         identity_number, 
+            //         identity_exp_date, 
+            //         nationality, 
+            //         identity_type }
+            //     // add more passenger objects here as needed
+            //   ];
+            
+            if (DataPassengers.length == 0){
+                res.json({message: "Passenger is not found", success: false, data: {}})
+            }
+
+            const transaction = await Transaction.create({
+                FlightId,
+                UserId
+            })
+            .then((transaction) => {
+                DataPassengers.forEach(element => {
+                    let PassengerId = element.PassengerId
+                    if(!PassengerId){
+                        let cekIdentity = /^(?=.*[0-9])\d{16,}$/
+                        if (!element.identity_number.match(cekIdentity)) {
+                            return res.status(400).json({
+                                message: 'Identity must a number and have 16 character'
+                            })
+                        }
+                        const passenger = Passenger.create({
+                            name_passenger: element.name_passenger, 
+                            identity_number: element.identity_number, 
+                            identity_exp_date: element.identity_exp_date, 
+                            nationality: element.nationality, 
+                            identity_type: element.identity_type
+                        })
+                        .then((Passenger) =>{
+                            PassengerId = Passenger.id
+                            const transactioniMapping = transactionMapping.create({
+                                UserId,
+                                TransactionId: transaction.id,
+                                PassengerId: Passenger.id
+                            })
+                        })
+                    }    
+                });
+            })
             return res.status(201).json({
-                status: false,
-                message: 'Succes',
-                data: {
-                    transaction
-                }
+                status: true,
+                message: 'Succes Create Booking'
             });
+
         } catch (err) {
             next(err)
         }

@@ -79,7 +79,7 @@ module.exports = {
     create: async (req, res, next) => {
         try {
             const { origin_airport, destination_airport, depature_date, return_date, total_passenger,
-                depature_time, arrival_time, duration_time, price } = req.body;
+                depature_time, arrival_time, price } = req.body;
             // console.log(origin_airport)
             // console.log(req.user)
             const user_id = req.user.id
@@ -94,9 +94,14 @@ module.exports = {
             
             console.log(user_id)
             
+            const timedt = new Date("1970-01-01T" + depature_time + "Z");
+            const timeat = new Date("1970-01-01T" + arrival_time + "Z");
+            
+            let diff = timeat - timedt;
+            const diffInHours = Math.floor(diff / (1000 * 60 * 60))
+            const diffInMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
             //Create
             const flight = await Flight.create({
-                user_id,
                 origin_airport,
                 destination_airport,
                 depature_date,
@@ -105,9 +110,9 @@ module.exports = {
                 airlines:'Garuda Indonesia',
                 depature_time,
                 arrival_time,
-                duration_time, 
+                duration_time: `${diffInHours} Hours ${diffInMinutes} Minutes`, 
                 price
-        
+                
             });
 
             return res.status(201).json({
