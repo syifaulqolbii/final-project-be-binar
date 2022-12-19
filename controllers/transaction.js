@@ -155,7 +155,8 @@ module.exports = {
                             const transactioniMapping = transactionMapping.create({
                                 UserId,
                                 TransactionId: transaction.id,
-                                PassengerId: Passenger.id
+                                PassengerId: Passenger.id,
+                                passengers: DataPassengers.length
                             })
                         })
                     }    

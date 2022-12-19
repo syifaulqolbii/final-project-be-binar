@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   transactionMapping.init({
     UserId: DataTypes.INTEGER,
     TransactionId: DataTypes.INTEGER,
-    PassengerId: DataTypes.INTEGER
+    PassengerId: DataTypes.INTEGER,
+    booked_passengers: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'transactionMapping',

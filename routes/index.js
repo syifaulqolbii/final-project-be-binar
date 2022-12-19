@@ -15,7 +15,6 @@ router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.h
 
 router.post('/auth/register', con.auth.register);
 router.post('/auth/login', con.auth.login)
-// router.post("/auth/loginAdmin", con.auth.loginAdmin)
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
 
 
@@ -28,7 +27,6 @@ router.post('/auth/reset-password', con.auth.resetPassword);
 // list airport
 router.get('/list-airport', con.list.listAirport);
 
-// router.get('/home?', con.hom.getData)
 router.get('/search?', con.fli.getSearch)
 router.post('/route', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true), con.fli.create)
 router.put('/flight', mid.cekLogin,con.fli.update)
@@ -39,10 +37,6 @@ router.post('/passenger', mid.cekLogin,con.pas.create)
 router.put('/passenger', mid.cekLogin,con.pas.update)
 router.delete('/passenger',mid.cekLogin,con.pas.delete)
 
-// router.get('/airlines', con.air.index)
-// router.post('/airlines', con.air.create)
-// router.put('/airlines', con.air.update)
-// router.delete('/airlines', con.air.delete)
 
 router.get('/order', mid.cekLogin,con.ord.index)
 router.post('/order',  mid.cekLogin,con.ord.create)
@@ -56,21 +50,9 @@ router.put('/transaction', con.trans.update)
 router.delete('/transaction', con.trans.delete)
 
 
-router.get('/access', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.auth.hello)
-router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.auth.hello)
-router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.hello)
-
-
 router.get('/notification', con.not.getData)
 // router.post('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.create)
 router.put('/notification/:id', con.not.update)
-
-// router.get('/search/:id', con.sc.getData)
-
-// router.post('/search', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true),con.sc.create)
-// router.put('/search', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.update)
-// router.delete('/search', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.delete)
-// router.post('/search-admin',mid.cekLogin, rbac(MODUL.AdminDashboard, true, true),con.sc.create)
 
 
 router.get('/history', mid.cekLogin, con.his.getData)

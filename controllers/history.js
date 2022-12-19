@@ -13,10 +13,21 @@ module.exports = {
                 as: "flight",
                 attributes: {exclude: ["createdAt","updatedAt"]}
             }]})
+        const mapping = await transactionMapping.findOne({where: { UserId: req.user.id},
+            attributes: {exclude: [
+                "id",
+                "PassengerId",
+                "TransactionId",
+                "createdAt",
+                "updatedAt"
+            ]}         
+        })
+        const history = await Promise.all([transaction, mapping])
+        
         return res.status(200).json({
             status: true,
             message: 'Display History Data',
-            data: transaction
+            data: history
         });
 
         } catch (err) {
