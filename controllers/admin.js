@@ -4,11 +4,10 @@ module.exports = {
     getUser : async (req, res, next)=>{
         try {
             const user = await User.findAll();
-            const jumlah = user.length
 
             return res.status(200).json({
                 status: true,
-                data: jumlah
+                data: user
             });
         } catch (err) {
             next(err)
@@ -17,11 +16,10 @@ module.exports = {
     getTransaction : async (req, res, next)=>{
         try {
             const transaction = await Transaction.findAll();
-            const jumlah = transaction.length
 
             return res.status(200).json({
                 status: true,
-                data: jumlah
+                data: transaction
             });
         } catch (err) {
             next(err)
@@ -30,11 +28,10 @@ module.exports = {
     getRoute : async (req, res, next)=>{
         try {
             const route = await Flight.findAll();
-            const jumlah = route.length
 
             return res.status(200).json({
                 status: true,
-                data: jumlah
+                data: route
             });
         } catch (error) {
             next(err)
