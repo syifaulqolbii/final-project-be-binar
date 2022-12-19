@@ -5,7 +5,7 @@ module.exports = {
     try {
       const user_id = req.user.id;
       const notification = await Notification.findAll({
-        where: { user_id: user_id },
+        where: { user_id: user_id } && {isRead : false},
       });
 
       return res.status(200).json({
