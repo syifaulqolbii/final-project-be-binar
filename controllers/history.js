@@ -14,7 +14,7 @@ module.exports = {
                 attributes: {exclude: ["createdAt","updatedAt"]}
             }]
         })
-        const mapping = await transactionMapping.findOne({where: { UserId: req.user.id},
+        const mapping = await transactionMapping.findAll({where: { UserId: req.user.id},
             attributes: {exclude: [
                 "id",   
                 "PassengerId",
