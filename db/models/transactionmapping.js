@@ -11,12 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Passenger, { foreignKey: 'PassengerId', as: 'passenger' })
     }
   }
   transactionMapping.init({
     UserId: DataTypes.INTEGER,
     TransactionId: DataTypes.INTEGER,
-    PassengerId: DataTypes.INTEGER
+    PassengerId: DataTypes.INTEGER,
+    booked_passengers: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'transactionMapping',
