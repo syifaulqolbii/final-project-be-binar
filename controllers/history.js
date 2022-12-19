@@ -6,23 +6,25 @@ const transaction = require('./transaction')
 module.exports = {
     getData: async (req, res, next) => {
         try {
-        // const user_id = req.user.id
+        const user_id = req.user.id
         const transaction = await Transaction.findAll({where: { UserId : req.user.id},
             include: [{
                 model: Flight,
                 as: "flight",
                 attributes: {exclude: ["createdAt","updatedAt"]}
-            }]})
+            }]
+        })
         const mapping = await transactionMapping.findOne({where: { UserId: req.user.id},
             attributes: {exclude: [
-                "id",
+                "id",   
                 "PassengerId",
-                "TransactionId",
                 "createdAt",
                 "updatedAt"
             ]}         
         })
         const history = await Promise.all([transaction, mapping])
+        
+        
         
         return res.status(200).json({
             status: true,
@@ -44,7 +46,7 @@ module.exports = {
                 attributes: {exclude: ["createdAt","updatedAt"]}
             }]
         })
-        const mapping = await transactionMapping.findAll({where: { UserId: req.user.id},
+        const mapping = await transactionMapping.findAll({where: { TransactionId: +req.params.id},
             include: [{
                 model: Passenger,
                 as: "passenger",
