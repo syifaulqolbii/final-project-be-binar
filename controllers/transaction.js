@@ -116,14 +116,6 @@ module.exports = {
                     message: "You are not logged in"
                 })
             }
-            // const passengers = [
-            //     {  name_passenger, 
-            //         identity_number, 
-            //         identity_exp_date, 
-            //         nationality, 
-            //         identity_type }
-            //     // add more passenger objects here as needed
-            //   ];
             
             if (DataPassengers.length == 0){
                 res.json({message: "Passenger is not found", success: false, data: {}})
