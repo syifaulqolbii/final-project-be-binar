@@ -61,9 +61,9 @@ router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true)
 router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.hello)
 
 
-router.get('/notification', con.not.getData)
-// router.post('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.create)
-router.put('/notification/:id', con.not.update)
+router.get('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.getData)
+router.post('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.create)
+router.put('/notification/:id', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.not.update)
 
 // router.get('/search/:id', con.sc.getData)
 
