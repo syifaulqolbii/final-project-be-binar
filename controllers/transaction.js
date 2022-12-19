@@ -1,5 +1,4 @@
-const { Transaction, Passenger, Order, Flight,transactionMapping, User } = require('../db/models')
-const { create } = require('./notification')
+const { Transaction, Passenger, Order, Flight,transactionMapping, User, Notification } = require('../db/models')
 const seq = require('sequelize')
 const db  = require('../db/models/index')
 const { QueryTypes } = require('sequelize')
@@ -105,11 +104,11 @@ module.exports = {
             // });
             // const { name_passenger, identity_number, identity_exp_date, nationality, identity_type, 
             //     name, email, password, gender, phone} =  req.body
-            const  DataPassengers  = req.body
+            const  DataPassengers  = req.body.passangers
             
             
             const UserId = req.user.id
-            const FlightId = +req.params.id
+            const FlightId = +req.body.id
             console.log(UserId)
             if(!UserId){
                 return res.json({
@@ -117,14 +116,6 @@ module.exports = {
                     message: "You are not logged in"
                 })
             }
-            // const passengers = [
-            //     {  name_passenger, 
-            //         identity_number, 
-            //         identity_exp_date, 
-            //         nationality, 
-            //         identity_type }
-            //     // add more passenger objects here as needed
-            //   ];
             
             if (DataPassengers.length == 0){
                 res.json({message: "Passenger is not found", success: false, data: {}})
@@ -163,6 +154,14 @@ module.exports = {
                     }    
                 });
             })
+            const notification = await Notification.create({
+                user_id: UserId,
+                data : "",
+                tittle: "Transaksi berhasil",
+                description: "Selamat Transaksi Anda Telah Berhasil!!",
+                isRead: false
+            })
+
             return res.status(201).json({
                 status: true,
                 message: 'Succes Create Booking'
