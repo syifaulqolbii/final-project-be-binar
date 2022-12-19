@@ -1,4 +1,4 @@
-const { History, User, Transaction, Flight }= require ('../db/models')
+const { History, User, Transaction, Flight, transactionMapping, Passenger }= require ('../db/models')
 const db  = require('../db/models/index')
 const { QueryTypes } = require('sequelize')
 const transaction = require('./transaction')
@@ -23,6 +23,36 @@ module.exports = {
             next(err)
         }
     },
+    getDetail: async (req, res, next) => {
+        try {
+        // const user_id = req.user.id
+        const transaction = await Transaction.findAll({where: { UserId : req.user.id},
+            include: [{
+                model: Flight,
+                as: "flight",
+                attributes: {exclude: ["createdAt","updatedAt"]}
+            }]
+        })
+        const mapping = await transactionMapping.findAll({where: { UserId: req.user.id},
+            include: [{
+                model: Passenger,
+                as: "passenger",
+                attributes: {exclude: ["createdAt","updatedAt"]}
+            }]
+        })
+
+        const detail = await Promise.all([transaction, mapping])
+        
+        return res.status(200).json({
+            status: true,
+            message: 'Display History Detail',
+            data: detail
+        });
+
+        } catch (err) {
+            next(err)
+        }
+    }
 // //     create: async (req, res, next) => {
 // //         try {
 // //             const { transaction_id, search_id, payment_id, price, status } = req.body;

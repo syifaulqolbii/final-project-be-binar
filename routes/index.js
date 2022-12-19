@@ -49,7 +49,7 @@ router.post('/order',  mid.cekLogin,con.ord.create)
 router.put('/order', mid.cekLogin,con.ord.update)
 router.delete('/order', mid.cekLogin,con.ord.delete)
 
-router.get('/transaction/:id', mid.cekLogin, con.trans.getData)
+// router.get('/transaction/:id', mid.cekLogin, con.trans.getData)
 router.get('/transaction-ticket/:id', mid.cekLogin, con.trans.getTicket)
 router.post('/transaction/:id', mid.cekLogin,  con.trans.create)
 router.put('/transaction', con.trans.update)
@@ -74,6 +74,7 @@ router.put('/notification/:id', con.not.update)
 
 
 router.get('/history', mid.cekLogin, con.his.getData)
+router.get('/history-detail', mid.cekLogin, con.his.getDetail)
 // router.post('/history', con.his.create)
 // router.put('/history', con.his.update)
 // router.delete('/history/:id', con.his.delete)
