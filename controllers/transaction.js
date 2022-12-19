@@ -156,7 +156,7 @@ module.exports = {
                                 UserId,
                                 TransactionId: transaction.id,
                                 PassengerId: Passenger.id,
-                                passengers: DataPassengers.length
+                                booked_passengers: DataPassengers.length
                             })
                         })
                     }    

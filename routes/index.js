@@ -56,7 +56,7 @@ router.put('/notification/:id', con.not.update)
 
 
 router.get('/history', mid.cekLogin, con.his.getData)
-router.get('/history-detail', mid.cekLogin, con.his.getDetail)
+router.get('/history-detail/:id', mid.cekLogin, con.his.getDetail)
 // router.post('/history', con.his.create)
 // router.put('/history', con.his.update)
 // router.delete('/history/:id', con.his.delete)
