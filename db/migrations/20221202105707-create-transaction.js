@@ -14,12 +14,12 @@ module.exports = {
       FlightId: {
         type: Sequelize.INTEGER
       },
-      OrderId: {
-        type: Sequelize.INTEGER
-      },
-      PassengerId: {
-        type: Sequelize.INTEGER
-      },
+      // OrderId: {
+      //   type: Sequelize.INTEGER
+      // },
+      // PassengerId: {
+      //   type: Sequelize.INTEGER
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

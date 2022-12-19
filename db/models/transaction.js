@@ -11,16 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Passenger,{ foreignKey: 'PassengerId', as: 'passenger'})
-      this.belongsTo(models.Order, {foreignKey: 'OrderId', as: 'order'})
+      // this.belongsTo(models.Passenger,{ foreignKey: 'PassengerId', as: 'passenger'})
+      // this.belongsTo(models.Order, {foreignKey: 'OrderId', as: 'order'})
       this.belongsTo(models.Flight, { foreignKey: 'FlightId', as: 'flight' })
     }
   }
   Transaction.init({
     UserId: DataTypes.INTEGER,
     FlightId: DataTypes.INTEGER,
-    OrderId: DataTypes.INTEGER,
-    PassengerId: DataTypes.INTEGER
+    // OrderId: DataTypes.INTEGER,
+    // PassengerId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Transaction',
