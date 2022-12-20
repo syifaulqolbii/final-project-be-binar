@@ -156,7 +156,6 @@ module.exports = {
             })
             const notification = await Notification.create({
                 user_id: UserId,
-                data : "",
                 tittle: "Transaksi berhasil",
                 description: "Selamat Transaksi Anda Telah Berhasil!!",
                 isRead: false
