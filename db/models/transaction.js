@@ -14,11 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       // this.belongsTo(models.Passenger,{ foreignKey: 'PassengerId', as: 'passenger'})
       // this.belongsTo(models.Order, {foreignKey: 'OrderId', as: 'order'})
       this.belongsTo(models.Flight, { foreignKey: 'FlightId', as: 'flight' })
+      this.belongsTo(models.User, { foreignKey: 'UserId', as: 'user' })
     }
   }
   Transaction.init({
     UserId: DataTypes.INTEGER,
-    FlightId: DataTypes.INTEGER,
+    Flightidentity_exp_dateId: DataTypes.INTEGER,
     // OrderId: DataTypes.INTEGER,
     // PassengerId: DataTypes.INTEGER
   }, {
