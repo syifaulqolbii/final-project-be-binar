@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Transaction.init({
     UserId: DataTypes.INTEGER,
-    Flightidentity_exp_dateId: DataTypes.INTEGER,
+    FlightId: DataTypes.INTEGER,
     // OrderId: DataTypes.INTEGER,
     // PassengerId: DataTypes.INTEGER
   }, {

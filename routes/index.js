@@ -66,7 +66,7 @@ router.get('/history-detail/:id', mid.cekLogin, con.his.getDetail)
 // router.put('/history', con.his.update)
 // router.delete('/history/:id', con.his.delete)
 
-router.get('/admin/get-user', con.admin.getUser)
-router.get('/admin/get-transaction', con.admin.getTransaction)
-router.get('/admin/get-route', con.admin.getRoute)
+router.get('/admin/get-user', mid.cekLogin,con.admin.getUser)
+router.get('/admin/get-transaction', mid.cekLogin, con.admin.getTransaction)
+router.get('/admin/get-route', mid.cekLogin, con.admin.getRoute)
 module.exports = router

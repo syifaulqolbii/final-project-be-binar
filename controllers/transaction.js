@@ -108,7 +108,7 @@ module.exports = {
             
             
             const userId = req.user.id
-            const flightId = +req.body.id
+            const FlightId = +req.body.id
             if(!userId){
                 return res.json({
                     status: false,
@@ -118,9 +118,9 @@ module.exports = {
             if (dataPassengers.length == 0){
                 res.json({message: "Passenger is not found", success: false, data: {}})
             }
-
+            console.log(FlightId)
             const transaction = await Transaction.create({
-                FlightId: flightId,
+                FlightId,
                 UserId: userId
             })
             .then((transaction) => {
