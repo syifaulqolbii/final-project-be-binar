@@ -108,7 +108,7 @@ module.exports = {
             
             
             const userId = req.user.id
-            const FlightId = +req.body.id
+            const flightId = +req.body.id
             if(!userId){
                 return res.json({
                     status: false,
@@ -118,19 +118,32 @@ module.exports = {
             if (dataPassengers.length == 0){
                 res.json({message: "Passenger is not found", success: false, data: {}})
             }
-            console.log(FlightId)
+            console.log(flightId)
             const transaction = await Transaction.create({
-                FlightId,
+                FlightId: flightId,
                 UserId: userId
             })
             .then((transaction) => {
                 dataPassengers.forEach(element => {
                     let PassengerId = element.PassengerId
                     if(!PassengerId){
-                        let cekIdentity = /^(?=.*[0-9])\d{16,}$/
-                        if (!element.identity_number.match(cekIdentity)) {
+                        if(element.identity_type == "KTP"){
+                            let cekIdentity = /^(?=.*[0-9])\d{16,}$/
+                            if (!element.identity_number.match(cekIdentity)) {
+                                return res.status(400).json({
+                                    message: 'Identity number of KTP must number and have 16 character'
+                                })
+                            }
+                        } else if (element.identity_type == "Passport"){
+                            let cekIdentity = /^[a-z0-9]{10}$/i;
+                            if (!element.identity_number.match(cekIdentity)) {
+                                return res.status(400).json({
+                                    message: 'Identity number of Passport must be a number and letter 10 character'
+                                })
+                            }
+                        }else{
                             return res.status(400).json({
-                                message: 'Identity must a number and have 16 character'
+                                message: 'Identity not found'
                             })
                         }
                         const passenger = Passenger.create({
