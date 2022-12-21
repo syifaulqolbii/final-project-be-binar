@@ -7,6 +7,9 @@ module.exports = {
       const user_id = req.user.id;
       const notification = await Notification.findAll({
         where: { user_id: user_id },
+        // order: [
+        //   ['createdAt', 'DESC']
+        // ]
       });
 
       // sorting
