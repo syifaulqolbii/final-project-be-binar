@@ -116,7 +116,7 @@ module.exports = {
             });
 
             return res.status(201).json({
-                status: false,
+                status: true,
                 message: 'Succes',
                 data: flight
             })

@@ -108,7 +108,7 @@ module.exports = {
             
             
             const userId = req.user.id
-            const FlightId = +req.body.id
+            const flightId = +req.body.id
             if(!userId){
                 return res.json({
                     status: false,
@@ -120,7 +120,7 @@ module.exports = {
             }
 
             const transaction = await Transaction.create({
-                FlightId,
+                FlightId: flightId,
                 UserId: userId
             })
             .then((transaction) => {
@@ -193,7 +193,7 @@ module.exports = {
 
 
             return res.status(201).json({
-                status: false,
+                status: true,
                 message: 'Succes',
                 data: transaction
             });

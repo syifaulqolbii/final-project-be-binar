@@ -7,18 +7,18 @@ module.exports = {
       const user_id = req.user.id;
       const notification = await Notification.findAll({
         where: { user_id: user_id },
-        // order: [
-        //   ['createdAt', 'DESC']
-        // ]
+        order: [
+          ['createdAt', 'DESC']
+        ]
       });
 
       // sorting
-      const data = JSON.parse(JSON.stringify(notification));
-      data.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-      console.log(data.record);
+      // const data = JSON.parse(JSON.stringify(notification));
+      // data.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+      // console.log(data.record);
 
       return res.status(200).json({
-        data: data
+        data: notification
       });
     } catch (err) {
       next(err);
