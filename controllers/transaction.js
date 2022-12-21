@@ -104,29 +104,27 @@ module.exports = {
             // });
             // const { name_passenger, identity_number, identity_exp_date, nationality, identity_type, 
             //     name, email, password, gender, phone} =  req.body
-            const  DataPassengers  = req.body.passangers
+            const  dataPassengers  = req.body.passangers
             
             
-            const UserId = req.user.id
+            const userId = req.user.id
             const FlightId = +req.body.id
-            console.log(UserId)
-            if(!UserId){
+            if(!userId){
                 return res.json({
                     status: false,
                     message: "You are not logged in"
                 })
             }
-            
-            if (DataPassengers.length == 0){
+            if (dataPassengers.length == 0){
                 res.json({message: "Passenger is not found", success: false, data: {}})
             }
 
             const transaction = await Transaction.create({
                 FlightId,
-                UserId
+                UserId: userId
             })
             .then((transaction) => {
-                DataPassengers.forEach(element => {
+                dataPassengers.forEach(element => {
                     let PassengerId = element.PassengerId
                     if(!PassengerId){
                         let cekIdentity = /^(?=.*[0-9])\d{16,}$/
@@ -142,20 +140,21 @@ module.exports = {
                             nationality: element.nationality, 
                             identity_type: element.identity_type
                         })
+                        
                         .then((Passenger) =>{
                             PassengerId = Passenger.id
                             const transactioniMapping = transactionMapping.create({
-                                UserId,
+                                UserId: userId,
                                 TransactionId: transaction.id,
-                                PassengerId: Passenger.id,
-                                booked_passengers: DataPassengers.length
+                                PassengerId: Passenger.id
                             })
                         })
+                        
                     }    
                 });
             })
             const notification = await Notification.create({
-                user_id: UserId,
+                user_id: userId,
                 tittle: "Transaksi berhasil",
                 description: "Selamat Transaksi Anda Telah Berhasil!!",
                 isRead: false
