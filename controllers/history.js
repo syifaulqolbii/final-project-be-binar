@@ -17,7 +17,6 @@ module.exports = {
         const mapping = await transactionMapping.findAll({where: { UserId: req.user.id},
             attributes: {exclude: [
                 "id",   
-                "PassengerId",
                 "createdAt",
                 "updatedAt"
             ]}         
@@ -39,7 +38,7 @@ module.exports = {
     getDetail: async (req, res, next) => {
         try {
         // const user_id = req.user.id
-        const transaction = await Transaction.findAll({where: { UserId : req.user.id},
+        const transaction = await Transaction.findAll({where: { id : +req.params.id},
             include: [{
                 model: Flight,
                 as: "flight",
