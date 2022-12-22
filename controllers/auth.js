@@ -212,8 +212,11 @@ module.exports = {
 
             console.log('TOKEN :', token);
 
-            if (!token) return res.render('auth/reset-password', { message: 'invalid token', token });
-            if (new_password != confirm_new_password) return res.render('auth/reset-password', { message: 'password doesn\'t match!', token });
+            if (!token) return res.status(498).json({
+                status: false,
+                message: 'invalid token', token 
+            });
+            if (new_password != confirm_new_password) return res.status(404).json({ message: 'password doesn\'t match!', token });
 
             const payload = jwt.verify(token, JWT_SECRET_KEY);
 
@@ -221,7 +224,10 @@ module.exports = {
 
             const user = await User.update({ password: encryptedPassword }, { where: { id: payload.user_id } });
 
-            return res.render('auth/login', { error: null });
+            return res.status(200).json({
+                status: true,
+                message: 'Change Password Success'
+            });
         } catch (err) {
             next(err);
         }
