@@ -110,47 +110,47 @@ module.exports = {
         }
     },
     google: async (req, res, next) => {
-        try {
-            const code = req.query.code;
+        // try {
+        //     const code = req.query.code;
 
-            if (!code) {
-                const url = googleOauth2.generateAuthURL();
-                return res.redirect(url);
-            }
+        //     if (!code) {
+        //         const url = googleOauth2.generateAuthURL();
+        //         return res.redirect(url);
+        //     }
 
-            await googleOauth2.setCredentials(code);
+        //     await googleOauth2.setCredentials(code);
 
-            const { data } = await googleOauth2.getUserData();
+        //     const { data } = await googleOauth2.getUserData();
 
-            const userExist = await User.findOne({ where: { email: data.email } });
+        //     const userExist = await User.findOne({ where: { email: data.email } });
 
-            if (!userExist) {
-                userExist = await User.create({
-                    name: data.name,
-                    email: data.email,
-                    user_type: userType.google
-                });
-            }
+        //     if (!userExist) {
+        //         userExist = await User.create({
+        //             name: data.name,
+        //             email: data.email,
+        //             user_type: userType.google
+        //         });
+        //     }
 
-            const payload = {
-                id: userExist.id,
-                name: userExist.name,
-                email: userExist.email,
-                user_type: userExist.user_type,
-            };
-            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+        //     const payload = {
+        //         id: userExist.id,
+        //         name: userExist.name,
+        //         email: userExist.email,
+        //         user_type: userExist.user_type,
+        //     };
+        //     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
 
-            return res.status(200).json({
-                status: true,
-                message: 'success',
-                data: {
-                    user_id: userExist.id,
-                    token
-                }
-            });
-        } catch (err) {
-            next(err);
-        }
+        //     return res.status(200).json({
+        //         status: true,
+        //         message: 'success',
+        //         data: {
+        //             user_id: userExist.id,
+        //             token
+        //         }
+        //     });
+        // } catch (err) {
+        //     next(err);
+        // }
     },
     whoami: async(req, res, next) => {
         const user = req.user
