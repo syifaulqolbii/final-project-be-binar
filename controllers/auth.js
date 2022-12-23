@@ -10,6 +10,7 @@ const util = require('../utils');
 const {
     JWT_SECRET_KEY,
     GOOGLE_REDIRECT_URI,
+    SERVER
 
 } = process.env
 
@@ -109,47 +110,47 @@ module.exports = {
         }
     },
     google: async (req, res, next) => {
-        try {
-            const code = req.query.code;
+        // try {
+        //     const code = req.query.code;
 
-            if (!code) {
-                const url = googleOauth2.generateAuthURL();
-                return res.redirect(url);
-            }
+        //     if (!code) {
+        //         const url = googleOauth2.generateAuthURL();
+        //         return res.redirect(url);
+        //     }
 
-            await googleOauth2.setCredentials(code);
+        //     await googleOauth2.setCredentials(code);
 
-            const { data } = await googleOauth2.getUserData();
+        //     const { data } = await googleOauth2.getUserData();
 
-            const userExist = await User.findOne({ where: { email: data.email } });
+        //     const userExist = await User.findOne({ where: { email: data.email } });
 
-            if (!userExist) {
-                userExist = await User.create({
-                    name: data.name,
-                    email: data.email,
-                    user_type: userType.google
-                });
-            }
+        //     if (!userExist) {
+        //         userExist = await User.create({
+        //             name: data.name,
+        //             email: data.email,
+        //             user_type: userType.google
+        //         });
+        //     }
 
-            const payload = {
-                id: userExist.id,
-                name: userExist.name,
-                email: userExist.email,
-                user_type: userExist.user_type,
-            };
-            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+        //     const payload = {
+        //         id: userExist.id,
+        //         name: userExist.name,
+        //         email: userExist.email,
+        //         user_type: userExist.user_type,
+        //     };
+        //     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
 
-            return res.status(200).json({
-                status: true,
-                message: 'success',
-                data: {
-                    user_id: userExist.id,
-                    token
-                }
-            });
-        } catch (err) {
-            next(err);
-        }
+        //     return res.status(200).json({
+        //         status: true,
+        //         message: 'success',
+        //         data: {
+        //             user_id: userExist.id,
+        //             token
+        //         }
+        //     });
+        // } catch (err) {
+        //     next(err);
+        // }
     },
     whoami: async(req, res, next) => {
         const user = req.user
@@ -185,48 +186,63 @@ module.exports = {
                     status: false,
                     message: 'Email not found!'
                 })
-            }else{
-                const payload = { user_id: user.id };
-                const token = jwt.sign(payload, JWT_SECRET_KEY);
-                const link = `${GOOGLE_REDIRECT_URI}/auth/reset-password?token=${token}`;
-
-                htmlEmail = await util.email.getHtml('reset-password.ejs', { name: user.name, link: link });
-                await util.email.sendEmail(user.email, 'Reset your password', htmlEmail);
             }
+            const payload = { 
+                user_id: user.id,
+                name: user.name,
+                email: user.email 
+            };
+            const token = jwt.sign(payload, JWT_SECRET_KEY);
+            //const link = `${GOOGLE_REDIRECT_URI}/auth/reset-password?token=${token}`;
+
+            await util.email.sendEmail(email, '[Forgot Password]', `<a href='${SERVER}/reset-pass?token=${token}'>click here to reset your password</a>`)
 
             return res.status(200).json({
                 status: true,
-                message: 'we will send email for reset password if the email is exist on our database!' 
+                message: 'Succes, cek your email!',
+                //data: user 
             });
         } catch (err) {
             next(err);
         }
     },
-    forgotPasswordView: (req, res) => {
-        return res.res('auth/forgot-password', { message: null });
-    },
+    // forgotPasswordView: (req, res) => {
+    //     return res.res('auth/forgot-password', { message: null });
+    // },
     resetPassword: async (req, res, next) => {
         try {
-            const { token } = req.query;
+            const token = req.query.token;
             const { new_password, confirm_new_password } = req.body;
 
-            console.log('TOKEN :', token);
-
-            if (!token) return res.status(498).json({
-                status: false,
-                message: 'invalid token', token 
-            });
-            if (new_password != confirm_new_password) return res.status(404).json({ message: 'password doesn\'t match!', token });
+            if(new_password !== confirm_new_password) {
+                return res.status(422).json({
+                    status: false,
+                    message: 'new password and confirm new password doesnt match'
+                });
+            }
 
             const payload = jwt.verify(token, JWT_SECRET_KEY);
 
-            const encryptedPassword = await bcrypt.hash(new_password, 10);
+            const user = await User.findOne({ where: { id: payload.user_id } });
+            
+            if (!user) {
+                return res.status(400).json({
+                    status: false,
+                    message: 'User not found',
+                    data: null,
+                });
+            }
 
-            const user = await User.update({ password: encryptedPassword }, { where: { id: payload.user_id } });
+            const isUpdated = await User.update({
+                password: await bcrypt.hash(new_password, 10)
+            }, {
+                where: { id: payload.user_id }
+            });
 
             return res.status(200).json({
                 status: true,
-                message: 'Change Password Success'
+                message: 'Change password success',
+                data: isUpdated
             });
         } catch (err) {
             next(err);
