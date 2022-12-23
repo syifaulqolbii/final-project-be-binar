@@ -14,8 +14,9 @@ router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true)
 router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.hello)
 
 router.post('/auth/register', con.auth.register);
-router.post('/auth/login', con.auth.login)
+router.post('/auth/login', con.auth.login);
 // router.post("/auth/loginAdmin", con.auth.loginAdmin)
+router.get('/auth/login-google', con.auth.google);
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
 
 
