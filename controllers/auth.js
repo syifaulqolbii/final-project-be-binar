@@ -194,6 +194,8 @@ module.exports = {
             const token = jwt.sign(payload, JWT_SECRET_KEY);
             //const link = `${GOOGLE_REDIRECT_URI}/auth/reset-password?token=${token}`;
 
+            console.log(SERVER);
+
             await util.email.sendEmail(email, '[Forgot Password]', `<a href='${SERVER}/reset-pass?token=${token}'>click here to reset your password</a>`)
 
             return res.status(200).json({
