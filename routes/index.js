@@ -18,7 +18,7 @@ router.post('/auth/login', con.auth.login)
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
 
 
-router.get('/auth/forgot-password', con.auth.forgotPasswordView);
+//router.get('/auth/forgot-password', con.auth.forgotPasswordView);
 router.post('/auth/forgot-password', con.auth.forgotPassword);
 
 router.get('/auth/reset-password', con.auth.resetPasswordView);
