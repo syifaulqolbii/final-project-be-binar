@@ -1,32 +1,8 @@
 const { Transaction, Passenger, Order, Flight,transactionMapping, User, Notification } = require('../db/models')
-const seq = require('sequelize')
-const db  = require('../db/models/index')
-const { QueryTypes } = require('sequelize')
-const order = require('../db/models/order')
-// const passenger = require('./passenger')
-// const passenger = require('./passenger')
-// const transaction = require('../db/models/transaction')
-// const order = require('./order')
+
 module.exports = {
     getData: async(req, res, next) => {
         try {
-            // let transaction = await db.sequelize.query(`SELECT "Passengers".name_passenger, "Passengers".identity_number, "Passengers".identity_exp_date , 
-            // "Passengers".nationality, "Passengers".identity_type, "Orders".orderer , "Orders".phone_number, "Orders".email  
-            // FROM "Passengers" JOIN "Transactions" ON "Passengers".id = "Transactions".PassengerId JOIN "Orders" ON "Orders".id = "Transactions".OrderId 
-            // ORDER BY "Passengers".id ASC `, {
-            //     type: QueryTypes.SELECT
-            // })
-            // if (transaction.length > 0) {
-            //     res.status(200).json({
-            //         message: 'Data is Loaded',
-            //         data: transaction[0]
-            //     })
-            // } else {
-            //     res.status(200).json({
-            //         message: 'Data Unknown',
-            //         data: []
-            //     })
-            // }
             Transaction.findOne({where: {id: req.params.id}, 
                 include: [
             {
@@ -57,19 +33,13 @@ module.exports = {
         }
     },
     getTicket: async( req, res, next) => {
-        // const { origin_aiport, destination_aiport, airlines, depature_date, depature_time, price } = req.body
-        // console.log(req.params)
-        // Flight.findAll()
-        // .then((tiket) => {
-        //     res.json(tiket)
-        // })
         Flight.findOne({ where: {id: +req.params.id}})
         .then((ticket) =>{
             console.log(ticket)
             return res.json({
                 data: {
                     ticket
-                    // total: ticket.price * ticket.total_passenger
+                    
                 }
             })
         })
@@ -77,33 +47,6 @@ module.exports = {
     },
     create: async (req, res, next) => {
         try {
-            // const { PassengerId, OrderId } = req.body;
-
-            // //Read
-            // // const existTransaction = await Transaction.findOne({ where: {id: id }});
-            // // if (existTransaction){
-            // //     return res.status(400).json({
-            // //         status: false,
-            // //         message: 'data already create'
-            // //     });
-            // // }
-            // //Create
-            // const transaction = await Transaction.create({
-            //     PassengerId,
-            //     OrderId
-        
-            // });
-
-
-            // return res.status(201).json({
-            //     status: false,
-            //     message: 'Succes',
-            //     data: {
-            //         transaction
-            //     }
-            // });
-            // const { name_passenger, identity_number, identity_exp_date, nationality, identity_type, 
-            //     name, email, password, gender, phone} =  req.body
             const  dataPassengers  = req.body.passangers
             
             

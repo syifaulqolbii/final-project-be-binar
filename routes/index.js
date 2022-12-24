@@ -32,18 +32,9 @@ router.post('/route', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true), con.f
 router.put('/flight', mid.cekLogin,con.fli.update)
 router.delete('/flight', mid.cekLogin,con.fli.delete)
 
-router.get('/passenger', mid.cekLogin,con.pas.index)
-router.post('/passenger', mid.cekLogin,con.pas.create)
-router.put('/passenger', mid.cekLogin,con.pas.update)
+
 router.delete('/passenger',mid.cekLogin,con.pas.delete)
 
-
-router.get('/order', mid.cekLogin,con.ord.index)
-router.post('/order',  mid.cekLogin,con.ord.create)
-router.put('/order', mid.cekLogin,con.ord.update)
-router.delete('/order', mid.cekLogin,con.ord.delete)
-
-// router.get('/transaction/:id', mid.cekLogin, con.trans.getData)
 router.get('/transaction-ticket/:id', mid.cekLogin, con.trans.getTicket)
 router.post('/transaction', mid.cekLogin,  con.trans.create)
 router.put('/transaction', con.trans.update)
