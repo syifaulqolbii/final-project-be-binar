@@ -322,6 +322,12 @@ paths:
                   phone: '089512345678'
                   gender: Male
         description: Body yang bisa dimasukkan
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authorization
+          description: Need login to edit data
   /list-airport:
     get:
       summary: Airport List Endpoint
