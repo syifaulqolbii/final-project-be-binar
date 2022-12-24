@@ -531,8 +531,13 @@ paths:
         description: 'Hal hal yang bisa di edit, tidak harus semua field diedit'
       tags:
         - Admin Endpoint
-  '/search/:id':
-    parameters: []
+  '/flight/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     delete:
       summary: Delete Schedule Flight List Endpoint
       operationId: delete-search---copy
@@ -550,6 +555,17 @@ paths:
                 Example 1:
                   value:
                     message: Success delete data
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    message: Succes Delete Data
       description: Endpoint ini digunakan untuk menghapus Schedule Flight
       parameters:
         - schema:
@@ -839,7 +855,7 @@ paths:
       description: endpoint ini digunakan untuk mengambil total jumlah rute penerbangan
       parameters: []
     parameters: []
-  '/transaction/:id':
+  '/transaction/${id}':
     post:
       summary: Create Transaction
       operationId: 'post-transaction:id'
@@ -901,9 +917,19 @@ paths:
         description: Data yang harus dimasukkan
       tags:
         - Transactions Endpoint
-    parameters: []
-  '/transaction-ticket/:id':
-    parameters: []
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+  '/transaction-ticket/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     get:
       summary: Get Ticket From Transactions
       operationId: 'get-transaction-ticket-:id'
@@ -1420,8 +1446,13 @@ paths:
       description: Untuk mengambil seluruh data notification berdasarkan user yang login
       tags:
         - Notifications Endpoint
-  '/notification/:id':
-    parameters: []
+  '/notification/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     put:
       summary: Update IsRead Notifications
       operationId: put-notification---copy

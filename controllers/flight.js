@@ -168,11 +168,11 @@ module.exports = {
     //Delete
     delete: async (req, res, next) => {
         try{
-            const { id } = req.body;
+            const {id} = req.params;
 
             await Flight.destroy({
                 where: {
-                    id
+                    id : id
                 }
             });
 
