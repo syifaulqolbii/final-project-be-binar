@@ -256,7 +256,30 @@ module.exports = {
             message: 'Hello World!!!'
         })
     },
-    me: async (req, res) => {
+    editProfile: async (req, res) => {
+        const user = req.user
+        const { name, email, phone, gender } = req.body
 
+        try {
+            const userUpdate = await User.update({
+                name,
+                email,
+                phone,
+                gender
+            },
+            {
+                where:{
+                    id : user.id
+                }
+            });
+
+            return res.status(201).json({
+                status: true,
+                message: 'Succes Update Data',
+
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 }

@@ -277,6 +277,51 @@ paths:
           in: header
           required: true
           name: Authorization
+  /auth/editProfile:
+    parameters: []
+    put:
+      summary: Edit Profile Endpoint
+      operationId: put-auth-editProfile
+      responses:
+        '200':
+          description: Success Update Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Succes Update Data
+      tags:
+        - Auth Endpoint
+      description: Endpoint ini digunakan untuk mengubah data profile user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                gender:
+                  type: string
+              x-examples:
+                Example 1:
+                  name: Petottttt
+                  email: udinpetot12@mail.com
+                  phone: '089512345678'
+                  gender: Male
+        description: Body yang bisa dimasukkan
   /list-airport:
     get:
       summary: Airport List Endpoint
