@@ -126,8 +126,9 @@ module.exports = {
     },
     update: async (req, res, next) => {
         try{
-            const { id, origin_airport, destination_airport, depature_date, return_date, depature_time, arrival_time,duration_time } = req.body;
+            const {origin_airport, destination_airport, depature_date,total_passenger,price, return_date, depature_time, arrival_time,duration_time } = req.body;
             const user_id = req.user.id
+            const {id} = req.params;
             const existFlight = await Flight.findOne({ where: {id: id }});
             if (!existFlight){
                 return res.status(400).json({
@@ -136,7 +137,6 @@ module.exports = {
                 });
             }
             const flight = await Flight.update({
-                user_id,
                 origin_airport,
                 destination_airport,
                 depature_date,
@@ -146,19 +146,17 @@ module.exports = {
                 arrival_time,
                 duration_time, 
                 price
-        
             },
             {
                 where:{
-                    id
+                    id : id
                 }
             });
-
-
+            const resultFlight = await Flight.findOne({ where: {id: id }});
             return res.status(201).json({
                 status: true,
-                message: 'Succes',
-                data: flight
+                message: 'Succes Edit Data',
+                data: resultFlight
             });
         }catch(err){
             next(err);
