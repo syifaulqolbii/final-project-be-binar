@@ -1,4 +1,4 @@
 module.exports = {
     basic: 'basic',
-    goolge: 'google'
+    google: 'google'
 }

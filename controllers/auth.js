@@ -23,7 +23,14 @@ module.exports = {
 
             const existUser = await User.findOne({ where: { email: email } });
             if (existUser) {
-                return res.status(400).json({
+                if (existUser.userType != userType.basic) {
+                    return res.status(400).json({
+                        status: true,
+                        message: `your account is associated with ${existUser.userType} oauth`,
+                        data: null
+                    })
+                }
+                return res.status(400).json({ 
                     status: false,
                     message: 'email already used!'
                 });
@@ -52,9 +59,10 @@ module.exports = {
                 name,
                 email,
                 password: encryptPassword,
-                role: 'Buyer',
+                role: roles.buyer,
                 gender,
-                phone
+                phone,
+                user_type: userType.basic
             });
 
 
@@ -78,8 +86,15 @@ module.exports = {
             if (!user) {
                 return res.status(404).json({
                     status: false,
-                    message: 'email not found!'
+                    message: 'user not found!',
+                    data: null
                 });
+            }
+            if(user.user_type != userType.basic) {
+                return res.status(400).json({
+                    status: false,
+                    message: `your account is associated  with ${user.user_type} oauth`
+                })
             }
 
             const isPassCorrect = await bcrypt.compare(password, user.password)
@@ -124,26 +139,29 @@ module.exports = {
 
             const { data } = await googleOauth2.getUserData();
 
-            const userExist = await User.findOne({ where: { email: data.email } });
+            var user = await User.findOne({ where: { email: data.email } });
 
-            if (!userExist) {
-                userExist = await User.create({
+            if (!user) {
+                user = await User.create({
                     name: data.name,
                     email: data.email,
-                    role: user.role,
+                    gender: data.gender,
+                    role: roles.buyer,
                     user_type: userType.google
                 });
             }
 
             const payload = {
-                id: userExist.id,
-                name: userExist.name,
-                email: userExist.email,
-                user_type: userExist.user_type,
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                gender: user.gender,
+                role: user.role,
+                user_type: user.user_type,
             };
             const token = jwt.sign(payload, JWT_SECRET_KEY);
 
-            const valid = jwt.verify(token, JWT_SIGNATURE_KEY)
+            const valid = jwt.verify(token, JWT_SECRET_KEY)
 
             if (!valid) {
                 return res.status(409).json({ status: false, message: 'you are not authorized!' })
@@ -153,7 +171,8 @@ module.exports = {
                 status: true,
                 message: 'success',
                 data: {
-                    user_id: userExist.id,
+                    name: user.name,
+                    role: user.role,
                     token
                 }
             });
@@ -221,6 +240,13 @@ module.exports = {
         try {
             const token = req.query.token;
             const { new_password, confirm_new_password } = req.body;
+
+            let strongRegex = /^(?=(.*[a-zA-Z]){1,})(?=(.*[0-9]){2,}).{8,}$/
+            if (!new_password.match(strongRegex)) {
+                return res.status(400).json({
+                    message: 'password must have Capital, number and special character(minimum 8 character) '
+                })
+            };
 
             if(new_password !== confirm_new_password) {
                 return res.status(422).json({
