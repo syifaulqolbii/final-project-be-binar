@@ -7,6 +7,7 @@ const swaggerDocument = YAML.load('./api-docs.yaml');
 const cors = require('cors')
 const methodOverride = require('method-override');
 const router = require('./routes')
+const expressLayouts = require('express-ejs-layouts')
 
 const app = express()
 
@@ -20,6 +21,7 @@ app.use(morgan('dev'))
 app.use(cors());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(methodOverride('_method'));
+app.use(expressLayouts);
 app.use(router);
 
 

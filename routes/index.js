@@ -15,6 +15,7 @@ router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.h
 
 router.post('/auth/register', con.auth.register);
 router.post('/auth/login', con.auth.login)
+router.get('/auth/login-google', con.auth.google);
 // router.post("/auth/loginAdmin", con.auth.loginAdmin)
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
 
@@ -46,7 +47,7 @@ router.delete('/order', mid.cekLogin,con.ord.delete)
 
 // router.get('/transaction/:id', mid.cekLogin, con.trans.getData)
 router.get('/transaction-ticket/:id', mid.cekLogin, con.trans.getTicket)
-router.post('/transaction', mid.cekLogin,  con.trans.create)
+router.post('/transaction',  con.trans.create)
 router.put('/transaction', con.trans.update)
 router.delete('/transaction', con.trans.delete)
 

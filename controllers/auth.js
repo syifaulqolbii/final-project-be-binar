@@ -1,10 +1,12 @@
 const { User } = require('../db/models')
-const googleOauth2 = require('../utils/google')
+const googleOauth2 = require('../utils/oauth/google')
 const { Notification } = require('../db/models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const userType = require('../utils/oauth/enum')
 const roles = require('../utils/roles')
 const util = require('../utils');
+const user = require('../db/models/user')
 
 
 const {
@@ -110,47 +112,54 @@ module.exports = {
         }
     },
     google: async (req, res, next) => {
-        // try {
-        //     const code = req.query.code;
+        try {
+            const code = req.query.code;
 
-        //     if (!code) {
-        //         const url = googleOauth2.generateAuthURL();
-        //         return res.redirect(url);
-        //     }
+            if (!code) {
+                const url = googleOauth2.generateAuthURL();
+                return res.redirect(url);
+            }
 
-        //     await googleOauth2.setCredentials(code);
+            await googleOauth2.setCredentials(code);
 
-        //     const { data } = await googleOauth2.getUserData();
+            const { data } = await googleOauth2.getUserData();
 
-        //     const userExist = await User.findOne({ where: { email: data.email } });
+            const userExist = await User.findOne({ where: { email: data.email } });
 
-        //     if (!userExist) {
-        //         userExist = await User.create({
-        //             name: data.name,
-        //             email: data.email,
-        //             user_type: userType.google
-        //         });
-        //     }
+            if (!userExist) {
+                userExist = await User.create({
+                    name: data.name,
+                    email: data.email,
+                    role: user.role,
+                    user_type: userType.google
+                });
+            }
 
-        //     const payload = {
-        //         id: userExist.id,
-        //         name: userExist.name,
-        //         email: userExist.email,
-        //         user_type: userExist.user_type,
-        //     };
-        //     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+            const payload = {
+                id: userExist.id,
+                name: userExist.name,
+                email: userExist.email,
+                user_type: userExist.user_type,
+            };
+            const token = jwt.sign(payload, JWT_SECRET_KEY);
 
-        //     return res.status(200).json({
-        //         status: true,
-        //         message: 'success',
-        //         data: {
-        //             user_id: userExist.id,
-        //             token
-        //         }
-        //     });
-        // } catch (err) {
-        //     next(err);
-        // }
+            const valid = jwt.verify(token, JWT_SIGNATURE_KEY)
+
+            if (!valid) {
+                return res.status(409).json({ status: false, message: 'you are not authorized!' })
+            }
+
+            return res.status(200).json({
+                status: true,
+                message: 'success',
+                data: {
+                    user_id: userExist.id,
+                    token
+                }
+            });
+        } catch (err) {
+            next(err);
+        }
     },
     whoami: async(req, res, next) => {
         const user = req.user
@@ -194,7 +203,7 @@ module.exports = {
             const token = jwt.sign(payload, JWT_SECRET_KEY);
             //const link = `${GOOGLE_REDIRECT_URI}/auth/reset-password?token=${token}`;
 
-            await util.email.sendEmail(email, '[Forgot Password]', `<a href='${SERVER}/reset-pass?token=${token}'>click here to reset your password</a>`)
+            await util.email.sendEmail(email, '[Forgot Password]', `<a href='${SERVER}/auth/reset-password?token=${token}'>click here to reset your password</a>`)
 
             return res.status(200).json({
                 status: true,
