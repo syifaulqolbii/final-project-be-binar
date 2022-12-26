@@ -33,6 +33,7 @@ router.post('/route', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true), con.f
 router.put('/editFlight/:id', mid.cekLogin,con.fli.update)
 router.delete('/flight/:id', mid.cekLogin,con.fli.delete)
 router.get('/sortflight?', mid.cekLogin,con.fli.search)
+router.get('/flight/getById/:id', mid.cekLogin,con.fli.getRouteById)
 
 router.get('/passenger', mid.cekLogin,con.pas.index)
 router.post('/passenger', mid.cekLogin,con.pas.create)

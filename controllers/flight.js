@@ -202,7 +202,7 @@ module.exports = {
 
   // sorting, search, pagination, filter
 
-  search: async(req, res, next) => {
+  search: async (req, res, next) => {
     try {
       const search = req.query.search || "";
       const sortField = req.query.sortField || "total_passenger";
@@ -210,7 +210,7 @@ module.exports = {
       const page = parseInt(req.query.page) || 1;
       const pageSize = parseInt(req.query.pageSize) || 5;
 
-    await Flight.findAll({
+      await Flight.findAll({
         where: {
           airlines: {
             [Op.like]: `%${search}%`,
@@ -224,6 +224,23 @@ module.exports = {
           status: true,
           data: flight,
         });
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getRouteById: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const flight = await Flight.findOne({
+        where: {
+          id: id,
+        },
+      });
+      return res.status(200).json({
+        status: true,
+        data: flight,
       });
     } catch (error) {
       next(error);
