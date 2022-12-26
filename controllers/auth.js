@@ -23,10 +23,10 @@ module.exports = {
 
             const existUser = await User.findOne({ where: { email: email } });
             if (existUser) {
-                if (existUser.userType != userType.basic) {
+                if (existUser.user_type != userType.basic) {
                     return res.status(400).json({
                         status: true,
-                        message: `your account is associated with ${existUser.userType} oauth`,
+                        message: `your account is associated with ${existUser.user_type} oauth`,
                         data: null
                     })
                 }
