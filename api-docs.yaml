@@ -277,6 +277,57 @@ paths:
           in: header
           required: true
           name: Authorization
+  /auth/editProfile:
+    parameters: []
+    put:
+      summary: Edit Profile Endpoint
+      operationId: put-auth-editProfile
+      responses:
+        '200':
+          description: Success Update Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Succes Update Data
+      tags:
+        - Auth Endpoint
+      description: Endpoint ini digunakan untuk mengubah data profile user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                gender:
+                  type: string
+              x-examples:
+                Example 1:
+                  name: Petottttt
+                  email: udinpetot12@mail.com
+                  phone: '089512345678'
+                  gender: Male
+        description: Body yang bisa dimasukkan
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authorization
+          description: Need login to edit data
   /list-airport:
     get:
       summary: Airport List Endpoint
@@ -435,8 +486,13 @@ paths:
           required: true
       tags:
         - Search Endpoint
-  /flight:
-    parameters: []
+  '/editFlight/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     put:
       summary: Edit schedule list endpoint
       operationId: put-search
@@ -490,36 +546,88 @@ paths:
           description: Bad Request
         '500':
           description: Internal Server Error
+        '':
+          description: Success Edit Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      origin_airport:
+                        type: string
+                      destination_airport:
+                        type: string
+                      depature_date:
+                        type: string
+                      return_date:
+                        type: 'null'
+                      total_passenger:
+                        type: integer
+                      airlines:
+                        type: string
+                      depature_time:
+                        type: string
+                      arrival_time:
+                        type: string
+                      duration_time:
+                        type: string
+                      price:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Succes Edit Data
+                    data:
+                      id: 52
+                      origin_airport: CGK
+                      destination_airport: YIA
+                      depature_date: 29-12-2022
+                      return_date: null
+                      total_passenger: 5
+                      airlines: Garuda Indonesia
+                      depature_time: '08:00'
+                      arrival_time: '10:00'
+                      duration_time: 2 Hours 0 Minutes
+                      price: '1230000'
+                      createdAt: '2022-12-24T18:30:14.456Z'
+                      updatedAt: '2022-12-25T06:34:42.713Z'
       description: Diendpoint ini admin dapat mengubah jadwal penerbangan pesawat
       parameters:
         - schema:
             type: string
           in: header
           name: authorization
-          description: only admin can access this endpoint
+          description: need access to edit data flight
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                airlines:
+                origin_airport:
                   type: string
-                depature_time:
+                destination_airport:
                   type: string
-                arrival_time:
-                  type: string
-                duration_time:
-                  type: string
-                price:
+                total_passenger:
                   type: string
               x-examples:
                 Example 1:
-                  airlines: Garuda
-                  depature_time: '2022-12-10'
-                  arrival_time: '2022-12-10'
-                  duration_time: '6'
-                  price: '6000000'
+                  origin_airport: CGK
+                  destination_airport: YIA
+                  total_passenger: '5'
             examples:
               Example 1:
                 value:
@@ -531,8 +639,13 @@ paths:
         description: 'Hal hal yang bisa di edit, tidak harus semua field diedit'
       tags:
         - Admin Endpoint
-  '/search/:id':
-    parameters: []
+  '/flight/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     delete:
       summary: Delete Schedule Flight List Endpoint
       operationId: delete-search---copy
@@ -550,6 +663,17 @@ paths:
                 Example 1:
                   value:
                     message: Success delete data
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    message: Succes Delete Data
       description: Endpoint ini digunakan untuk menghapus Schedule Flight
       parameters:
         - schema:
@@ -839,7 +963,7 @@ paths:
       description: endpoint ini digunakan untuk mengambil total jumlah rute penerbangan
       parameters: []
     parameters: []
-  '/transaction/:id':
+  '/transaction/${id}':
     post:
       summary: Create Transaction
       operationId: 'post-transaction:id'
@@ -901,9 +1025,19 @@ paths:
         description: Data yang harus dimasukkan
       tags:
         - Transactions Endpoint
-    parameters: []
-  '/transaction-ticket/:id':
-    parameters: []
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+  '/transaction-ticket/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     get:
       summary: Get Ticket From Transactions
       operationId: 'get-transaction-ticket-:id'
@@ -1420,8 +1554,13 @@ paths:
       description: Untuk mengambil seluruh data notification berdasarkan user yang login
       tags:
         - Notifications Endpoint
-  '/notification/:id':
-    parameters: []
+  '/notification/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     put:
       summary: Update IsRead Notifications
       operationId: put-notification---copy
