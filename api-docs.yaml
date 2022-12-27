@@ -190,19 +190,7 @@ paths:
                       name: LINTANG DANDUNG PRAKOSO
                       role: Buyer
                       token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IkxJTlRBTkcgREFORFVORyBQUkFLT1NPIiwiZW1haWwiOiIyMDEwMzE0MUBpdHRlbGtvbS1wd3QuYWMuaWQiLCJnZW5kZXIiOm51bGwsInJvbGUiOiJCdXllciIsInVzZXJfdHlwZSI6Imdvb2dsZSIsImlhdCI6MTY3MjE0MDQxM30.O7kDErweZQAt2eqItcohbH3xx8DuCf-awTXFLK1XAM8
-              examples:
-                Example 1:
-                  value:
-                    status: false
-                    message: succes
-                    data:
-                      id: 4
-                      name: dadang
-                      email: dada@mail.com
-                      role: Buyer
-                      gender: null
-                      phone: null
-                      iat: 1670253655
+              examples: {}
         '':
           description: Ok
           content:
