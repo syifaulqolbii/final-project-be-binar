@@ -156,6 +156,94 @@ paths:
         description: In this endpoint you can login to your application
       tags:
         - Auth Endpoint
+  /auth/loginGoogle:
+    get:
+      summary: Login Endpoint With Google Oauth2
+      tags:
+        - Auth Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      role:
+                        type: string
+                      token:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: success
+                    data:
+                      name: LINTANG DANDUNG PRAKOSO
+                      role: Buyer
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IkxJTlRBTkcgREFORFVORyBQUkFLT1NPIiwiZW1haWwiOiIyMDEwMzE0MUBpdHRlbGtvbS1wd3QuYWMuaWQiLCJnZW5kZXIiOm51bGwsInJvbGUiOiJCdXllciIsInVzZXJfdHlwZSI6Imdvb2dsZSIsImlhdCI6MTY3MjE0MDQxM30.O7kDErweZQAt2eqItcohbH3xx8DuCf-awTXFLK1XAM8
+              examples:
+                Example 1:
+                  value:
+                    status: false
+                    message: succes
+                    data:
+                      id: 4
+                      name: dadang
+                      email: dada@mail.com
+                      role: Buyer
+                      gender: null
+                      phone: null
+                      iat: 1670253655
+        '':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      role:
+                        type: string
+                      token:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: success
+                    data:
+                      name: LINTANG DANDUNG PRAKOSO
+                      role: Buyer
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IkxJTlRBTkcgREFORFVORyBQUkFLT1NPIiwiZW1haWwiOiIyMDEwMzE0MUBpdHRlbGtvbS1wd3QuYWMuaWQiLCJnZW5kZXIiOm51bGwsInJvbGUiOiJCdXllciIsInVzZXJfdHlwZSI6Imdvb2dsZSIsImlhdCI6MTY3MjE0MDQxM30.O7kDErweZQAt2eqItcohbH3xx8DuCf-awTXFLK1XAM8
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    message: string
+                    data:
+                      name: string
+                      role: string
+                      token: string
+      operationId: get-auth-whoami
+      description: Endpoint ini digunakan untuk login dengan google oauth2
+      parameters: []
+    parameters: []
   /auth/forgot-password:
     post:
       summary: Forgot Password Endpoint
@@ -277,106 +365,6 @@ paths:
           in: header
           required: true
           name: Authorization
-  /auth/loginGoogle:
-    get:
-      summary: Login Endpoint With Google Oauth2
-      tags:
-        - Auth Endpoint
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      role:
-                        type: string
-                      gender:
-                        type: 'null'
-                      phone:
-                        type: 'null'
-                      iat:
-                        type: integer
-                x-examples:
-                  Example 1:
-                    status: false
-                    message: succes
-                    data:
-                      id: 4
-                      name: dadang
-                      email: dada@mail.com
-                      role: Buyer
-                      gender: null
-                      phone: null
-                      iat: 1670253655
-              examples:
-                Example 1:
-                  value:
-                    status: false
-                    message: succes
-                    data:
-                      id: 4
-                      name: dadang
-                      email: dada@mail.com
-                      role: Buyer
-                      gender: null
-                      phone: null
-                      iat: 1670253655
-        '':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      role:
-                        type: string
-                      token:
-                        type: string
-                x-examples:
-                  Example 1:
-                    status: true
-                    message: success
-                    data:
-                      name: LINTANG DANDUNG PRAKOSO
-                      role: Buyer
-                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IkxJTlRBTkcgREFORFVORyBQUkFLT1NPIiwiZW1haWwiOiIyMDEwMzE0MUBpdHRlbGtvbS1wd3QuYWMuaWQiLCJnZW5kZXIiOm51bGwsInJvbGUiOiJCdXllciIsInVzZXJfdHlwZSI6Imdvb2dsZSIsImlhdCI6MTY3MjE0MDQxM30.O7kDErweZQAt2eqItcohbH3xx8DuCf-awTXFLK1XAM8
-              examples:
-                Example 1:
-                  value:
-                    status: true
-                    message: string
-                    data:
-                      name: string
-                      role: string
-                      token: string
-      operationId: get-auth-whoami
-      description: Endpoint ini digunakan untuk login dengan google oauth2
-      parameters: []
-    parameters: []
   /auth/editProfile:
     parameters: []
     put:
