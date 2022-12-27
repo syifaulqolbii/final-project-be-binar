@@ -240,7 +240,7 @@ paths:
                       name: string
                       role: string
                       token: string
-      operationId: get-auth-whoami
+      operationId: get-auth-loginGoogle
       description: Endpoint ini digunakan untuk login dengan google oauth2
       parameters: []
     parameters: []
