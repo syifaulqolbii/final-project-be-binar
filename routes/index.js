@@ -15,7 +15,7 @@ router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.h
 
 router.post('/auth/register', con.auth.register);
 router.post('/auth/login', con.auth.login)
-router.get('/auth/login', con.auth.google);
+router.get('/auth/loginGoogle', con.auth.google);
 // router.post("/auth/loginAdmin", con.auth.loginAdmin)
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami);
 router.put('/auth/editProfile', mid.cekLogin, con.auth.editProfile);
