@@ -1,10 +1,12 @@
 const { User } = require('../db/models')
-const googleOauth2 = require('../utils/google')
+const googleOauth2 = require('../utils/oauth/google')
 const { Notification } = require('../db/models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const userType = require('../utils/oauth/enum')
 const roles = require('../utils/roles')
 const util = require('../utils');
+const user = require('../db/models/user')
 
 
 const {
@@ -21,7 +23,14 @@ module.exports = {
 
             const existUser = await User.findOne({ where: { email: email } });
             if (existUser) {
-                return res.status(400).json({
+                if (existUser.user_type != userType.basic) {
+                    return res.status(400).json({
+                        status: true,
+                        message: `your account is associated with ${existUser.user_type} oauth`,
+                        data: null
+                    })
+                }
+                return res.status(400).json({ 
                     status: false,
                     message: 'email already used!'
                 });
@@ -50,9 +59,10 @@ module.exports = {
                 name,
                 email,
                 password: encryptPassword,
-                role: 'Buyer',
+                role: roles.buyer,
                 gender,
-                phone
+                phone,
+                user_type: userType.basic
             });
 
 
@@ -76,8 +86,15 @@ module.exports = {
             if (!user) {
                 return res.status(404).json({
                     status: false,
-                    message: 'email not found!'
+                    message: 'user not found!',
+                    data: null
                 });
+            }
+            if(user.user_type != userType.basic) {
+                return res.status(400).json({
+                    status: false,
+                    message: `your account is associated  with ${user.user_type} oauth`
+                })
             }
 
             const isPassCorrect = await bcrypt.compare(password, user.password)
@@ -110,47 +127,58 @@ module.exports = {
         }
     },
     google: async (req, res, next) => {
-        // try {
-        //     const code = req.query.code;
+        try {
+            const code = req.query.code;
 
-        //     if (!code) {
-        //         const url = googleOauth2.generateAuthURL();
-        //         return res.redirect(url);
-        //     }
+            if (!code) {
+                const url = googleOauth2.generateAuthURL();
+                return res.redirect(url);
+            }
 
-        //     await googleOauth2.setCredentials(code);
+            await googleOauth2.setCredentials(code);
 
-        //     const { data } = await googleOauth2.getUserData();
+            const { data } = await googleOauth2.getUserData();
 
-        //     const userExist = await User.findOne({ where: { email: data.email } });
+            var user = await User.findOne({ where: { email: data.email } });
 
-        //     if (!userExist) {
-        //         userExist = await User.create({
-        //             name: data.name,
-        //             email: data.email,
-        //             user_type: userType.google
-        //         });
-        //     }
+            if (!user) {
+                user = await User.create({
+                    name: data.name,
+                    email: data.email,
+                    gender: data.gender,
+                    role: roles.buyer,
+                    user_type: userType.google
+                });
+            }
 
-        //     const payload = {
-        //         id: userExist.id,
-        //         name: userExist.name,
-        //         email: userExist.email,
-        //         user_type: userExist.user_type,
-        //     };
-        //     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+            const payload = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                gender: user.gender,
+                role: user.role,
+                user_type: user.user_type,
+            };
+            const token = jwt.sign(payload, JWT_SECRET_KEY);
 
-        //     return res.status(200).json({
-        //         status: true,
-        //         message: 'success',
-        //         data: {
-        //             user_id: userExist.id,
-        //             token
-        //         }
-        //     });
-        // } catch (err) {
-        //     next(err);
-        // }
+            const valid = jwt.verify(token, JWT_SECRET_KEY)
+
+            if (!valid) {
+                return res.status(409).json({ status: false, message: 'you are not authorized!' })
+            }
+
+            return res.status(200).json({
+                status: true,
+                message: 'success',
+                data: {
+                    name: user.name,
+                    role: user.role,
+                    token
+                }
+            });
+        } catch (err) {
+            next(err);
+        }
     },
     whoami: async(req, res, next) => {
         const user = req.user
@@ -194,7 +222,7 @@ module.exports = {
             const token = jwt.sign(payload, JWT_SECRET_KEY);
             //const link = `${GOOGLE_REDIRECT_URI}/auth/reset-password?token=${token}`;
 
-            await util.email.sendEmail(email, '[Forgot Password]', `<a href='${SERVER}/reset-pass?token=${token}'>click here to reset your password</a>`)
+            await util.email.sendEmail(email, '[Forgot Password]', `<a href='${SERVER}/auth/reset-password?token=${token}'>click here to reset your password</a>`)
 
             return res.status(200).json({
                 status: true,
@@ -212,6 +240,13 @@ module.exports = {
         try {
             const token = req.query.token;
             const { new_password, confirm_new_password } = req.body;
+
+            let strongRegex = /^(?=(.*[a-zA-Z]){1,})(?=(.*[0-9]){2,}).{8,}$/
+            if (!new_password.match(strongRegex)) {
+                return res.status(400).json({
+                    message: 'password must have Capital, number and special character(minimum 8 character) '
+                })
+            };
 
             if(new_password !== confirm_new_password) {
                 return res.status(422).json({

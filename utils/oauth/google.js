@@ -1,22 +1,23 @@
 const { google } = require('googleapis');
 
 const {
-    OAUTH_REDIRECT_URI,
-    OAUTH_CLIENT_ID,
-    OAUTH_CLIENT_SECRET
+    GOOGLE_REDIRECT_URI,
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET
 } = process.env;
 
 const oauth2Client = new google.auth.OAuth2(
-    OAUTH_CLIENT_ID,
-    OAUTH_CLIENT_SECRET,
-    OAUTH_REDIRECT_URI
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_REDIRECT_URI
 );
 
 module.exports = {
     generateAuthURL: () => {
         const scopes = [
             'https://www.googleapis.com/auth/userinfo.email',
-            'https://www.googleapis.com/auth/userinfo.profile'
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/user.gender.read'
         ];
 
         const authUrl = oauth2Client.generateAuthUrl({
