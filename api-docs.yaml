@@ -786,14 +786,7 @@ paths:
               x-examples:
                 Example 1:
                   price: '5000000'
-            examples:
-              Example 1:
-                value:
-                  airlines: Garuda
-                  depature_time: '2022-12-10'
-                  arrival_time: '2022-12-10'
-                  duration_time: '6'
-                  price: '6000000'
+            examples: {}
         description: 'Hal hal yang bisa di edit, tidak harus semua field diedit'
       tags:
         - Admin Endpoint
