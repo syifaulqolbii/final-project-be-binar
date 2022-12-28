@@ -171,25 +171,19 @@ paths:
                 properties:
                   status:
                     type: boolean
-                  message:
-                    type: string
                   data:
                     type: object
                     properties:
-                      name:
+                      token:
                         type: string
                       role:
-                        type: string
-                      token:
                         type: string
                 x-examples:
                   Example 1:
                     status: true
-                    message: success
                     data:
-                      name: LINTANG DANDUNG PRAKOSO
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlVkaW4gUGV0b3QiLCJlbWFpbCI6InBldG90dWRpbjEyM0BtYWlsLmNvbSIsInJvbGUiOiJCdXllciIsImdlbmRlciI6IkZlbWFsZSIsInBob25lIjoiMTIzNDU2Nzg5MDEyIiwiaWF0IjoxNjcxODk5MDg3fQ.mRpvYYYarKJ_cVv2zpBSMOHYYzbaEvImvAM8GyXIDX0
                       role: Buyer
-                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IkxJTlRBTkcgREFORFVORyBQUkFLT1NPIiwiZW1haWwiOiIyMDEwMzE0MUBpdHRlbGtvbS1wd3QuYWMuaWQiLCJnZW5kZXIiOm51bGwsInJvbGUiOiJCdXllciIsInVzZXJfdHlwZSI6Imdvb2dsZSIsImlhdCI6MTY3MjE0MDQxM30.O7kDErweZQAt2eqItcohbH3xx8DuCf-awTXFLK1XAM8
               examples: {}
         '':
           description: Ok
