@@ -185,6 +185,7 @@ module.exports = {
             //     status: true,
             //     message: 'Succes Create Booking'
             // });
+            // 
 
         } catch (err) {
             next(err)
