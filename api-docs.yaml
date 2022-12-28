@@ -781,17 +781,11 @@ paths:
             schema:
               type: object
               properties:
-                origin_airport:
-                  type: string
-                destination_airport:
-                  type: string
-                total_passenger:
+                price:
                   type: string
               x-examples:
                 Example 1:
-                  origin_airport: CGK
-                  destination_airport: YIA
-                  total_passenger: '5'
+                  price: '5000000'
             examples:
               Example 1:
                 value:

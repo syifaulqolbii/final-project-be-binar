@@ -154,14 +154,6 @@ module.exports = {
       }
       const flight = await Flight.update(
         {
-          origin_airport,
-          destination_airport,
-          depature_date,
-          return_date,
-          total_passenger,
-          depature_time,
-          arrival_time,
-          duration_time,
           price,
         },
         {
