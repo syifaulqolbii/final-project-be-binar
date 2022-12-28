@@ -3,6 +3,9 @@ const seq = require('sequelize')
 const db  = require('../db/models/index')
 const { QueryTypes } = require('sequelize')
 const order = require('../db/models/order')
+const user = require('../db/models/user')
+const mail = require('../utils/oauth/email');
+const passenger = require('./passenger')
 // const passenger = require('./passenger')
 // const passenger = require('./passenger')
 // const transaction = require('../db/models/transaction')
@@ -180,7 +183,7 @@ module.exports = {
             //     htmlEmail = await util.email.getHtml('transaction.ejs', { name: user.name, link: link });
             //     await util.email.sendEmail(user.email, '[Notification]', htmlEmail);
             // }
-
+            
             return res.status(201).json({
                 status: true,
                 message: 'Succes Create Booking'

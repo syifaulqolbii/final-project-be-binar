@@ -92,7 +92,7 @@ module.exports = {
 
         return new Promise((resolve, reject) => {
 
-            const path = __dirname + '/../views/email/' + filename;
+            const path = __dirname + '/../../views/email/' + filename;
 
             ejs.renderFile(path, data, (err, data) => {
 

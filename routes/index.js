@@ -23,7 +23,7 @@ router.put('/auth/editProfile', mid.cekLogin, con.auth.editProfile);
 //router.get('/auth/forgot-password', con.auth.forgotPasswordView);
 router.post('/auth/forgot-password', con.auth.forgotPassword);
 
-router.get('/auth/reset-password', con.auth.resetPasswordView);
+//router.get('/auth/reset-password', con.auth.resetPasswordView);
 router.post('/auth/reset-password', con.auth.resetPassword);
 
 // list airport

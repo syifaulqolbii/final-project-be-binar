@@ -12,7 +12,8 @@ const user = require('../db/models/user')
 const {
     JWT_SECRET_KEY,
     GOOGLE_REDIRECT_URI,
-    SERVER
+    SERVER,
+    SERVER_FE
 
 } = process.env
 
@@ -167,15 +168,17 @@ module.exports = {
                 return res.status(409).json({ status: false, message: 'you are not authorized!' })
             }
 
-            return res.status(200).json({
-                status: true,
-                message: 'success',
-                data: {
-                    name: user.name,
-                    role: user.role,
-                    token
-                }
-            });
+            return res.redirect(`${SERVER_FE}/save-token-google?code=${token}`)
+
+            // return res.status(200).json({
+            //     status: true,
+            //     message: 'success',
+            //     data: {
+            //         name: user.name,
+            //         role: user.role,
+            //         token
+            //     }
+            // });
         } catch (err) {
             next(err);
         }
