@@ -17,8 +17,8 @@ router.post('/auth/register', con.auth.register);
 router.post('/auth/login', con.auth.login)
 router.get('/auth/loginGoogle', con.auth.google);
 // router.post("/auth/loginAdmin", con.auth.loginAdmin)
-router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
-
+router.get('/auth/whoami', mid.cekLogin, con.auth.whoami);
+router.put('/auth/editProfile', mid.cekLogin, con.auth.editProfile);
 
 //router.get('/auth/forgot-password', con.auth.forgotPasswordView);
 router.post('/auth/forgot-password', con.auth.forgotPassword);
@@ -31,8 +31,10 @@ router.get('/list-airport', con.list.listAirport);
 
 router.get('/search?', con.fli.getSearch)
 router.post('/route', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true), con.fli.create)
-router.put('/flight', mid.cekLogin,con.fli.update)
-router.delete('/flight', mid.cekLogin,con.fli.delete)
+router.put('/editFlight/:id', mid.cekLogin,con.fli.update)
+router.delete('/flight/:id', mid.cekLogin,con.fli.delete)
+router.get('/sortflight?', mid.cekLogin,con.fli.search)
+router.get('/flight/getById/:id', mid.cekLogin,con.fli.getRouteById)
 
 router.get('/passenger', mid.cekLogin,con.pas.index)
 router.post('/passenger', mid.cekLogin,con.pas.create)

@@ -176,33 +176,19 @@ module.exports = {
                 isRead: false
             })
 
-            const user = await User.findOne({ where: { id: userId} });
-            if (user) {
-                 const link = `#`;
-                 const ticket = await  Flight.findOne({ where: { id: flightId } });
-                 const passenger = await Transaction.findOne({ where: { UserId: userId}})
+            // const user = await User.findOne({ where: { email } });
+            // if (user) {
+            //     const link = `#`;
 
-                htmlEmail = await mail.getHtml('transaction.ejs', 
-                { 
-                    name: user.name, 
-                    link: link ,
-                    origin_airport: ticket.origin_airport,
-                    destination_airport: ticket.destination_airport,
-                    departure_date: ticket.depature_date,
-                    duration_time: ticket.duration_time,
-                    departure_time: ticket.depature_time,
-                    arrival_time: ticket.arrival_time,
-                    name_passenger: passenger.name_passenger
-
-                }
-                );
-                await mail.sendEmail(user.email, '[Notification]', htmlEmail);
-             }
-
+            //     htmlEmail = await util.email.getHtml('transaction.ejs', { name: user.name, link: link });
+            //     await util.email.sendEmail(user.email, '[Notification]', htmlEmail);
+            // }
+            
             return res.status(201).json({
                 status: true,
                 message: 'Succes Create Booking'
             });
+            
 
         } catch (err) {
             next(err)
