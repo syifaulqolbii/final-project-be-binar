@@ -3,6 +3,9 @@ const seq = require('sequelize')
 const db  = require('../db/models/index')
 const { QueryTypes } = require('sequelize')
 const order = require('../db/models/order')
+const user = require('../db/models/user')
+const mail = require('../utils/oauth/email');
+const passenger = require('./passenger')
 // const passenger = require('./passenger')
 // const passenger = require('./passenger')
 // const transaction = require('../db/models/transaction')
@@ -173,13 +176,28 @@ module.exports = {
                 isRead: false
             })
 
-            const user = await User.findOne({ where: { email } });
+            const user = await User.findOne({ where: { id: userId} });
             if (user) {
-                const link = `#`;
+                 const link = `#`;
+                 const ticket = await  Flight.findOne({ where: { id: flightId } });
+                 const passenger = await Transaction.findOne({ where: { UserId: userId}})
 
-                htmlEmail = await util.email.getHtml('transaction.ejs', { name: user.name, link: link });
-                await util.email.sendEmail(user.email, '[Notification]', htmlEmail);
-            }
+                htmlEmail = await mail.getHtml('transaction.ejs', 
+                { 
+                    name: user.name, 
+                    link: link ,
+                    origin_airport: ticket.origin_airport,
+                    destination_airport: ticket.destination_airport,
+                    departure_date: ticket.depature_date,
+                    duration_time: ticket.duration_time,
+                    departure_time: ticket.depature_time,
+                    arrival_time: ticket.arrival_time,
+                    name_passenger: passenger.name_passenger
+
+                }
+                );
+                await mail.sendEmail(user.email, '[Notification]', htmlEmail);
+             }
 
             return res.status(201).json({
                 status: true,
