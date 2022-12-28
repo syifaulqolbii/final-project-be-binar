@@ -181,11 +181,11 @@ module.exports = {
             //     await util.email.sendEmail(user.email, '[Notification]', htmlEmail);
             // }
 
-            // return res.status(201).json({
-            //     status: true,
-            //     message: 'Succes Create Booking'
-            // });
-            // 
+            return res.status(201).json({
+                status: true,
+                message: 'Succes Create Booking'
+            });
+            
 
         } catch (err) {
             next(err)
