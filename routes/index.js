@@ -32,7 +32,6 @@ router.get('/search?', con.fli.getSearch)
 router.post('/route', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true), con.fli.create)
 router.put('/editFlight/:id', mid.cekLogin,con.fli.update)
 router.delete('/flight/:id', mid.cekLogin,con.fli.delete)
-router.get('/sortflight?', mid.cekLogin,con.fli.search)
 router.get('/flight/getById/:id', mid.cekLogin,con.fli.getRouteById)
 
 
