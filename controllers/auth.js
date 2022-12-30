@@ -296,12 +296,11 @@ module.exports = {
     },
     editProfile: async (req, res) => {
         const id = req.user.id
-        const { name, email, phone, gender } = req.body
+        const { name, phone, gender } = req.body
 
         try {
             const userUpdate = await User.update({
                 name,
-                email,
                 phone,
                 gender
             },
