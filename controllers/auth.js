@@ -309,15 +309,31 @@ module.exports = {
                     id : id
                 }
             });
+
             const updatedUser = await User.findOne({
                 where:{
                     id : id
                 }
             });
+
+            payload = {
+                id: updatedUser.id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                gender: updatedUser.gender,
+                phone: updatedUser.phone
+            }
+
+            const token = jwt.sign(payload, JWT_SECRET_KEY)
+
             return res.status(201).json({
                 status: true,
                 message: 'Succes Update Data',
-                data: updatedUser
+                data: {
+                    updatedUser,
+                    token
+                }
             });
         } catch (error) {
             next(error);
