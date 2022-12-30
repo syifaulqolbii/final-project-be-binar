@@ -124,10 +124,19 @@ module.exports = {
                 }]
             })
 
+            // const user = await User.findOne({ where: { email } });
+            // if (user) {
+            //     const link = `#`;
+
+            //     htmlEmail = await util.email.getHtml('transaction.ejs', { name: user.name, link: link });
+            //     await util.email.sendEmail(user.email, '[Notification]', htmlEmail);
+            // }
+            
             return res.status(201).json({
                 status: true,
                 message: 'Succes Create Booking'
             });
+            
 
         } catch (err) {
             next(err)

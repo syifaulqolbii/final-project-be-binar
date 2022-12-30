@@ -156,6 +156,76 @@ paths:
         description: In this endpoint you can login to your application
       tags:
         - Auth Endpoint
+  /auth/loginGoogle:
+    get:
+      summary: Login Endpoint With Google Oauth2
+      tags:
+        - Auth Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      role:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    data:
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlVkaW4gUGV0b3QiLCJlbWFpbCI6InBldG90dWRpbjEyM0BtYWlsLmNvbSIsInJvbGUiOiJCdXllciIsImdlbmRlciI6IkZlbWFsZSIsInBob25lIjoiMTIzNDU2Nzg5MDEyIiwiaWF0IjoxNjcxODk5MDg3fQ.mRpvYYYarKJ_cVv2zpBSMOHYYzbaEvImvAM8GyXIDX0
+                      role: Buyer
+              examples: {}
+        '':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      role:
+                        type: string
+                      token:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: success
+                    data:
+                      name: LINTANG DANDUNG PRAKOSO
+                      role: Buyer
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IkxJTlRBTkcgREFORFVORyBQUkFLT1NPIiwiZW1haWwiOiIyMDEwMzE0MUBpdHRlbGtvbS1wd3QuYWMuaWQiLCJnZW5kZXIiOm51bGwsInJvbGUiOiJCdXllciIsInVzZXJfdHlwZSI6Imdvb2dsZSIsImlhdCI6MTY3MjE0MDQxM30.O7kDErweZQAt2eqItcohbH3xx8DuCf-awTXFLK1XAM8
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    message: string
+                    data:
+                      name: string
+                      role: string
+                      token: string
+      operationId: get-auth-loginGoogle
+      description: Endpoint ini digunakan untuk login dengan google oauth2
+      parameters: []
+    parameters: []
   /auth/forgot-password:
     post:
       summary: Forgot Password Endpoint
@@ -711,25 +781,12 @@ paths:
             schema:
               type: object
               properties:
-                origin_airport:
-                  type: string
-                destination_airport:
-                  type: string
-                total_passenger:
+                price:
                   type: string
               x-examples:
                 Example 1:
-                  origin_airport: CGK
-                  destination_airport: YIA
-                  total_passenger: '5'
-            examples:
-              Example 1:
-                value:
-                  airlines: Garuda
-                  depature_time: '2022-12-10'
-                  arrival_time: '2022-12-10'
-                  duration_time: '6'
-                  price: '6000000'
+                  price: '5000000'
+            examples: {}
         description: 'Hal hal yang bisa di edit, tidak harus semua field diedit'
       tags:
         - Admin Endpoint

@@ -7,7 +7,7 @@ const restrict = require('../middleware/restrict')
 const { MODUL } = require('../utils/enum')
 // const { User } = require('../db/models')
 
-router.get('/', con.auth.hello)
+//router.get('/', con.auth.hello)
 
 router.get('/access', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.auth.hello)
 router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.auth.hello)
@@ -15,6 +15,7 @@ router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.h
 
 router.post('/auth/register', con.auth.register);
 router.post('/auth/login', con.auth.login)
+router.get('/auth/loginGoogle', con.auth.google);
 // router.post("/auth/loginAdmin", con.auth.loginAdmin)
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami);
 router.put('/auth/editProfile', mid.cekLogin, con.auth.editProfile);
@@ -22,7 +23,7 @@ router.put('/auth/editProfile', mid.cekLogin, con.auth.editProfile);
 //router.get('/auth/forgot-password', con.auth.forgotPasswordView);
 router.post('/auth/forgot-password', con.auth.forgotPassword);
 
-router.get('/auth/reset-password', con.auth.resetPasswordView);
+//router.get('/auth/reset-password', con.auth.resetPasswordView);
 router.post('/auth/reset-password', con.auth.resetPassword);
 
 // list airport
@@ -38,7 +39,7 @@ router.get('/flight/getById/:id', mid.cekLogin,con.fli.getRouteById)
 router.delete('/passenger',mid.cekLogin,con.pas.delete)
 
 router.get('/transaction-ticket/:id', mid.cekLogin, con.trans.getTicket)
-router.post('/transaction', mid.cekLogin,  con.trans.create)
+router.post('/transaction',  mid.cekLogin, con.trans.create)
 router.put('/transaction', con.trans.update)
 router.delete('/transaction', con.trans.delete)
 
