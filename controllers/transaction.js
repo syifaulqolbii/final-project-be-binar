@@ -62,7 +62,7 @@ module.exports = {
     getTicket: async( req, res, next) => {
         // const { origin_aiport, destination_aiport, airlines, depature_date, depature_time, price } = req.body
         // console.log(req.params)
-        // Flight.findAll()
+        // ticket.findAll()
         // .then((tiket) => {
         //     res.json(tiket)
         // })
@@ -125,49 +125,50 @@ module.exports = {
             const transaction = await Transaction.create({
                 FlightId: flightId,
                 UserId: userId
-            })
-            .then((transaction) => {
-                dataPassengers.forEach(element => {
-                    let PassengerId = element.PassengerId
-                    if(!PassengerId){
-                        if(element.identity_type == "KTP"){
-                            let cekIdentity = /^(?=.*[0-9])\d{16,}$/
-                            if (!element.identity_number.match(cekIdentity)) {
-                                return res.status(400).json({
-                                    message: 'Identity number of KTP must number and have 16 character'
-                                })
-                            }
-                        } else if (element.identity_type == "Passport"){
-                            let cekIdentity = /^[a-z0-9]{10}$/i;
-                            if (!element.identity_number.match(cekIdentity)) {
-                                return res.status(400).json({
-                                    message: 'Identity number of Passport must be a number and letter 10 character'
-                                })
-                            }
-                        }else{
+             })
+        
+            dataPassengers.forEach(element => {
+                let PassengerId = element.PassengerId
+                if(!PassengerId){
+                    if(element.identity_type == "KTP"){
+                        let cekIdentity = /^(?=.*[0-9])\d{16,}$/
+                        if (!element.identity_number.match(cekIdentity)) {
                             return res.status(400).json({
-                                message: 'Identity not found'
+                                message: 'Identity number of KTP must number and have 16 character'
                             })
                         }
-                        const passenger = Passenger.create({
-                            name_passenger: element.name_passenger, 
-                            identity_number: element.identity_number, 
-                            identity_exp_date: element.identity_exp_date, 
-                            nationality: element.nationality, 
-                            identity_type: element.identity_type
-                        })
-                        
-                        .then((Passenger) =>{
-                            PassengerId = Passenger.id
-                            const transactioniMapping = transactionMapping.create({
-                                UserId: userId,
-                                TransactionId: transaction.id,
-                                PassengerId: Passenger.id
+                    } else if (element.identity_type == "Passport"){
+                        let cekIdentity = /^[a-z0-9]{10}$/i;
+                        if (!element.identity_number.match(cekIdentity)) {
+                            return res.status(400).json({
+                                message: 'Identity number of Passport must be a number and letter 10 character'
                             })
+                        }
+                    }else{
+                        return res.status(400).json({
+                            message: 'Identity not found'
                         })
-                        
-                    }    
-                });
+                    }
+                    const passenger = Passenger.create({
+                        name_passenger: element.name_passenger, 
+                        identity_number: element.identity_number, 
+                        identity_exp_date: element.identity_exp_date, 
+                        nationality: element.nationality, 
+                        identity_type: element.identity_type
+                    })
+                    
+                    .then((Passenger) =>{
+                        PassengerId = Passenger.id
+                        const transactioniMapping = transactionMapping.create({
+                            UserId: userId,
+                            TransactionId: transaction.id,
+                            PassengerId: Passenger.id,
+                            FlightId: flightId
+                        })
+                    })
+                    
+                }    
+            
             })
             const notification = await Notification.create({
                 user_id: userId,
@@ -175,29 +176,33 @@ module.exports = {
                 description: "Selamat Transaksi Anda Telah Berhasil!!",
                 isRead: false
             })
+            const transactions = await transactionMapping.findAll({
+                where: {TransactionId: transaction.id},
+                include: [
+                    {
+                        model: Passenger,
+                        as: "passenger",
+                        attributes: {exclude: ["createdAt","updatedAt"]}
+                    },
+                    {
+                        model: Flight,
+                        as: "flight",
+                        attributes: {exclude: ["createdAt","updatedAt"]}
+                    },
+                ]
+            })
 
-            const user = await User.findOne({ where: { id: userId} });
-            if (user) {
-                 const link = `#`;
-                 const ticket = await  Flight.findOne({ where: { id: flightId } });
-                 const passenger = await Transaction.findOne({ where: { UserId: userId}})
-
+            if(transactions != 0){
+                const user = await User.findOne({ where: { id: userId} });
                 htmlEmail = await mail.getHtml('transaction.ejs', 
                 { 
-                    name: user.name, 
-                    link: link ,
-                    origin_airport: ticket.origin_airport,
-                    destination_airport: ticket.destination_airport,
-                    departure_date: ticket.depature_date,
-                    duration_time: ticket.duration_time,
-                    departure_time: ticket.depature_time,
-                    arrival_time: ticket.arrival_time,
-                    name_passenger: passenger.name_passenger
+                    passengerData: transactions
+                    
 
-                }
-                );
-                await mail.sendEmail(user.email, '[Notification]', htmlEmail);
-             }
+                });
+
+                await mail.sendEmail(user.email, '[Ticket]', htmlEmail);
+            }
 
             return res.status(201).json({
                 status: true,

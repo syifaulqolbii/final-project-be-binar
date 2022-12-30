@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const userType = require('../utils/oauth/enum')
 const roles = require('../utils/roles')
+const mail = require('../utils/oauth/email');
 const util = require('../utils');
 const user = require('../db/models/user')
 
@@ -12,8 +13,8 @@ const user = require('../db/models/user')
 const {
     JWT_SECRET_KEY,
     GOOGLE_REDIRECT_URI,
-    SERVER,
-    SERVER_FE
+    BACKEND_SERVER,
+    FRONTEND_SERVER
 
 } = process.env
 
@@ -63,9 +64,26 @@ module.exports = {
                 role: roles.buyer,
                 gender,
                 phone,
+                isVerified: false,
                 user_type: userType.basic
             });
 
+            const payload = {
+                user_id: user.id,
+                email: user.email,
+                isVerified: user.isVerified,
+                userType: user.user_type
+            }
+
+            const token = jwt.sign(payload, JWT_SECRET_KEY);
+            const link = `http://${BACKEND_SERVER}/auth/verify-account?token=${token}`;
+
+            htmlEmail = await mail.getHtml('verify-email.ejs', 
+                { 
+                    name: name,
+                    link: link
+                });
+            await mail.sendEmail(user.email, '[Verify]', htmlEmail);
 
             return res.status(201).json({
                 status: true,
@@ -73,7 +91,7 @@ module.exports = {
                 data: {
                     email: user.email,
                     name: user.name,
-                    role: user.role
+                    role: user.role,
                 }
             });
         } catch (err) {
@@ -97,6 +115,14 @@ module.exports = {
                     message: `your account is associated  with ${user.user_type} oauth`
                 })
             }
+            
+            if(user.isVerified != true) {
+                return res.status(400).json({
+                    status: false,
+                    message: 'your account not verified'
+                })
+            }
+
 
             const isPassCorrect = await bcrypt.compare(password, user.password)
             if (!isPassCorrect) {
@@ -148,6 +174,7 @@ module.exports = {
                     email: data.email,
                     gender: data.gender,
                     role: roles.buyer,
+                    isVerified: true,
                     user_type: userType.google
                 });
             }
@@ -158,6 +185,7 @@ module.exports = {
                 email: user.email,
                 gender: user.gender,
                 role: user.role,
+                isVerified: user.isVerified,
                 user_type: user.user_type,
             };
             const token = jwt.sign(payload, JWT_SECRET_KEY);
@@ -168,7 +196,7 @@ module.exports = {
                 return res.status(409).json({ status: false, message: 'you are not authorized!' })
             }
 
-            return res.redirect(`${SERVER_FE}/save-token-google?code=${token}`)
+            return res.redirect(`${FRONTEND_SERVER}/save-token-google?code=${token}`)
 
             // return res.status(200).json({
             //     status: true,
@@ -205,6 +233,39 @@ module.exports = {
             next(err);
         }
     },
+    verifyAccount: async(req, res, next) => {
+        try {
+            const token  = req.query.token;
+            
+            const payload = jwt.verify(token, JWT_SECRET_KEY);
+
+            const user = await User.findOne({ where: { id: payload.user_id } });
+            
+            if (!user) {
+                return res.status(400).json({
+                    status: false,
+                    message: 'User not found',
+                    data: null,
+                });
+            }
+
+            const isUpdated = await User.update({
+                isVerified: true
+            }, {
+                where: { id: payload.user_id }
+            });
+
+            return res.redirect(`${FRONTEND_SERVER}/login`)
+
+
+        } catch(err) {
+            next(err);
+        }
+    },
+    verifyAccountView: (req, res) => {
+        const { token } = req.query;
+        return res.render('auth/verify-account', { message: null, token });
+    },
     forgotPassword: async (req, res, next) => {
         try {
             const { email } = req.body;
@@ -222,10 +283,17 @@ module.exports = {
                 name: user.name,
                 email: user.email 
             };
-            const token = jwt.sign(payload, JWT_SECRET_KEY);
-            //const link = `${GOOGLE_REDIRECT_URI}/auth/reset-password?token=${token}`;
 
-            await util.email.sendEmail(email, '[Forgot Password]', `<a href='${SERVER}/auth/reset-password?token=${token}'>click here to reset your password</a>`)
+        
+            const token = jwt.sign(payload, JWT_SECRET_KEY);
+            const link = `${BACKEND_SERVER}/auth/reset-password?token=${token}`;
+
+            htmlEmail = await mail.getHtml('reset-password.ejs', 
+                { 
+                    name: user.name,
+                    link: link
+                });
+            await mail.sendEmail(user.email, '[Verify]', htmlEmail);
 
             return res.status(200).json({
                 status: true,

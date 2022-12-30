@@ -7,7 +7,7 @@ const restrict = require('../middleware/restrict')
 const { MODUL } = require('../utils/enum')
 // const { User } = require('../db/models')
 
-//router.get('/', con.auth.hello)
+router.get('/', con.auth.hello)
 
 router.get('/access', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.auth.hello)
 router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.auth.hello)
@@ -19,11 +19,13 @@ router.get('/auth/loginGoogle', con.auth.google);
 // router.post("/auth/loginAdmin", con.auth.loginAdmin)
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
 
+router.get('/auth/verify-account', con.auth.verifyAccountView);
+router.post('/auth/verify-account', con.auth.verifyAccount);
 
 //router.get('/auth/forgot-password', con.auth.forgotPasswordView);
 router.post('/auth/forgot-password', con.auth.forgotPassword);
 
-//router.get('/auth/reset-password', con.auth.resetPasswordView);
+router.get('/auth/reset-password', con.auth.resetPasswordView);
 router.post('/auth/reset-password', con.auth.resetPassword);
 
 // list airport
