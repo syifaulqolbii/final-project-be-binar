@@ -165,35 +165,6 @@ module.exports = {
         next(err);
         }
     },
-
-    // sorting, search, pagination, filter
-
-    search: async (req, res, next) => {
-        try {
-        const search = req.query.search || "";
-        const page = parseInt(req.query.page) || 1;
-        const pageSize = parseInt(req.query.pageSize) || 5;
-
-        await Flight.findAll({
-            where: {
-            airlines: {
-                [Op.like]: `%${search}%`,
-            },
-            },
-            order: [["price", "DESC"]],
-            offset: (page - 1) * pageSize,
-            limit: pageSize,
-        }).then((flight) => {
-            res.json({
-            status: true,
-            data: flight,
-            });
-        });
-        } catch (error) {
-        next(error);
-        }
-    },
-
     getRouteById: async (req, res, next) => {
         try {
         const { id } = req.params;
@@ -208,69 +179,6 @@ module.exports = {
         });
         } catch (error) {
         next(error);
-        }
-    },
-    sortingTertinggi: async (req, res, next) =>{
-        try {
-        // const { oa, da, dd } = req.query;
-        // req.query.where = {
-        //     [Op.and]: [
-        //     { origin_airport: oa },
-        //     { destination_airport: da },
-        //     { depature_date: dd },
-        //     ],
-        // };
-        // const flight = await Flight.findAll(req.query);
-        let tab = 1;
-        let oa = "";
-        let da = "";
-        let dd = "";
-        if(req.query.tab){
-            tab = req.query.tab ;
-        }
-        if(req.query.oa){
-            oa = req.query.oa
-        }
-        if(req.query.da){
-            da = req.query.da
-        }
-        if(req.query.dd){
-            dd = req.query.dd
-        }
-
-        let offset = (tab-1)*4
-        Flight.findAll({where:{
-            origin_airport: {[Sequelize.Op.iLike]: `%${oa}%`},
-            destination_airport: {[Sequelize.Op.iLike]: `%${da}%`},
-            depature_date: {[Sequelize.Op.iLike]: `%${dd}%`},
-            limit: 4, offset,  order: [["price", "DESC"]]
-        }})
-        
-            
-        } catch (err) {
-            next(err);
-        }
-    },
-    sortingTerendah: async (req, res, next) =>{
-        try {   
-                
-                Flight.findAll({
-                    order:[
-                        ["price", "ASC"]
-                    ]
-                })
-                .then((flight) => {
-                    res.status(200).json({
-                        message : "Menampilkan harga terendah",
-                        data: flight
-                    })
-                })
-                .catch(err => {
-                    console.log(err)
-                    res.json({message: "Flight Tidak Ditemukan", success: false, data: err.message})
-                })
-        } catch (err) {
-            next(err);
         }
     }
 };

@@ -7,7 +7,6 @@ const restrict = require('../middleware/restrict')
 const { MODUL } = require('../utils/enum')
 // const { User } = require('../db/models')
 
-//router.get('/', con.auth.hello)
 
 router.get('/access', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.auth.hello)
 router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true), con.auth.hello)
@@ -56,9 +55,6 @@ router.put('/notification/:id', mid.cekLogin, rbac(MODUL.UserDashboard, true, tr
 
 router.get('/history', mid.cekLogin, con.his.getData)
 router.get('/history-detail/:id', mid.cekLogin, con.his.getDetail)
-// router.post('/history', con.his.create)
-// router.put('/history', con.his.update)
-// router.delete('/history/:id', con.his.delete)
 
 router.get('/admin/get-user', mid.cekLogin,con.admin.getUser)
 router.get('/admin/get-transaction', mid.cekLogin, con.admin.getTransaction)
