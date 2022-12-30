@@ -74,7 +74,7 @@ module.exports = {
       );
       const updatedNotif = await Notification.findOne({ where: { id: id } });
       return res.status(201).json({
-        status: false,
+        status: true,
         message: "Succes",
         data: {
           id: updatedNotif.id,

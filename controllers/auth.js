@@ -295,7 +295,7 @@ module.exports = {
         })
     },
     editProfile: async (req, res) => {
-        const user = req.user
+        const id = req.user.id
         const { name, email, phone, gender } = req.body
 
         try {
@@ -307,14 +307,18 @@ module.exports = {
             },
             {
                 where:{
-                    id : user.id
+                    id : id
                 }
             });
-
+            const updatedUser = await User.findOne({
+                where:{
+                    id : id
+                }
+            });
             return res.status(201).json({
                 status: true,
                 message: 'Succes Update Data',
-
+                data: updatedUser
             });
         } catch (error) {
             next(error);
