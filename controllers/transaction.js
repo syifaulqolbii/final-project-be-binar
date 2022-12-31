@@ -94,6 +94,7 @@ module.exports = {
                             message: 'Identity Type is still empty'
                         })
                     }
+
                     if(element.identity_type == "KTP"){
                         let cekIdentity = /^(?=.*[0-9])\d{16,}$/
                         if (!element.identity_number.match(cekIdentity)) {
@@ -125,7 +126,8 @@ module.exports = {
                         const transactioniMapping = transactionMapping.create({
                             UserId: user.id,
                             TransactionId: transaction.id,
-                            PassengerId: Passenger.id
+                            PassengerId: Passenger.id,
+                            FlightId: flightId
                         })
                     })
                     
@@ -139,6 +141,34 @@ module.exports = {
                   "Terima kasih telah membeli tiket, silahkan cek tiket anda di email atau dihalaman history pembelian",
                 isRead: false,
               });
+
+            const transactions = await transactionMapping.findAll({
+                where: {TransactionId: transaction.id},
+                include: [
+                    {
+                        model: Passenger,
+                        as: "passenger",
+                        attributes: {exclude: ["createdAt","updatedAt"]}
+                    },
+                    {
+                        model: Flight,
+                        as: "flight",
+                        attributes: {exclude: ["createdAt","updatedAt"]}
+                    },
+                ]
+            })
+
+            if(transactions != 0){
+                const user = await User.findOne({ where: { id: userId} });
+                htmlEmail = await mail.getHtml('transaction.ejs', 
+                { 
+                    passengerData: transactions
+                    
+
+                });
+
+                await mail.sendEmail(user.email, '[Ticket]', htmlEmail);
+            }
             
             return res.status(201).json({
                 status: true,
