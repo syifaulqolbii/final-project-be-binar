@@ -420,34 +420,36 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         name:
                           type: string
                         region:
                           type: string
-                        code:
-                          type:
-                            - 'null'
-                            - string
+                        iata:
+                          type: string
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
                 x-examples:
                   Example 1:
                     status: true
-                    message: Data dari Port API
-                    data:
-                      - name: Sultan Aji Muhammad Sulaiman Sepinggan International Airport
-                        region: Kalimantan Timur (East Kalimantan)
-                        code: BPN
-                      - name: Dortheys Hiyo Eluay International Airport
-                        region: Papua
-                        code: DJJ
-              examples:
-                Example 1:
-                  value:
-                    status: true
                     message: Data Airport
                     data:
-                      - name: Soekarno Hatta
+                      - id: 6
+                        name: Yogyakarta International Airport
+                        region: Daerah Istimewa Yogyakarta
+                        iata: YIA
+                        createdAt: '2022-12-31T07:40:21.614Z'
+                        updatedAt: '2022-12-31T07:40:21.614Z'
+                      - id: 7
+                        name: Soekarno-Hatta International Airport
                         region: Banten
-                        code: CGK
+                        iata: CGK
+                        createdAt: '2022-12-31T07:43:25.477Z'
+                        updatedAt: '2022-12-31T07:43:25.477Z'
+              examples: {}
       operationId: get-list-airport
       description: Endpoint ini untuk mengambil data list airport yang ada di Indonesia
   /search?:
