@@ -114,15 +114,24 @@ module.exports = {
                 description: "Selamat Transaksi Anda Telah Berhasil!!",
                 isRead: false
             })
-            console.log(transaction.id)
-            const transactions = await transactionMapping.findAll({
-                where: {TransactionId: transaction.id},
-                include: [{
-                    model: Passenger,
-                    as: "passenger",
-                    attributes: {exclude: ["createdAt","updatedAt"]}
-                }]
-            })
+            // console.log(transaction.id)
+            // const transactions = await transactionMapping.findAll({
+            //     where: {TransactionId: transaction.id},
+            //         include: [
+            //             {
+            //             model: Passenger,
+            //             as: "passenger",
+            //             attributes: {exclude: ["createdAt","updatedAt"]}
+            //             }],
+            //         include: [
+            //             {
+            //             model: Transaction, include:[{model: Flight, as: "flight", attributes:{exclude: ["createdAt","updatedAt"]}}], 
+            //             as:"transaction"
+            //             }
+            //         ]
+                    
+            // })
+            // let data = {}
 
             // const user = await User.findOne({ where: { email } });
             // if (user) {
@@ -134,7 +143,9 @@ module.exports = {
             
             return res.status(201).json({
                 status: true,
-                message: 'Succes Create Booking'
+                message: 'Succes Create Booking',
+                data: dataPassengers
+                
             });
             
 
