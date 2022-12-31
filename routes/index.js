@@ -26,7 +26,8 @@ router.post('/auth/forgot-password', con.auth.forgotPassword);
 router.post('/auth/reset-password', con.auth.resetPassword);
 
 // list airport
-router.get('/list-airport', con.list.listAirport);
+router.get('/list-airport', con.list.getListAirport);
+router.post('/create/list-airport', con.list.createListAirport);
 
 router.get('/search?', con.fli.getSearch)
 router.post('/route', mid.cekLogin,rbac(MODUL.AdminDashboard, true, true), con.fli.create)
