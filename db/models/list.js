@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   List.init({
     name: DataTypes.STRING,
     region: DataTypes.STRING,
-    iata: DataTypes.STRING
+    code: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'List',

@@ -15,7 +15,7 @@ module.exports = {
       region: {
         type: Sequelize.STRING
       },
-      iata: {
+      code: {
         type: Sequelize.STRING
       },
       createdAt: {

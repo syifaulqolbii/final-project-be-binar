@@ -69,7 +69,9 @@ module.exports = {
   },
   getListAirport: async (req, res, next) => {
     try {
-      const listResult = await List.findAll();
+      const listResult = await List.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] }
+      });
 
       res.status(200).json({
         status: true,
