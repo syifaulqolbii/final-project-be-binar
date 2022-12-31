@@ -50,9 +50,9 @@ module.exports = {
             const  dataPassengers  = req.body.passangers
             
             
-            const user = req.user
+            const userId = req.user.id
             const flightId = +req.body.id
-            if(!user.id){
+            if(!userId){
                 return res.json({
                     status: false,
                     message: "You are not logged in"
@@ -63,36 +63,26 @@ module.exports = {
             }
             const transaction = await Transaction.create({
                 FlightId: flightId,
-                UserId: user.id
+                UserId: userId
              })
         
             dataPassengers.forEach(element => {
                 let PassengerId = element.PassengerId
                 if(!PassengerId){
-                    if(element.name_passenger ==null || element.name_passenger == "" ){                        
-                        return res.status(400).json({
-                            message: 'Name Passenger is still empty'
-                        })
+                    if(element.name_passenger ==null || element.name_passenger == "" ){
+                        res.json({message: "Name Passenger is still empty", success: false})
                     }
-                    else if (element.identity_number == null || element.identity_number == "") {                        
-                        return res.status(400).json({
-                            message: 'Identity Number is still empty'
-                        })
+                    else if (element.identity_number == null || element.identity_number == "") {
+                        res.json({message: "Identity Number is still empty", success: false})
                     }
-                    else if (element.identity_type == "Passport" && element.identity_exp_date == "") {                        
-                        return res.status(400).json({
-                            message: 'Identity exp date is still empty'
-                        })
+                    else if (element.identity_type == "Passport" && element.identity_exp_date == "") {
+                        res.json({message: "Identity exp date is still empty", success: false})
                     }
                     else if (element.nationality == null || element.nationality == "") {
-                        return res.status(400).json({
-                            message: 'Nationality is still empty'
-                        })
+                        res.json({message: "Nationality is still empty", success: false})
                     }
                     else if (element.identity_type == null || element.identity_type == "") {
-                        return res.status(400).json({
-                            message: 'Identity Type is still empty'
-                        })
+                        res.json({message: "Identity Type is still empty", success: false})
                     }
 
                     if(element.identity_type == "KTP"){
@@ -124,7 +114,7 @@ module.exports = {
                     .then((Passenger) =>{
                         PassengerId = Passenger.id
                         const transactioniMapping = transactionMapping.create({
-                            UserId: user.id,
+                            UserId: userId,
                             TransactionId: transaction.id,
                             PassengerId: Passenger.id,
                             FlightId: flightId
@@ -134,45 +124,46 @@ module.exports = {
                 }    
             
             })
-            const notification = await Notification.create({
-                user_id: user.id,
-                tittle: `Hello ${user.name}!!`,
-                description:
-                  "Terima kasih telah membeli tiket, silahkan cek tiket anda di email atau dihalaman history pembelian",
-                isRead: false,
-              });
-
-            const transactions = await transactionMapping.findAll({
-                where: {TransactionId: transaction.id},
-                include: [
-                    {
-                        model: Passenger,
-                        as: "passenger",
-                        attributes: {exclude: ["createdAt","updatedAt"]}
-                    },
-                    {
-                        model: Flight,
-                        as: "flight",
-                        attributes: {exclude: ["createdAt","updatedAt"]}
-                    },
-                ]
-            })
-
-            if(transactions != 0){
-                const user = await User.findOne({ where: { id: userId} });
-                htmlEmail = await mail.getHtml('transaction.ejs', 
-                { 
-                    passengerData: transactions
-                    
-
-                });
-
-                await mail.sendEmail(user.email, '[Ticket]', htmlEmail);
+            if (dataPassengers.length == 0){
+                res.json({message: "Passenger is not found", success: false, data: {}})
             }
+            const notification = await Notification.create({
+                    user_id: userId,
+                    tittle: "Transaksi berhasil",
+                    description: "Selamat Transaksi Anda Telah Berhasil!!",
+                    isRead: false
+            })
+            // console.log(transaction.id)
+            // const transactions = await transactionMapping.findAll({
+            //     where: {TransactionId: transaction.id},
+            //         include: [
+            //             {
+            //             model: Passenger,
+            //             as: "passenger",
+            //             attributes: {exclude: ["createdAt","updatedAt"]}
+            //             }],
+            //         include: [
+            //             {
+            //             model: Transaction, include:[{model: Flight, as: "flight", attributes:{exclude: ["createdAt","updatedAt"]}}], 
+            //             as:"transaction"
+            //             }
+            //         ]
+                    
+            // })
+            // let data = {}
+
+            // const user = await User.findOne({ where: { email } });
+            // if (user) {
+            //     const link = `#`;
+
+            //     htmlEmail = await util.email.getHtml('transaction.ejs', { name: user.name, link: link });
+            //     await util.email.sendEmail(user.email, '[Notification]', htmlEmail);
+            // }
             
             return res.status(201).json({
                 status: true,
-                message: 'Succes Create Booking'
+                message: 'Succes Create Booking',
+                data: dataPassengers
                 
             });
             
