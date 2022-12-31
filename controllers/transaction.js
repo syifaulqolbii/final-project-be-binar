@@ -161,7 +161,7 @@ module.exports = {
                 ]
             })
             if(transactions != 0){
-                const user = await User.findOne({ where: { id: userId} });
+                const user = await User.findOne({ where: { id: user.id} });
                 htmlEmail = await mail.getHtml('transaction.ejs', 
                 { 
                     passengerData: transactions
