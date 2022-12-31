@@ -50,7 +50,7 @@ router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.h
 
 
 router.get('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.getData)
-router.post('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.create)
+// router.post('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.create)
 router.put('/notification/:id', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.not.update)
 
 
