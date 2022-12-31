@@ -4,10 +4,6 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "build": "npm init",
-    "clean": "rm -rf node_modules",
-    "reinstall": "npm run clean && npm install",
-    "rebuild": "npm run clean && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
