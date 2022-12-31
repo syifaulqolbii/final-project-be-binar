@@ -24,30 +24,30 @@ module.exports = {
       next(err);
     }
   },
-  create: async (req, res, next) => {
-    try {
-      const user = req.user;
-      const notification = await Notification.create({
-        user_id: user.id,
-        tittle: `Hello ${user.name}!!`,
-        description:
-          "Terima kasih telah membeli tiket, silahkan cek tiket anda di email atau dihalaman history pembelian",
-        isRead: false,
-      });
-      return res.status(201).json({
-        status: true,
-        message: "Succes",
-        data: {
-          user_id: notification.user_id,
-          tittle: notification.tittle,
-          description: notification.description,
-          isRead: notification.isRead,
-        },
-      });
-    } catch (error) {
-      next(error);
-    }
-  },
+  // create: async (req, res, next) => {
+  //   try {
+  //     const user = req.user;
+  //     const notification = await Notification.create({
+  //       user_id: user.id,
+  //       tittle: `Hello ${user.name}!!`,
+  //       description:
+  //         "Terima kasih telah membeli tiket, silahkan cek tiket anda di email atau dihalaman history pembelian",
+  //       isRead: false,
+  //     });
+  //     return res.status(201).json({
+  //       status: true,
+  //       message: "Succes",
+  //       data: {
+  //         user_id: notification.user_id,
+  //         tittle: notification.tittle,
+  //         description: notification.description,
+  //         isRead: notification.isRead,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
   update: async (req, res, next) => {
     try {
       const { id } = req.params;
