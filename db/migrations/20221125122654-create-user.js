@@ -26,6 +26,12 @@ module.exports = {
       phone: {
         type: Sequelize.STRING
       },
+      isVerified: {
+        type: Sequelize.BOOLEAN
+      },
+      user_type: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -33,7 +39,8 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      
     });
   },
   async down(queryInterface, Sequelize) {

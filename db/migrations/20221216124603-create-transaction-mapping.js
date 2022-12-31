@@ -1,24 +1,24 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Notifications', {
+    await queryInterface.createTable('transactionMappings', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
+      UserId: {
         type: Sequelize.INTEGER
       },
-      tittle: {
-        type: Sequelize.STRING
+      TransactionId: {
+        type: Sequelize.INTEGER
       },
-      description: {
-        type: Sequelize.STRING
+      PassengerId: {
+        type: Sequelize.INTEGER
       },
-      isRead: {
-        type: Sequelize.BOOLEAN
+      FlightId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +31,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Notifications');
+    await queryInterface.dropTable('transactionMappings');
   }
 };

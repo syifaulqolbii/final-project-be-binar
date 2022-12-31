@@ -1,4 +1,5 @@
 'use strict';
+const { datacatalog } = require('googleapis/build/src/apis/datacatalog');
 const {
   Model
 } = require('sequelize');
@@ -11,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Transaction, {as: 'transaction'})
     }
   }
   User.init({
@@ -19,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     role: DataTypes.ENUM(['Admin','Buyer']),
     gender: DataTypes.STRING,
-    phone: DataTypes.STRING
+    phone: DataTypes.STRING,
+    isVerified: DataTypes.BOOLEAN,
+    user_type: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',

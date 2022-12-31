@@ -8,12 +8,18 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      OrderId: {
+      UserId: {
         type: Sequelize.INTEGER
       },
-      PassengerId: {
+      FlightId: {
         type: Sequelize.INTEGER
       },
+      // OrderId: {
+      //   type: Sequelize.INTEGER
+      // },
+      // PassengerId: {
+      //   type: Sequelize.INTEGER
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

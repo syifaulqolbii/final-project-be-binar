@@ -11,7 +11,7 @@ info:
 servers:
   - url: 'https://antariksa-api.up.railway.app'
     description: Production Environtment
-  - url: 'https://backend-4.up.railway.app/'
+  - url: 'https://backend-4-staging.up.railway.app/'
     description: Staging Environtment
 paths:
   /auth/register:
@@ -44,15 +44,18 @@ paths:
                     status: true
                     message: Succes
                     data:
-                      email: syifaul@gmail.com
-                      name: Syifa
+                      email: petotudin123@mail.com
+                      name: Udin Petot
                       role: Buyer
               examples:
                 Example 1:
                   value:
-                    email: syifa@mail.com
-                    name: Syifa
-                    role: Buyer
+                    status: true
+                    message: Succes
+                    data:
+                      email: petotudin123@mail.com
+                      name: Udin Petot
+                      role: Buyer
         '400':
           description: email not match
         '403':
@@ -69,17 +72,25 @@ paths:
                   type: string
                 password:
                   type: string
+                gender:
+                  type: string
+                phone:
+                  type: string
               x-examples:
                 Example 1:
-                  name: Syifa
-                  email: syifa@mail.com
-                  password: '123'
+                  name: Udin Petot
+                  email: petotudin123@mail.com
+                  password: Petot123#
+                  gender: Female
+                  phone: '123456789012'
             examples:
               Example 1:
                 value:
-                  name: Syifa
-                  email: syifa@mail.com
-                  password: '123'
+                  name: Udin Petot
+                  email: petotudin123@mail.com
+                  password: Petot123#
+                  gender: Female
+                  phone: '123456789012'
         description: In this body you can create new buyer
       description: ''
       tags:
@@ -145,6 +156,76 @@ paths:
         description: In this endpoint you can login to your application
       tags:
         - Auth Endpoint
+  /auth/loginGoogle:
+    get:
+      summary: Login Endpoint With Google Oauth2
+      tags:
+        - Auth Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      role:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    data:
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlVkaW4gUGV0b3QiLCJlbWFpbCI6InBldG90dWRpbjEyM0BtYWlsLmNvbSIsInJvbGUiOiJCdXllciIsImdlbmRlciI6IkZlbWFsZSIsInBob25lIjoiMTIzNDU2Nzg5MDEyIiwiaWF0IjoxNjcxODk5MDg3fQ.mRpvYYYarKJ_cVv2zpBSMOHYYzbaEvImvAM8GyXIDX0
+                      role: Buyer
+              examples: {}
+        '':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      role:
+                        type: string
+                      token:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: success
+                    data:
+                      name: LINTANG DANDUNG PRAKOSO
+                      role: Buyer
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IkxJTlRBTkcgREFORFVORyBQUkFLT1NPIiwiZW1haWwiOiIyMDEwMzE0MUBpdHRlbGtvbS1wd3QuYWMuaWQiLCJnZW5kZXIiOm51bGwsInJvbGUiOiJCdXllciIsInVzZXJfdHlwZSI6Imdvb2dsZSIsImlhdCI6MTY3MjE0MDQxM30.O7kDErweZQAt2eqItcohbH3xx8DuCf-awTXFLK1XAM8
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    message: string
+                    data:
+                      name: string
+                      role: string
+                      token: string
+      operationId: get-auth-loginGoogle
+      description: Endpoint ini digunakan untuk login dengan google oauth2
+      parameters: []
+    parameters: []
   /auth/forgot-password:
     post:
       summary: Forgot Password Endpoint
@@ -266,6 +347,57 @@ paths:
           in: header
           required: true
           name: Authorization
+  /auth/editProfile:
+    parameters: []
+    put:
+      summary: Edit Profile Endpoint
+      operationId: put-auth-editProfile
+      responses:
+        '200':
+          description: Success Update Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Succes Update Data
+      tags:
+        - Auth Endpoint
+      description: Endpoint ini digunakan untuk mengubah data profile user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                gender:
+                  type: string
+              x-examples:
+                Example 1:
+                  name: Petottttt
+                  email: udinpetot12@mail.com
+                  phone: '089512345678'
+                  gender: Male
+        description: Body yang bisa dimasukkan
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authorization
+          description: Need login to edit data
   /list-airport:
     get:
       summary: Airport List Endpoint
@@ -288,88 +420,36 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         name:
                           type: string
                         region:
                           type: string
                         code:
-                          type:
-                            - 'null'
-                            - string
+                          type: string
                 x-examples:
                   Example 1:
                     status: true
-                    message: Data dari Port API
-                    data:
-                      - name: Sultan Aji Muhammad Sulaiman Sepinggan International Airport
-                        region: Kalimantan Timur (East Kalimantan)
-                        code: BPN
-                      - name: Dortheys Hiyo Eluay International Airport
-                        region: Papua
-                        code: DJJ
-              examples:
-                Example 1:
-                  value:
-                    status: true
                     message: Data Airport
                     data:
-                      - name: Soeharto Hatta
+                      - id: 2
+                        name: Yogyakarta International Airport
+                        region: Daerah Istimewa Yogyakarta
+                        code: YIA
+                      - id: 3
+                        name: Soekarno-Hata International Airport
                         region: Banten
                         code: CGK
+              examples: {}
       operationId: get-list-airport
       description: Endpoint ini untuk mengambil data list airport yang ada di Indonesia
   /search?:
     get:
-      summary: Get All Data Search
-      tags:
-        - Search Endpoint
+      summary: Get All Data Flight Schedule
       responses:
         '200':
           description: OK
-      operationId: get-search?
-      description: This endpoint can show all data search
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: Origin Airport
-          description: Add origin airport
-          required: true
-        - schema:
-            type: string
-          in: query
-          name: Destination Airport
-          description: Add destination airport
-          required: true
-        - schema: {}
-          in: query
-          name: Departure Date
-          description: Add departure date
-          required: true
-        - schema: {}
-          in: query
-          name: Arrival Date
-          description: Add arrival date
-          required: true
-        - schema:
-            type: string
-          in: query
-          name: Return Date
-          description: Add return date
-        - schema:
-            type: integer
-          in: query
-          name: Total Passenger
-          description: Add total passenger
-          required: true
-  /search-admin:
-    parameters: []
-    post:
-      summary: Add schedule flight list
-      operationId: post-search-admin
-      responses:
-        '200':
-          description: Success
           content:
             application/json:
               schema:
@@ -377,11 +457,127 @@ paths:
                 properties:
                   status:
                     type: boolean
-                  message:
-                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        origin_airport:
+                          type: string
+                        destination_airport:
+                          type: string
+                        depature_date:
+                          type: string
+                        return_date:
+                          type: string
+                        total_passenger:
+                          type: integer
+                        airlines:
+                          type: string
+                        depature_time:
+                          type: string
+                        arrival_time:
+                          type: string
+                        duration_time:
+                          type: string
+                        price:
+                          type: string
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    data:
+                      - id: 1
+                        user_id: 1
+                        origin_airport: KRA
+                        destination_airport: SKA
+                        depature_date: '2022-12-11'
+                        return_date: '2022-12-30'
+                        total_passenger: 4
+                        airlines: Garuda Indonesia
+                        depature_time: '11:00:00'
+                        arrival_time: '20:00:00'
+                        duration_time: 9 Hours
+                        price: '20000'
+                        createdAt: '2022-12-13T02:04:10.184Z'
+                        updatedAt: '2022-12-13T02:04:10.184Z'
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data:
+                      - id: 1
+                        user_id: 1
+                        origin_airport: KRA
+                        destination_airport: SKA
+                        depature_date: '2022-12-11'
+                        return_date: '2022-12-30'
+                        total_passenger: 4
+                        airlines: Garuda Indonesia
+                        depature_time: '11:00:00'
+                        arrival_time: '20:00:00'
+                        duration_time: 9 Hours
+                        price: '20000'
+                        createdAt: '2022-12-13T02:04:10.184Z'
+                        updatedAt: '2022-12-13T02:04:10.184Z'
+      operationId: get-search?
+      description: This endpoint can show all data flight schedule
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: oa
+          description: Add origin airport
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: da
+          description: Add destination airport
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: dd
+          description: Add departure date
+          required: true
+      tags:
+        - Search Endpoint
+  '/flight/getById/${id}':
+    get:
+      summary: Get Data Flight Schedule By Id
+      responses:
+        '200':
+          description: Success get data by Id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
                   data:
                     type: object
                     properties:
+                      id:
+                        type: integer
+                      origin_airport:
+                        type: string
+                      destination_airport:
+                        type: string
+                      depature_date:
+                        type: string
+                      return_date:
+                        type: 'null'
+                      total_passenger:
+                        type: integer
                       airlines:
                         type: string
                       depature_time:
@@ -392,72 +588,69 @@ paths:
                         type: string
                       price:
                         type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
                 x-examples:
                   Example 1:
                     status: true
-                    message: success
                     data:
-                      airlines: Garuda
-                      depature_time: '2022-12-10'
-                      arrival_time: '2022-12-10'
-                      duration_time: '6'
-                      price: '6000000'
+                      id: 52
+                      origin_airport: CGK
+                      destination_airport: YIA
+                      depature_date: 29-12-2022
+                      return_date: null
+                      total_passenger: 5
+                      airlines: Garuda Indonesia
+                      depature_time: '08:00'
+                      arrival_time: '10:00'
+                      duration_time: 2 Hours 0 Minutes
+                      price: '1230000'
+                      createdAt: '2022-12-24T18:30:14.456Z'
+                      updatedAt: '2022-12-25T06:38:40.959Z'
               examples:
                 Example 1:
                   value:
                     status: true
-                    message: success
                     data:
-                      airlines: Garuda
-                      depature_time: '2022-12-10'
-                      arrival_time: '2022-12-10'
-                      duration_time: '6'
-                      price: '6000000'
-        '400':
-          description: Bad Request
-      tags:
-        - Search Endpoint
-      description: Di endpoint ini admin dapat menambahkan list jadwal penerbangan
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                airlines:
-                  type: string
-                depature_time:
-                  type: string
-                arrival_time:
-                  type: string
-                duration_time:
-                  type: string
-                price:
-                  type: string
-              x-examples:
-                Example 1:
-                  airlines: Garuda
-                  depature_time: '2022-12-10'
-                  arrival_time: '2022-12-10'
-                  duration_time: '6'
-                  price: '6000000'
-            examples:
-              Example 1:
-                value:
-                  airlines: Garuda
-                  depature_time: '2022-12-10'
-                  arrival_time: '2022-12-10'
-                  duration_time: '6'
-                  price: '6000000'
-        description: 'Kamu dapat memasukkan data berikut '
+                      - id: 1
+                        user_id: 1
+                        origin_airport: KRA
+                        destination_airport: SKA
+                        depature_date: '2022-12-11'
+                        return_date: '2022-12-30'
+                        total_passenger: 4
+                        airlines: Garuda Indonesia
+                        depature_time: '11:00:00'
+                        arrival_time: '20:00:00'
+                        duration_time: 9 Hours
+                        price: '20000'
+                        createdAt: '2022-12-13T02:04:10.184Z'
+                        updatedAt: '2022-12-13T02:04:10.184Z'
+      operationId: get-search?
+      description: This endpoint can show data flight schedule by id
       parameters:
         - schema:
             type: string
           in: header
           name: authorization
-          description: authorization for admin needed
-  /search:
-    parameters: []
+          description: need login for execute this endpoint
+      tags:
+        - Admin Endpoint
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+  '/editFlight/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     put:
       summary: Edit schedule list endpoint
       operationId: put-search
@@ -511,49 +704,93 @@ paths:
           description: Bad Request
         '500':
           description: Internal Server Error
+        '':
+          description: Success Edit Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      origin_airport:
+                        type: string
+                      destination_airport:
+                        type: string
+                      depature_date:
+                        type: string
+                      return_date:
+                        type: 'null'
+                      total_passenger:
+                        type: integer
+                      airlines:
+                        type: string
+                      depature_time:
+                        type: string
+                      arrival_time:
+                        type: string
+                      duration_time:
+                        type: string
+                      price:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Succes Edit Data
+                    data:
+                      id: 52
+                      origin_airport: CGK
+                      destination_airport: YIA
+                      depature_date: 29-12-2022
+                      return_date: null
+                      total_passenger: 5
+                      airlines: Garuda Indonesia
+                      depature_time: '08:00'
+                      arrival_time: '10:00'
+                      duration_time: 2 Hours 0 Minutes
+                      price: '1230000'
+                      createdAt: '2022-12-24T18:30:14.456Z'
+                      updatedAt: '2022-12-25T06:34:42.713Z'
       description: Diendpoint ini admin dapat mengubah jadwal penerbangan pesawat
       parameters:
         - schema:
             type: string
           in: header
           name: authorization
-          description: only admin can access this endpoint
+          description: need access to edit data flight
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                airlines:
-                  type: string
-                depature_time:
-                  type: string
-                arrival_time:
-                  type: string
-                duration_time:
-                  type: string
                 price:
                   type: string
               x-examples:
                 Example 1:
-                  airlines: Garuda
-                  depature_time: '2022-12-10'
-                  arrival_time: '2022-12-10'
-                  duration_time: '6'
-                  price: '6000000'
-            examples:
-              Example 1:
-                value:
-                  airlines: Garuda
-                  depature_time: '2022-12-10'
-                  arrival_time: '2022-12-10'
-                  duration_time: '6'
-                  price: '6000000'
+                  price: '5000000'
+            examples: {}
         description: 'Hal hal yang bisa di edit, tidak harus semua field diedit'
       tags:
-        - Search Endpoint
-  '/search/:id':
-    parameters: []
+        - Admin Endpoint
+  '/flight/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     delete:
       summary: Delete Schedule Flight List Endpoint
       operationId: delete-search---copy
@@ -571,8 +808,17 @@ paths:
                 Example 1:
                   value:
                     message: Success delete data
-      tags:
-        - Search Endpoint
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    message: Succes Delete Data
       description: Endpoint ini digunakan untuk menghapus Schedule Flight
       parameters:
         - schema:
@@ -580,5 +826,950 @@ paths:
           in: header
           name: authorization
           description: only admin can delete data
+      tags:
+        - Admin Endpoint
+  /route:
+    parameters: []
+    post:
+      summary: Add schedule flight list
+      operationId: post-search-admin
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      origin_airport:
+                        type: string
+                      destination_airport:
+                        type: string
+                      depature_date:
+                        type: string
+                      return_date:
+                        type: string
+                      total_passenger:
+                        type: integer
+                      airlines:
+                        type: string
+                      depature_time:
+                        type: string
+                      arrival_time:
+                        type: string
+                      duration_time:
+                        type: 'null'
+                      price:
+                        type: string
+                      updatedAt:
+                        type: string
+                      createdAt:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: false
+                    message: Succes
+                    data:
+                      id: 1
+                      user_id: 1
+                      origin_airport: Solo
+                      destination_airport: Jakarta
+                      depature_date: '2022-12-11'
+                      return_date: '2022-12-30'
+                      total_passenger: 2
+                      airlines: Garuda Indonesia
+                      depature_time: '10:00:00'
+                      arrival_time: '12:00:00'
+                      duration_time: null
+                      price: '20000'
+                      updatedAt: '2022-12-14T09:48:39.883Z'
+                      createdAt: '2022-12-14T09:48:39.883Z'
+              examples:
+                Example 1:
+                  value:
+                    status: false
+                    message: Succes
+                    data:
+                      id: 1
+                      user_id: 1
+                      origin_airport: Solo
+                      destination_airport: Jakarta
+                      depature_date: '2022-12-11'
+                      return_date: '2022-12-30'
+                      total_passenger: 2
+                      airlines: Garuda Indonesia
+                      depature_time: '10:00:00'
+                      arrival_time: '12:00:00'
+                      duration_time: null
+                      price: '20000'
+                      updatedAt: '2022-12-14T09:48:39.883Z'
+                      createdAt: '2022-12-14T09:48:39.883Z'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          description: Success
+      description: Di endpoint ini admin dapat menambahkan list jadwal penerbangan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                origin_airport:
+                  type: string
+                destination_airport:
+                  type: string
+                depature_date:
+                  type: string
+                return_date:
+                  type: string
+                total_passenger:
+                  type: string
+                depature_time:
+                  type: string
+                arrival_time:
+                  type: string
+                price:
+                  type: string
+              x-examples:
+                Example 1:
+                  origin_airport: Solo
+                  destination_airport: Jakarta
+                  depature_date: '2022-12-11'
+                  return_date: '2022-12-30'
+                  total_passenger: '2'
+                  depature_time: '10:00'
+                  arrival_time: '12:00'
+                  price: '20000'
+            examples:
+              Example 1:
+                value:
+                  origin_airport: Solo
+                  destination_airport: Jakarta
+                  depature_date: '2022-12-11'
+                  return_date: '2022-12-30'
+                  total_passenger: '2'
+                  depature_time: '10:00'
+                  arrival_time: '12:00'
+                  price: '20000'
+        description: 'Kamu dapat memasukkan data berikut '
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authorization
+          description: authorization for admin needed
+      tags:
+        - Admin Endpoint
+  /admin/get-user:
+    get:
+      summary: Get Amount User
+      tags:
+        - Admin Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+      operationId: get-admin-get-user
+      description: endpoint ini digunakan untuk mengambil total jumlah user
+      parameters: []
+  /admin/get-transaction:
+    get:
+      summary: Get Amount Transaction
+      tags:
+        - Admin Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+          description: Success
+      operationId: get-admin-get-user
+      description: endpoint ini digunakan untuk mengambil total jumlah transaksi
+      parameters: []
+    parameters: []
+  /admin/get-route:
+    get:
+      summary: Get Amount Route
+      tags:
+        - Admin Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: integer
+                x-examples:
+                  Example 1:
+                    status: true
+                    data: 2
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data: 2
+          description: Success
+      operationId: get-admin-get-user
+      description: endpoint ini digunakan untuk mengambil total jumlah rute penerbangan
+      parameters: []
+    parameters: []
+  '/transaction/${id}':
+    post:
+      summary: Create Transaction
+      operationId: 'post-transaction:id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Succes Create Booking
+      description: Endpoint ini digunakan untuk membuat transaksi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  name_passenger:
+                    type: string
+                  identity_number:
+                    type: string
+                  identity_exp_date:
+                    type: string
+                  nationality:
+                    type: string
+                  identity_type:
+                    type: string
+              x-examples:
+                Example 1:
+                  - name_passenger: wahyu
+                    identity_number: cd002348572198
+                    identity_exp_date: 20-10-2022
+                    nationality: INDO
+                    identity_type: KTP
+                  - name_passenger: doni
+                    identity_number: '7637002348572198'
+                    identity_exp_date: 20-10-2022
+                    nationality: Jepang
+                    identity_type: KTP
+            examples:
+              Example 1:
+                value:
+                  - name_passenger: string
+                    identity_number: string
+                    identity_exp_date: string
+                    nationality: string
+                    identity_type: string
+        description: Data yang harus dimasukkan
+      tags:
+        - Transactions Endpoint
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+  '/transaction-ticket/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get Ticket From Transactions
+      operationId: 'get-transaction-ticket-:id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ticket:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          user_id:
+                            type: 'null'
+                          origin_airport:
+                            type: string
+                          destination_airport:
+                            type: string
+                          depature_date:
+                            type: string
+                          return_date:
+                            type: string
+                          total_passenger:
+                            type: integer
+                          airlines:
+                            type: string
+                          depature_time:
+                            type: string
+                          arrival_time:
+                            type: string
+                          duration_time:
+                            type: string
+                          price:
+                            type: string
+                          createdAt:
+                            type: string
+                          updatedAt:
+                            type: string
+                x-examples:
+                  Example 1:
+                    data:
+                      ticket:
+                        id: 1
+                        user_id: null
+                        origin_airport: KON
+                        destination_airport: KIN
+                        depature_date: '2022-12-11'
+                        return_date: '2022-12-30'
+                        total_passenger: 2
+                        airlines: Garuda Indonesia
+                        depature_time: '15:25'
+                        arrival_time: '20:37'
+                        duration_time: 5 Hours 12 Minutes
+                        price: '20000'
+                        createdAt: '2022-12-17T12:00:04.095Z'
+                        updatedAt: '2022-12-17T12:00:04.095Z'
+      description: Untuk get ticket by id
+      tags:
+        - Transactions Endpoint
+  /history:
+    parameters: []
+    get:
+      summary: Get Data History
+      operationId: 'get-transaction-ticket-:id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ticket:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          user_id:
+                            type: 'null'
+                          origin_airport:
+                            type: string
+                          destination_airport:
+                            type: string
+                          depature_date:
+                            type: string
+                          return_date:
+                            type: string
+                          total_passenger:
+                            type: integer
+                          airlines:
+                            type: string
+                          depature_time:
+                            type: string
+                          arrival_time:
+                            type: string
+                          duration_time:
+                            type: string
+                          price:
+                            type: string
+                          createdAt:
+                            type: string
+                          updatedAt:
+                            type: string
+                x-examples:
+                  Example 1:
+                    data:
+                      ticket:
+                        id: 1
+                        user_id: null
+                        origin_airport: KON
+                        destination_airport: KIN
+                        depature_date: '2022-12-11'
+                        return_date: '2022-12-30'
+                        total_passenger: 2
+                        airlines: Garuda Indonesia
+                        depature_time: '15:25'
+                        arrival_time: '20:37'
+                        duration_time: 5 Hours 12 Minutes
+                        price: '20000'
+                        createdAt: '2022-12-17T12:00:04.095Z'
+                        updatedAt: '2022-12-17T12:00:04.095Z'
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        UserId:
+                          type: integer
+                        FlightId:
+                          type: integer
+                        OrderId:
+                          type: 'null'
+                        PassengerId:
+                          type: 'null'
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        flight:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            user_id:
+                              type: 'null'
+                            origin_airport:
+                              type: string
+                            destination_airport:
+                              type: string
+                            depature_date:
+                              type: string
+                            return_date:
+                              type: string
+                            total_passenger:
+                              type: integer
+                            airlines:
+                              type: string
+                            depature_time:
+                              type: string
+                            arrival_time:
+                              type: string
+                            duration_time:
+                              type: string
+                            price:
+                              type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Display History Data
+                    data:
+                      - id: 1
+                        UserId: 2
+                        FlightId: 1
+                        OrderId: null
+                        PassengerId: null
+                        createdAt: '2022-12-17T12:00:56.701Z'
+                        updatedAt: '2022-12-17T12:00:56.701Z'
+                        flight:
+                          id: 1
+                          user_id: null
+                          origin_airport: KON
+                          destination_airport: KIN
+                          depature_date: '2022-12-11'
+                          return_date: '2022-12-30'
+                          total_passenger: 2
+                          airlines: Garuda Indonesia
+                          depature_time: '15:25'
+                          arrival_time: '20:37'
+                          duration_time: 5 Hours 12 Minutes
+                          price: '20000'
+      description: Untuk mengambil data history
+      tags:
+        - History Endpoint
+  /history-detail:
+    parameters: []
+    get:
+      summary: Get Data Detail History
+      operationId: 'get-transaction-ticket-:id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ticket:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          user_id:
+                            type: 'null'
+                          origin_airport:
+                            type: string
+                          destination_airport:
+                            type: string
+                          depature_date:
+                            type: string
+                          return_date:
+                            type: string
+                          total_passenger:
+                            type: integer
+                          airlines:
+                            type: string
+                          depature_time:
+                            type: string
+                          arrival_time:
+                            type: string
+                          duration_time:
+                            type: string
+                          price:
+                            type: string
+                          createdAt:
+                            type: string
+                          updatedAt:
+                            type: string
+                x-examples:
+                  Example 1:
+                    data:
+                      ticket:
+                        id: 1
+                        user_id: null
+                        origin_airport: KON
+                        destination_airport: KIN
+                        depature_date: '2022-12-11'
+                        return_date: '2022-12-30'
+                        total_passenger: 2
+                        airlines: Garuda Indonesia
+                        depature_time: '15:25'
+                        arrival_time: '20:37'
+                        duration_time: 5 Hours 12 Minutes
+                        price: '20000'
+                        createdAt: '2022-12-17T12:00:04.095Z'
+                        updatedAt: '2022-12-17T12:00:04.095Z'
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        UserId:
+                          type: integer
+                        FlightId:
+                          type: integer
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        flight:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            origin_airport:
+                              type: string
+                            destination_airport:
+                              type: string
+                            depature_date:
+                              type: string
+                            return_date:
+                              type: string
+                            total_passenger:
+                              type: integer
+                            airlines:
+                              type: string
+                            depature_time:
+                              type: string
+                            arrival_time:
+                              type: string
+                            duration_time:
+                              type: string
+                            price:
+                              type: string
+                        TransactionId:
+                          type: integer
+                        PassengerId:
+                          type: integer
+                        booked_passengers:
+                          type: integer
+                        passenger:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name_passenger:
+                              type: string
+                            identity_number:
+                              type: string
+                            identity_exp_date:
+                              type: string
+                            nationality:
+                              type: string
+                            identity_type:
+                              type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Display History Detail
+                    data:
+                      - - id: 2
+                          UserId: 4
+                          FlightId: 1
+                          createdAt: '2022-12-19T09:01:55.964Z'
+                          updatedAt: '2022-12-19T09:01:55.964Z'
+                          flight:
+                            id: 1
+                            origin_airport: KON
+                            destination_airport: KIN
+                            depature_date: '2022-12-11'
+                            return_date: '2022-12-30'
+                            total_passenger: 2
+                            airlines: Garuda Indonesia
+                            depature_time: '15:25'
+                            arrival_time: '20:37'
+                            duration_time: 5 Hours 12 Minutes
+                            price: '20000'
+                      - - id: 4
+                          UserId: 4
+                          TransactionId: 2
+                          PassengerId: 4
+                          booked_passengers: 2
+                          createdAt: '2022-12-19T09:01:56.049Z'
+                          updatedAt: '2022-12-19T09:01:56.049Z'
+                          passenger:
+                            id: 4
+                            name_passenger: kamidi
+                            identity_number: '1236475893207654'
+                            identity_exp_date: 20-10-2022
+                            nationality: INDO
+                            identity_type: KTP
+                        - id: 5
+                          UserId: 4
+                          TransactionId: 2
+                          PassengerId: 5
+                          booked_passengers: 2
+                          createdAt: '2022-12-19T09:01:56.053Z'
+                          updatedAt: '2022-12-19T09:01:56.053Z'
+                          passenger:
+                            id: 5
+                            name_passenger: kamino
+                            identity_number: '7637002348572198'
+                            identity_exp_date: 20-10-2022
+                            nationality: Jepang
+                            identity_type: KTP
+          description: Success
+      description: Untuk mengambil data dari detail history
+      tags:
+        - History Endpoint
+  /notification:
+    parameters: []
+    get:
+      summary: Get All Data Notification By User Id
+      operationId: 'get-transaction-ticket-:id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ticket:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          user_id:
+                            type: 'null'
+                          origin_airport:
+                            type: string
+                          destination_airport:
+                            type: string
+                          depature_date:
+                            type: string
+                          return_date:
+                            type: string
+                          total_passenger:
+                            type: integer
+                          airlines:
+                            type: string
+                          depature_time:
+                            type: string
+                          arrival_time:
+                            type: string
+                          duration_time:
+                            type: string
+                          price:
+                            type: string
+                          createdAt:
+                            type: string
+                          updatedAt:
+                            type: string
+                x-examples:
+                  Example 1:
+                    data:
+                      ticket:
+                        id: 1
+                        user_id: null
+                        origin_airport: KON
+                        destination_airport: KIN
+                        depature_date: '2022-12-11'
+                        return_date: '2022-12-30'
+                        total_passenger: 2
+                        airlines: Garuda Indonesia
+                        depature_time: '15:25'
+                        arrival_time: '20:37'
+                        duration_time: 5 Hours 12 Minutes
+                        price: '20000'
+                        createdAt: '2022-12-17T12:00:04.095Z'
+                        updatedAt: '2022-12-17T12:00:04.095Z'
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      data:
+                        type: string
+                      tittle:
+                        type: string
+                      description:
+                        type: string
+                      isRead:
+                        type: boolean
+                      updatedAt:
+                        type: string
+                      createdAt:
+                        type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: succes
+                    data:
+                      id: 4
+                      user_id: 3
+                      data: wkwk
+                      tittle: Hello 3!!
+                      description: 'Welcome to Antariksa, Happy Flight Everywhere'
+                      isRead: false
+                      updatedAt: '2022-12-11T04:17:02.103Z'
+                      createdAt: '2022-12-11T04:17:02.103Z'
+          description: Success
+      description: Untuk mengambil seluruh data notification berdasarkan user yang login
+      tags:
+        - Notifications Endpoint
+  '/notification/${id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    put:
+      summary: Update IsRead Notifications
+      operationId: put-notification---copy
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      isRead:
+                        type: boolean
+                x-examples:
+                  Example 1:
+                    status: false
+                    message: Succes
+                    data:
+                      id: 2
+                      isRead: true
+        '':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      isRead:
+                        type: boolean
+                x-examples:
+                  Example 1:
+                    status: false
+                    message: Succes
+                    data:
+                      id: 2
+                      isRead: true
+      tags:
+        - Notifications Endpoint
+      description: Endpoint ini digunakan untuk mengubah isRead "false" notification menjadi isRead "true"
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: id
+          description: need notification id
 components:
   securitySchemes: {}
+
+# test refresh testt

@@ -11,13 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Passenger,{ foreignKey: 'PassengerId', as: 'passenger'})
-      this.belongsTo(models.Order, {foreignKey: 'OrderId', as: 'order'})
+      // this.belongsTo(models.Passenger,{ foreignKey: 'PassengerId', as: 'passenger'})
+      // this.belongsTo(models.Order, {foreignKey: 'OrderId', as: 'order'})
+      this.belongsTo(models.Flight, { foreignKey: 'FlightId', as: 'flight' })
+      this.belongsTo(models.User, { foreignKey: 'UserId', as: 'user' })
+      this.hasMany(models.transactionMapping, {as: 'mapping'})
     }
   }
   Transaction.init({
-    OrderId: DataTypes.INTEGER,
-    PassengerId: DataTypes.INTEGER
+    UserId: DataTypes.INTEGER,
+    FlightId: DataTypes.INTEGER,
+    // OrderId: DataTypes.INTEGER,
+    // PassengerId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Transaction',
