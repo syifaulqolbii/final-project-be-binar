@@ -49,11 +49,11 @@ module.exports = {
       //     responseData[122],
       //     responseData[58]
       //   );
-      const { name, region, iata } = req.body;
+      const { name, region, code } = req.body;
       const listResult = await List.create({
         name,
         region,
-        iata,
+        code,
       });
 
       res.status(200).json({
