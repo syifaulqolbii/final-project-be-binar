@@ -69,6 +69,21 @@ module.exports = {
             dataPassengers.forEach(element => {
                 let PassengerId = element.PassengerId
                 if(!PassengerId){
+                    if(element.name_passenger ==null || element.name_passenger == "" ){
+                        res.json({message: "Name Passenger is still empty", success: false})
+                    }
+                    else if (element.identity_number == null || element.identity_number == "") {
+                        res.json({message: "Identity Number is still empty", success: false})
+                    }
+                    else if (element.identity_type == "Passport" && element.identity_exp_date == "") {
+                        res.json({message: "Identity exp date is still empty", success: false})
+                    }
+                    else if (element.nationality == null || element.nationality == "") {
+                        res.json({message: "Nationality is still empty", success: false})
+                    }
+                    else if (element.identity_type == null || element.identity_type == "") {
+                        res.json({message: "Identity Type is still empty", success: false})
+                    }
                     if(element.identity_type == "KTP"){
                         let cekIdentity = /^(?=.*[0-9])\d{16,}$/
                         if (!element.identity_number.match(cekIdentity)) {
@@ -95,7 +110,6 @@ module.exports = {
                         nationality: element.nationality, 
                         identity_type: element.identity_type
                     })
-                    
                     .then((Passenger) =>{
                         PassengerId = Passenger.id
                         const transactioniMapping = transactionMapping.create({
@@ -108,21 +122,33 @@ module.exports = {
                 }    
             
             })
-        const notification = await Notification.create({
-            user_id: userId,
-                tittle: "Transaksi berhasil",
-                description: "Selamat Transaksi Anda Telah Berhasil!!",
-                isRead: false
+            if (dataPassengers.length == 0){
+                res.json({message: "Passenger is not found", success: false, data: {}})
+            }
+            const notification = await Notification.create({
+                    user_id: userId,
+                    tittle: "Transaksi berhasil",
+                    description: "Selamat Transaksi Anda Telah Berhasil!!",
+                    isRead: false
             })
-            console.log(transaction.id)
-            const transactions = await transactionMapping.findAll({
-                where: {TransactionId: transaction.id},
-                include: [{
-                    model: Passenger,
-                    as: "passenger",
-                    attributes: {exclude: ["createdAt","updatedAt"]}
-                }]
-            })
+            // console.log(transaction.id)
+            // const transactions = await transactionMapping.findAll({
+            //     where: {TransactionId: transaction.id},
+            //         include: [
+            //             {
+            //             model: Passenger,
+            //             as: "passenger",
+            //             attributes: {exclude: ["createdAt","updatedAt"]}
+            //             }],
+            //         include: [
+            //             {
+            //             model: Transaction, include:[{model: Flight, as: "flight", attributes:{exclude: ["createdAt","updatedAt"]}}], 
+            //             as:"transaction"
+            //             }
+            //         ]
+                    
+            // })
+            // let data = {}
 
             // const user = await User.findOne({ where: { email } });
             // if (user) {
@@ -134,7 +160,9 @@ module.exports = {
             
             return res.status(201).json({
                 status: true,
-                message: 'Succes Create Booking'
+                message: 'Succes Create Booking',
+                data: dataPassengers
+                
             });
             
 
