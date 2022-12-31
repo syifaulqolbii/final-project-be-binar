@@ -84,6 +84,7 @@ module.exports = {
                     else if (element.identity_type == null || element.identity_type == "") {
                         res.json({message: "Identity Type is still empty", success: false})
                     }
+
                     if(element.identity_type == "KTP"){
                         let cekIdentity = /^(?=.*[0-9])\d{16,}$/
                         if (!element.identity_number.match(cekIdentity)) {
@@ -115,7 +116,8 @@ module.exports = {
                         const transactioniMapping = transactionMapping.create({
                             UserId: userId,
                             TransactionId: transaction.id,
-                            PassengerId: Passenger.id
+                            PassengerId: Passenger.id,
+                            FlightId: flightId
                         })
                     })
                     
@@ -131,32 +133,33 @@ module.exports = {
                     description: "Selamat Transaksi Anda Telah Berhasil!!",
                     isRead: false
             })
-            // console.log(transaction.id)
-            // const transactions = await transactionMapping.findAll({
-            //     where: {TransactionId: transaction.id},
-            //         include: [
-            //             {
-            //             model: Passenger,
-            //             as: "passenger",
-            //             attributes: {exclude: ["createdAt","updatedAt"]}
-            //             }],
-            //         include: [
-            //             {
-            //             model: Transaction, include:[{model: Flight, as: "flight", attributes:{exclude: ["createdAt","updatedAt"]}}], 
-            //             as:"transaction"
-            //             }
-            //         ]
+            const transactions = await transactionMapping.findAll({
+                where: {TransactionId: transaction.id},
+                include: [
+                    {
+                        model: Passenger,
+                        as: "passenger",
+                        attributes: {exclude: ["createdAt","updatedAt"]}
+                    },
+                    {
+                        model: Flight,
+                        as: "flight",
+                        attributes: {exclude: ["createdAt","updatedAt"]}
+                    },
+                ]
+            })
+
+            if(transactions != 0){
+                const user = await User.findOne({ where: { id: userId} });
+                htmlEmail = await mail.getHtml('transaction.ejs', 
+                { 
+                    passengerData: transactions
                     
-            // })
-            // let data = {}
 
-            // const user = await User.findOne({ where: { email } });
-            // if (user) {
-            //     const link = `#`;
+                });
 
-            //     htmlEmail = await util.email.getHtml('transaction.ejs', { name: user.name, link: link });
-            //     await util.email.sendEmail(user.email, '[Notification]', htmlEmail);
-            // }
+                await mail.sendEmail(user.email, '[Ticket]', htmlEmail);
+            }
             
             return res.status(201).json({
                 status: true,
