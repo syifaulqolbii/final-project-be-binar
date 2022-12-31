@@ -76,7 +76,7 @@ module.exports = {
             }
 
             const token = jwt.sign(payload, JWT_SECRET_KEY);
-            const link = `http://${BACKEND_SERVER}/auth/verify-account?token=${token}`;
+            const link = `${BACKEND_SERVER}/auth/verify-account?token=${token}`;
 
             htmlEmail = await mail.getHtml('verify-email.ejs', 
                 { 
@@ -213,16 +213,6 @@ module.exports = {
     },
     whoami: async(req, res, next) => {
         const user = req.user
-
-        // //Create
-        // const notification = await Notification.create({
-        //     user_id: user.id,
-        //     data : "haiiii",
-        //     tittle : `Hello ${user.id}!!` ,
-        //     description : "Welcome to Antariksa, Happy Flight Everywhere",
-        //     isRead: false
-        // });
-
         try {
             return res.status(200).json({
                 status: true,
@@ -362,7 +352,49 @@ module.exports = {
             message: 'Hello World!!!'
         })
     },
-    me: async (req, res) => {
+    editProfile: async (req, res) => {
+        const id = req.user.id
+        const { name, phone, gender } = req.body
 
+        try {
+            const userUpdate = await User.update({
+                name,
+                phone,
+                gender
+            },
+            {
+                where:{
+                    id : id
+                }
+            });
+
+            const updatedUser = await User.findOne({
+                where:{
+                    id : id
+                }
+            });
+
+            payload = {
+                id: updatedUser.id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                gender: updatedUser.gender,
+                phone: updatedUser.phone
+            }
+
+            const token = jwt.sign(payload, JWT_SECRET_KEY)
+
+            return res.status(201).json({
+                status: true,
+                message: 'Succes Update Data',
+                data: {
+                    updatedUser,
+                    token
+                }
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 }

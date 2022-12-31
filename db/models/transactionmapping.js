@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.Passenger, { foreignKey: 'PassengerId', as: 'passenger' }),
       this.belongsTo(models.Flight, { foreignKey: 'FlightId', as: 'flight' })
+      this.belongsTo(models.Transaction, { foreignKey: 'TransactionId', as: 'transaction' })
+
     }
   }
   transactionMapping.init({

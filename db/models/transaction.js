@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       // this.belongsTo(models.Order, {foreignKey: 'OrderId', as: 'order'})
       this.belongsTo(models.Flight, { foreignKey: 'FlightId', as: 'flight' })
       this.belongsTo(models.User, { foreignKey: 'UserId', as: 'user' })
+      this.hasMany(models.transactionMapping, {as: 'mapping'})
     }
   }
   Transaction.init({
