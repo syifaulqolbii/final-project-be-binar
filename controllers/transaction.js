@@ -1,4 +1,5 @@
 const { Transaction, Passenger, Order, Flight,transactionMapping, User, Notification } = require('../db/models')
+const { use } = require('../routes')
 
 module.exports = {
     // getData: async(req, res, next) => {
@@ -47,10 +48,9 @@ module.exports = {
     },
     create: async (req, res, next) => {
         try {
+            let statusPassengers = true
             const  dataPassengers  = req.body.passangers
-            
-            
-            const user= req.user
+            const user = req.user
             const flightId = +req.body.id
             if(!user.id){
                 return res.json({
@@ -59,79 +59,90 @@ module.exports = {
                 })
             }
             if (dataPassengers.length == 0){
+                statusPassengers = false
                 res.json({message: "Passenger is not found", success: false, data: {}})
-            }
-            const transaction = await Transaction.create({
-                FlightId: flightId,
-                UserId: user.id
-             })
-        
-            dataPassengers.forEach(element => {
-                let PassengerId = element.PassengerId
-                if(!PassengerId){
-                    if(element.name_passenger ==null || element.name_passenger == "" ){                        
+            }else{
+                dataPassengers.forEach(element => {
+                    if(element.name_passenger == null || element.name_passenger == "" ){                        
+                        statusPassengers = false
                         return res.status(400).json({
                             message: 'Name Passenger is still empty'
                         })
                     }
-                    else if (element.identity_number == null || element.identity_number == "") {                        
+                    else if (element.identity_number == null || element.identity_number == "") {    
+                        statusPassengers = false                    
                         return res.status(400).json({
                             message: 'Identity Number is still empty'
                         })
                     }
                     else if (element.identity_type == "Passport" && element.identity_exp_date == "") {                        
+                        statusPassengers = false
                         return res.status(400).json({
                             message: 'Identity exp date is still empty'
                         })
                     }
                     else if (element.nationality == null || element.nationality == "") {
+                        statusPassengers = false
                         return res.status(400).json({
                             message: 'Nationality is still empty'
                         })
                     }
                     else if (element.identity_type == null || element.identity_type == "") {
+                        statusPassengers = false
                         return res.status(400).json({
                             message: 'Identity Type is still empty'
                         })
-                    }
-
-                    if(element.identity_type == "KTP"){
+                    }else if(element.identity_type == "KTP"){
                         let cekIdentity = /^(?=.*[0-9])\d{16,}$/
                         if (!element.identity_number.match(cekIdentity)) {
+                            statusPassengers = false
                             return res.status(400).json({
                                 message: 'Identity number of KTP must number and have 16 character'
                             })
                         }
-                    } else if (element.identity_type == "Passport"){
+                    }else if (element.identity_type == "Passport"){
                         let cekIdentity = /^[a-z0-9]{10}$/i;
                         if (!element.identity_number.match(cekIdentity)) {
+                            statusPassengers = false
                             return res.status(400).json({
                                 message: 'Identity number of Passport must be a number and letter 10 character'
                             })
                         }
                     }else{
+                        statusPassengers = false
                         return res.status(400).json({
                             message: 'Identity not found'
                         })
                     }
-                    const passenger = Passenger.create({
-                        name_passenger: element.name_passenger, 
-                        identity_number: element.identity_number, 
-                        identity_exp_date: element.identity_exp_date, 
-                        nationality: element.nationality, 
-                        identity_type: element.identity_type
-                    })
-                    .then((Passenger) =>{
-                        PassengerId = Passenger.id
-                        const transactioniMapping = transactionMapping.create({
-                            UserId: user.id,
-                            TransactionId: transaction.id,
-                            PassengerId: Passenger.id,
-                            FlightId: flightId
+                })    
+            }
+            if(statusPassengers){
+                const transaction = await Transaction.create({
+                    FlightId: flightId,
+                    UserId: user.id
+                })
+                console.log(user.id, user.name)
+                dataPassengers.forEach(element => {
+                    let PassengerId = element.PassengerId
+                    if(!PassengerId){
+                        
+                        const passenger = Passenger.create({
+                            name_passenger: element.name_passenger, 
+                            identity_number: element.identity_number, 
+                            identity_exp_date: element.identity_exp_date, 
+                            nationality: element.nationality, 
+                            identity_type: element.identity_type
                         })
-                    })
-                    
-                }    
+                        .then((Passenger) =>{
+                            PassengerId = Passenger.id
+                            const transactioniMapping = transactionMapping.create({
+                                UserId: user.id,
+                                TransactionId: transaction.id,
+                                PassengerId: Passenger.id
+                            })
+                        })
+                        
+                    }    
             
             })
             if (dataPassengers.length == 0){
@@ -141,7 +152,8 @@ module.exports = {
                 user_id: user.id,
                 tittle: `Hello ${user.name}!!`,
                 description:
-                  "Terima kasih telah membeli tiket, silahkan cek tiket anda di email atau dihalaman history pembelian",
+                  `Transaksi kamu dengan nomor ${transaction.id} telah berhasil
+                  Silahkan cek tiket di email anda dan cek klik notif ini untuk melihat detail history`,
                 isRead: false,
               });
 
@@ -175,6 +187,8 @@ module.exports = {
             });
             
 
+            }
+            
         } catch (err) {
             next(err)
         }
