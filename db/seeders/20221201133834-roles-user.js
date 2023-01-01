@@ -31,6 +31,7 @@ module.exports = {
         name: dummyAdmin.name,
         email: dummyAdmin.email,
         password: password,
+        isVerified: dummyAdmin.isVerified,
         role: 'Admin',
         user_type: "basic"
       });

@@ -52,9 +52,9 @@ module.exports = {
         try {
             let statusPassengers = true
             const  dataPassengers  = req.body.passangers
-            const user = req.user
             const flightId = +req.body.id
-            if(!user.id){
+            // console.log(user.id, user.name)
+            if(!req.user.id){
                 return res.json({
                     status: false,
                     message: "You are not logged in"
@@ -121,9 +121,9 @@ module.exports = {
             if(statusPassengers){
                 const transaction = await Transaction.create({
                     FlightId: flightId,
-                    UserId: user.id
+                    UserId: req.user.id
                 })
-                console.log(user.id, user.name)
+                
                 dataPassengers.forEach(element => {
                     let PassengerId = element.PassengerId
                     if(!PassengerId){
@@ -137,9 +137,10 @@ module.exports = {
                         .then((Passenger) =>{
                             PassengerId = Passenger.id
                             const transactioniMapping = transactionMapping.create({
-                                UserId: user.id,
+                                UserId: req.user.id,
                                 TransactionId: transaction.id,
-                                PassengerId: Passenger.id
+                                PassengerId: Passenger.id,
+                                FlightId: flightId
                             })
                         })
                         
@@ -150,8 +151,8 @@ module.exports = {
                 res.json({message: "Passenger is not found", success: false, data: {}})
             }
             const notification = await Notification.create({
-                user_id: user.id,
-                tittle: `Hello ${user.name}!!`,
+                user_id: req.user.id,
+                tittle: `Hello ${req.user.name}!!`,
                 description:
                   `Transaksi kamu dengan nomor ${transaction.id} telah berhasil
                   Silahkan cek tiket di email anda dan cek klik notif ini untuk melihat detail history`,
@@ -174,14 +175,14 @@ module.exports = {
                 ]
             })
 
-            const user = await User.findOne({ where: { id: userId} });
+            const user1 = await User.findOne({ where: { id: req.user.id} });
             if(transactions){
 
                 htmlEmail = await mail.getHtml('transaction.ejs', 
                 { 
                     passengerData: transactions
                 });
-                await mail.sendEmail(user.email, '[Ticket]', htmlEmail);
+                await mail.sendEmail(req.user.email, '[Ticket]', htmlEmail);
             }
             
             return res.status(201).json({
