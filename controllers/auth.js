@@ -81,6 +81,7 @@ module.exports = {
             htmlEmail = await mail.getHtml('verify-email.ejs', 
                 { 
                     name: name,
+                    token: token,
                     link: link
                 });
             await mail.sendEmail(user.email, '[Verify Account]', htmlEmail);
