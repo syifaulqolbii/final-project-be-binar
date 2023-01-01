@@ -3,11 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
-    "build": "npm init",
-    "clean": "rm -rf node_modules",
-    "reinstall": "npm run clean && npm install",
-    "rebuild": "npm run clean && npm install && npm run build"
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
