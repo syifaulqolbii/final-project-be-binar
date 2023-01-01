@@ -17,11 +17,16 @@ router.get('/auth/loginGoogle', con.auth.google);
 // router.post("/auth/loginAdmin", con.auth.loginAdmin)
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
 
+router.get('/auth/verify-account', con.auth.verifyAccountView);
+router.post('/auth/verify-account', con.auth.verifyAccount);
+
+router.get('/auth/whoami', mid.cekLogin, con.auth.whoami);
+router.put('/auth/editProfile', mid.cekLogin, con.auth.editProfile);
 
 //router.get('/auth/forgot-password', con.auth.forgotPasswordView);
 router.post('/auth/forgot-password', con.auth.forgotPassword);
 
-router.get('/auth/reset-password', con.auth.resetPasswordView);
+//router.get('/auth/reset-password', con.auth.resetPasswordView);
 router.post('/auth/reset-password', con.auth.resetPassword);
 
 // list airport

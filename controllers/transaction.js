@@ -1,4 +1,5 @@
-const { Transaction, Passenger, Order, Flight,transactionMapping, User, Notification } = require('../db/models')
+const { Transaction, Passenger, Order, Flight,transactionMapping, User, Notification } = require('../db/models');
+const mail = require('../utils/oauth/email');
 
 module.exports = {
     // getData: async(req, res, next) => {
@@ -149,13 +150,11 @@ module.exports = {
                 ]
             })
 
-            if(transactions != 0){
-                const user = await User.findOne({ where: { id: userId} });
+            const user = await User.findOne({ where: { id: userId} });
+            if(transactions){
                 htmlEmail = await mail.getHtml('transaction.ejs', 
                 { 
                     passengerData: transactions
-                    
-
                 });
 
                 await mail.sendEmail(user.email, '[Ticket]', htmlEmail);
@@ -164,7 +163,7 @@ module.exports = {
             return res.status(201).json({
                 status: true,
                 message: 'Succes Create Booking',
-                data: dataPassengers
+                //data: dataPassengers
                 
             });
             

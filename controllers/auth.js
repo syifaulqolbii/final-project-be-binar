@@ -83,7 +83,7 @@ module.exports = {
                     name: name,
                     link: link
                 });
-            await mail.sendEmail(user.email, '[Verify]', htmlEmail);
+            await mail.sendEmail(user.email, '[Verify Account]', htmlEmail);
 
             return res.status(201).json({
                 status: true,
@@ -276,14 +276,14 @@ module.exports = {
 
         
             const token = jwt.sign(payload, JWT_SECRET_KEY);
-            const link = `${BACKEND_SERVER}/auth/reset-password?token=${token}`;
+            const link = `${FRONTEND_SERVER}/reset-pass?token=${token}`;
 
             htmlEmail = await mail.getHtml('reset-password.ejs', 
                 { 
                     name: user.name,
                     link: link
                 });
-            await mail.sendEmail(user.email, '[Verify]', htmlEmail);
+            await mail.sendEmail(user.email, '[Reset Password]', htmlEmail);
 
             return res.status(200).json({
                 status: true,
