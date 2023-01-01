@@ -145,6 +145,9 @@ module.exports = {
                     }    
             
             })
+            if (dataPassengers.length == 0){
+                res.json({message: "Passenger is not found", success: false, data: {}})
+            }
             const notification = await Notification.create({
                 user_id: user.id,
                 tittle: `Hello ${user.name}!!`,
@@ -153,11 +156,34 @@ module.exports = {
                   Silahkan cek tiket di email anda dan cek klik notif ini untuk melihat detail history`,
                 isRead: false,
               });
+
+            const transactions = await transactionMapping.findAll({
+                where: {TransactionId: transaction.id},
+                include: [
+                    {
+                        model: Passenger,
+                        as: "passenger",
+                        attributes: {exclude: ["createdAt","updatedAt"]}
+                    },
+                    {
+                        model: Flight,
+                        as: "flight",
+                        attributes: {exclude: ["createdAt","updatedAt"]}
+                    },
+                ]
+            })
+            if(transactions != 0){
+                const user = await User.findOne({ where: { id: user.id} });
+                htmlEmail = await mail.getHtml('transaction.ejs', 
+                { 
+                    passengerData: transactions
+                });
+                await mail.sendEmail(user.email, '[Ticket]', htmlEmail);
+            }
             
             return res.status(201).json({
                 status: true,
-                message: 'Succes Create Booking'
-                
+                message: 'Succes Create Booking',
             });
             
 
@@ -220,3 +246,5 @@ module.exports = {
         }
     }
 }
+
+// test

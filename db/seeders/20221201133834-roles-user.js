@@ -5,12 +5,14 @@ var { Modul, User, RoleAcces } = require('../models');
 var dummyAdmin = {
   name: 'admin',
   email: 'admin@mail.com',
-  passowrd: 'admin'
+  passowrd: 'admin',
+  isVerified: true
 };
 var dummyUser = {
   name: 'user',
   email: 'user@mail.com',
-  passowrd: '123'
+  passowrd: '123',
+  isVerified: true
 };
 
 module.exports = {
@@ -41,6 +43,7 @@ module.exports = {
         name: dummyUser.name,
         email: dummyUser.email,
         password: password,
+        isVerified: dummyUser.isVerified,
         role: 'Buyer'
       });
     }

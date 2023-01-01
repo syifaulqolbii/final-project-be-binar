@@ -426,29 +426,21 @@ paths:
                           type: string
                         region:
                           type: string
-                        iata:
-                          type: string
-                        createdAt:
-                          type: string
-                        updatedAt:
+                        code:
                           type: string
                 x-examples:
                   Example 1:
                     status: true
                     message: Data Airport
                     data:
-                      - id: 6
+                      - id: 2
                         name: Yogyakarta International Airport
                         region: Daerah Istimewa Yogyakarta
-                        iata: YIA
-                        createdAt: '2022-12-31T07:40:21.614Z'
-                        updatedAt: '2022-12-31T07:40:21.614Z'
-                      - id: 7
-                        name: Soekarno-Hatta International Airport
+                        code: YIA
+                      - id: 3
+                        name: Soekarno-Hata International Airport
                         region: Banten
-                        iata: CGK
-                        createdAt: '2022-12-31T07:43:25.477Z'
-                        updatedAt: '2022-12-31T07:43:25.477Z'
+                        code: CGK
               examples: {}
       operationId: get-list-airport
       description: Endpoint ini untuk mengambil data list airport yang ada di Indonesia
@@ -1779,3 +1771,5 @@ paths:
           description: need notification id
 components:
   securitySchemes: {}
+
+# test refresh testt

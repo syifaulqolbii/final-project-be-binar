@@ -17,13 +17,14 @@ const {
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}));
-app.use(morgan('dev'))
+app.use(morgan('dev'));
 app.use(cors());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(methodOverride('_method'));
-app.use(expressLayouts);
+//app.use(expressLayouts);
 app.use(router);
 
+app.set('view engine', 'ejs');
 
 app.use((err, req, res, next) =>{
     console.log(err);
@@ -32,7 +33,5 @@ app.use((err, req, res, next) =>{
         message: err.message
     });
 })
-
-app.set('view engine', 'ejs');
 
 app.listen(PORT, () => console.log('listening on PORT', PORT));
