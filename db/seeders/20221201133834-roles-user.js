@@ -29,7 +29,8 @@ module.exports = {
         name: dummyAdmin.name,
         email: dummyAdmin.email,
         password: password,
-        role: 'Admin'
+        role: 'Admin',
+        user_type: "basic"
       });
     }
 
