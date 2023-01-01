@@ -1,5 +1,7 @@
-const { Transaction, Passenger, Order, Flight,transactionMapping, User, Notification } = require('../db/models')
+const { Transaction, Passenger, Order, Flight,transactionMapping, User, Notification } = require('../db/models');
+const mail = require('../utils/oauth/email');
 const { use } = require('../routes')
+
 
 module.exports = {
     // getData: async(req, res, next) => {
@@ -125,7 +127,6 @@ module.exports = {
                 dataPassengers.forEach(element => {
                     let PassengerId = element.PassengerId
                     if(!PassengerId){
-                        
                         const passenger = Passenger.create({
                             name_passenger: element.name_passenger, 
                             identity_number: element.identity_number, 
@@ -172,8 +173,10 @@ module.exports = {
                     },
                 ]
             })
-            if(transactions != 0){
-                const user = await User.findOne({ where: { id: user.id} });
+
+            const user = await User.findOne({ where: { id: userId} });
+            if(transactions){
+
                 htmlEmail = await mail.getHtml('transaction.ejs', 
                 { 
                     passengerData: transactions
@@ -184,6 +187,7 @@ module.exports = {
             return res.status(201).json({
                 status: true,
                 message: 'Succes Create Booking',
+                data: dataPassengers
             });
             
 
