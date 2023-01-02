@@ -150,15 +150,27 @@ module.exports = {
             if (dataPassengers.length == 0){
                 res.json({message: "Passenger is not found", success: false, data: {}})
             }
-            const notification = await Notification.create({
+            console.log({
                 user_id: req.user.id,
+                transaction_id: transaction.id,
                 tittle: `Hello ${req.user.name}!!`,
                 description:
-                  `Transaksi kamu dengan nomor ${transaction.id} telah berhasil
-                  Silahkan cek tiket di email anda dan cek klik notif ini untuk melihat detail history`,
+                  `Transaksi kamu dengan nomor ${transaction.id} telah berhasil\n
+                   Silahkan cek tiket di email anda dan cek klik notif ini\n
+                   untuk melihat detail history`,
+                isRead: false,
+              })
+            const notification = await Notification.create({
+                user_id: req.user.id,
+                transaction_id: transaction.id,
+                tittle: `Hello ${req.user.name}!!`,
+                description:
+                  `Transaksi kamu dengan nomor ${transaction.id} telah berhasil\n
+                   Silahkan cek tiket di email anda dan cek klik notif ini\n
+                   untuk melihat detail history`,
                 isRead: false,
               });
-
+            
             const transactions = await transactionMapping.findAll({
                 where: {TransactionId: transaction.id},
                 include: [
@@ -174,7 +186,6 @@ module.exports = {
                     },
                 ]
             })
-
             const user1 = await User.findOne({ where: { id: req.user.id} });
             if(transactions){
 
