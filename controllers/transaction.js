@@ -165,7 +165,7 @@ module.exports = {
                 transaction_id: transaction.id,
                 tittle: `Hello ${req.user.name}!!`,
                 description:
-                  `Transaksi kamu dengan nomor ${transaction.id} telah berhasil\n
+                  `Transaksi kamu dengan nomor transaksi ${transaction.id} telah berhasil\n
                    Silahkan cek tiket di email anda dan cek klik notif ini\n
                    untuk melihat detail history`,
                 isRead: false,
