@@ -153,7 +153,7 @@ module.exports = {
                 user_id: user.id,
                 tittle: `Hello ${user.name}!!`,
                 description:
-                  `Transaksi kamu dengan nomor ${transaction.id} telah berhasil
+                  `Transaksi kamu dengan nomor transaksi ${transaction.id} telah berhasil. 
                   Silahkan cek tiket di email anda dan cek klik notif ini untuk melihat detail history`,
                 isRead: false,
               });
