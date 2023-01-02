@@ -17,11 +17,16 @@ router.get('/auth/loginGoogle', con.auth.google);
 // router.post("/auth/loginAdmin", con.auth.loginAdmin)
 router.get('/auth/whoami', mid.cekLogin, con.auth.whoami)
 
+router.get('/auth/verify-account', con.auth.verifyAccountView);
+router.post('/auth/verify-account', con.auth.verifyAccount);
+
+router.get('/auth/whoami', mid.cekLogin, con.auth.whoami);
+router.put('/auth/editProfile', mid.cekLogin, con.auth.editProfile);
 
 //router.get('/auth/forgot-password', con.auth.forgotPasswordView);
 router.post('/auth/forgot-password', con.auth.forgotPassword);
 
-router.get('/auth/reset-password', con.auth.resetPasswordView);
+//router.get('/auth/reset-password', con.auth.resetPasswordView);
 router.post('/auth/reset-password', con.auth.resetPassword);
 
 // list airport
@@ -48,9 +53,9 @@ router.get('/access-admin', mid.cekLogin, rbac(MODUL.AdminDashboard, true, true)
 router.get('/access-denied', mid.cekLogin, rbac(MODUL.UserDashboard), con.auth.hello)
 
 
-router.get('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.getData)
+router.get('/notification', mid.cekLogin,con.not.getData)
 // router.post('/notification', mid.cekLogin, rbac(MODUL.UserDashboard, true, true),con.not.create)
-router.put('/notification/:id', mid.cekLogin, rbac(MODUL.UserDashboard, true, true), con.not.update)
+router.put('/notification/:id', mid.cekLogin, con.not.update)
 
 
 router.get('/history', mid.cekLogin, con.his.getData)

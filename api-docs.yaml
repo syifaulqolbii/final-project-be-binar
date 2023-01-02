@@ -1771,6 +1771,3 @@ paths:
           description: need notification id
 components:
   securitySchemes: {}
-
-# test refresh testt
-# refresh
