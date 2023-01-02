@@ -71,6 +71,9 @@ module.exports = {
         const timeat = new Date("1970-01-01T" + arrival_time + "Z");
 
         let diff = timeat - timedt;
+        if (diff < 0) {
+            diff += 1440 * 60 * 1000;
+        }
         const diffInHours = Math.floor(diff / (1000 * 60 * 60));
         const diffInMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         //Create
