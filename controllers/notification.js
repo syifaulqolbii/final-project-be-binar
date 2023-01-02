@@ -1,5 +1,5 @@
 const { Notification } = require("../db/models");
-const notification = require("../db/models/notification");
+// const notification = require("../db/models/notification");
 
 module.exports = {
   getData: async (req, res, next) => {
